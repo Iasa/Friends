@@ -11,6 +11,7 @@ namespace Friends
         IEnumerable<User> GetUsers();
         User GetUserById(long id);
         User CreateUser(CreateUserDto newUser);
-        void UpdateUser(long id, CreateUserDto changedUser);
+        void UpdateUser(long id, CreateUserDto updatedUser);
+        User UpdateUserDetails(long ig, UpdateUserDto updatedUser);
     }
 }

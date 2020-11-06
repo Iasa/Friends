@@ -7710,11 +7710,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends2\\Friends\\Friends.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends\\Friends\\Friends.csproj",
       "projectName": "Friends",
-      "projectPath": "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends2\\Friends\\Friends.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends\\Friends\\Friends.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends2\\Friends\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends\\Friends\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",

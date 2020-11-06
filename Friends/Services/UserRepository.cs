@@ -54,27 +54,67 @@ namespace Friends
             return _userRepository.Find(id);
         }
 
-        public void UpdateUser(long id, CreateUserDto changedUser)
+        public void UpdateUser(long id, CreateUserDto updatedUser)
         {
             User user = _userRepository.Find(id);
 
             if (!_userRepository.GetAll().Any(u => u.Id == id))
                 throw new NotFoundException("User not found!");
 
-            if (changedUser.Email != user.Email && _userRepository.GetAll().Any(u => u.Email == changedUser.Email))
+            if (updatedUser.Email != user.Email && _userRepository.GetAll().Any(u => u.Email == updatedUser.Email))
                 throw new EntryAlreadyExistsException("This Email is already being used by another user");
 
-            if (changedUser.Username != user.Username && _userRepository.GetAll().Any(u => u.Username == changedUser.Username))
+            if (updatedUser.Username != user.Username && _userRepository.GetAll().Any(u => u.Username == updatedUser.Username))
                 throw new EntryAlreadyExistsException("This Username is already being used by another user");
 
-            user.FirstName = changedUser.FirstName;
-            user.LastName = changedUser.LastName;
-            user.BirthDate = changedUser.BirthDate;
-            user.Username = changedUser.Username;
-            user.Password = changedUser.Password;
-            user.Email = changedUser.Email;
+            user.FirstName = updatedUser.FirstName;
+            user.LastName = updatedUser.LastName;
+            user.BirthDate = updatedUser.BirthDate;
+            user.Username = updatedUser.Username;
+            user.Password = updatedUser.Password;
+            user.Email = updatedUser.Email;
 
             _userRepository.Save();
+        }
+
+        public User UpdateUserDetails(long id, UpdateUserDto updatedUser)
+        {
+            if (!_userRepository.GetAll().Any(u => u.Id == id))
+                throw new NotFoundException("User not found");
+
+            User user = _userRepository.Find(id);
+
+            if (!string.IsNullOrWhiteSpace(updatedUser.FirstName))
+                user.FirstName = updatedUser.LastName;
+
+            if (!string.IsNullOrWhiteSpace(updatedUser.LastName))
+                user.LastName = updatedUser.LastName;
+
+            if (!string.IsNullOrWhiteSpace(updatedUser.Username) && user.Username != updatedUser.Username)
+            {
+                if (_userRepository.GetAll().Any(u => u.Username == updatedUser.Username))
+                {
+                    throw new EntryAlreadyExistsException("This Username is already being used by another user");
+                }    
+                user.Username = updatedUser.Username;
+            }
+                
+            if (!string.IsNullOrWhiteSpace(updatedUser.Email) && user.Email != updatedUser.Email)
+            {
+                if (_userRepository.GetAll().Any(u=>u.Email == updatedUser.Email))
+                {
+                    throw new EntryAlreadyExistsException("This Email is already being used by another user");
+                }
+                user.Email = updatedUser.Email;
+            }
+
+            if (!string.IsNullOrWhiteSpace(updatedUser.Password))
+                user.Password = updatedUser.Password;
+
+            if (updatedUser.BirthDate.HasValue)
+                user.BirthDate = updatedUser.BirthDate.Value;
+
+            return user;
         }
 
 

@@ -62,5 +62,14 @@ namespace Friends.Controllers
             return NoContent();
         }
 
+        [HttpPatch("{id}")]
+        [ApiExceptionFilter]
+        public IActionResult Patch(long id, [FromBody] UpdateUserDto dto)
+        {
+            User user = _userRepository.UpdateUserDetails(id, dto);
+            var result = _mapper.Map<UserDto>(user);
+            return Ok(result);
+        }
+
     }
 }

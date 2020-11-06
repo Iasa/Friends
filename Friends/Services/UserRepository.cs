@@ -114,7 +114,19 @@ namespace Friends
             if (updatedUser.BirthDate.HasValue)
                 user.BirthDate = updatedUser.BirthDate.Value;
 
+            _userRepository.Save();
+
             return user;
+        }
+
+        public void RemoveUserById(long id)
+        {
+            if (!_userRepository.GetAll().Any(u => u.Id == id))
+                throw new NotFoundException("User not foun");
+
+            User user = _userRepository.Find(id);
+            _userRepository.Remove(user);
+            _userRepository.Save();
         }
 
 

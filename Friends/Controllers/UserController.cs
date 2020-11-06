@@ -71,5 +71,13 @@ namespace Friends.Controllers
             return Ok(result);
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(long id)
+        {
+            _userRepository.RemoveUserById(id);
+
+            return NoContent();
+        }
+
     }
 }

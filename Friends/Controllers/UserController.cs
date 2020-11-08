@@ -46,7 +46,7 @@ namespace Friends.Controllers
 
         [HttpPost]
         [ApiExceptionFilter]
-        public IActionResult Post([FromBody] CreateUserDto dto)
+        public IActionResult CreateUser([FromBody] CreateUserDto dto)
         {
             var user = _userRepository.CreateUser(dto);
 
@@ -56,7 +56,7 @@ namespace Friends.Controllers
 
         [HttpPut("{id}")]
         [ApiExceptionFilter]
-        public IActionResult Put(long id, [FromBody] CreateUserDto dto)
+        public IActionResult UpdateUser(long id, [FromBody] CreateUserDto dto)
         {
             _userRepository.UpdateUser(id, dto);
             return NoContent();
@@ -64,7 +64,7 @@ namespace Friends.Controllers
 
         [HttpPatch("{id}")]
         [ApiExceptionFilter]
-        public IActionResult Patch(long id, [FromBody] UpdateUserDto dto)
+        public IActionResult UpdateUserDetails(long id, [FromBody] UpdateUserDto dto)
         {
             User user = _userRepository.UpdateUserDetails(id, dto);
             var result = _mapper.Map<UserDto>(user);
@@ -72,7 +72,7 @@ namespace Friends.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(long id)
+        public IActionResult RemoveUser(long id)
         {
             _userRepository.RemoveUserById(id);
 

@@ -23,7 +23,7 @@ namespace Friends.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
             var users = _userRepository.GetUsers();
@@ -44,7 +44,7 @@ namespace Friends.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("CreateUser")]
         [ApiExceptionFilter]
         public IActionResult CreateUser([FromBody] CreateUserDto dto)
         {

@@ -1,5 +1,6 @@
 ﻿using Friends.CodeFirst;
 using Friends.Domain;
+using Friends.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,18 +8,42 @@ using System.Text;
 
 namespace Friends
 {
-    class MessageRepository : Repository<Message>, IMessageRepository
+    class MessageRepository : IMessageRepository
     {
-        public MessageRepository(FriendsDbContext context) : base(context)
+        private readonly IRepository<Message> _messageRepository;
+
+        public MessageRepository(IRepository<Message> messageRepository)
         {
+            _messageRepository = messageRepository;
         }
-        public FriendsDbContext FriendsContext
+
+        public Message CreateMessage(CreateMessageDto newMessage)
         {
-            get { return _context as FriendsDbContext; }
+            Message message = new Message();
+            message.SenderId = newMessage.SenderId;
+            message.ChatId = newMessage.ChatId;
+            message.Content = newMessage.Content.Trim();
+            message.SendingTime = newMessage.SendingTime;
+
+            _messageRepository.Add(message);
+            _messageRepository.Save();
+
+            return message;
         }
-        public void EditMessage(string newContent, long messageId)
+
+        public void EditMessage(long messageId)
         {
-            FriendsContext.Messages.First(m => m.Id == messageId).Content = newContent;
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Message> GetMessagesFromChat(long chatId)
+        {
+            return null;
+        }
+
+        public void RemoveMessage(long messageId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

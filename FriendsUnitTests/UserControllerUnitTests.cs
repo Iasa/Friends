@@ -19,7 +19,7 @@ namespace FriendsUnitTests
     public class UserControllerUnitTests
     {
         private Mock<IUserRepository> _mockUserRepository;
-        private Mock<IMapper> _mockMapper;
+        private Mock<IMapper> _mockMapper;  
         private UserController _userController;
         private List<User> _usersList;
 
@@ -102,7 +102,7 @@ namespace FriendsUnitTests
 
             //Assert.AreEqual(result.Count, expectedCount);
             Assert.AreEqual((int)HttpStatusCode.OK, users.StatusCode);
-        }
+        }   
 
         [TestMethod]
         public void CreateUser_ShouldReturnTheCreatedUser()

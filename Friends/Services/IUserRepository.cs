@@ -13,7 +13,6 @@ namespace Friends
         User CreateUser(CreateUserDto newUser);
         void UpdateUser(long id, CreateUserDto updatedUser);
         User UpdateUserDetails(long ig, UpdateUserDto updatedUser);
-
         void RemoveUserById(long id);
     }
 }

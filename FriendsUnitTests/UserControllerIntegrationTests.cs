@@ -21,10 +21,9 @@ namespace FriendsUnitTests
     public class UserControllerIntegrationTests
     {
         private readonly HttpClient _client;
-        private Mock<IUserRepository> _mockUserRepository;
-        private Mock<IMapper> _mockMapper;
-        private UserController _userController;
-        private List<User> _usersList;
+        //private Mock<IUserRepository> _mockUserRepository;
+        //private Mock<IMapper> _mockMapper;
+        //private UserController _userController;
 
         public UserControllerIntegrationTests()
         {
@@ -32,6 +31,7 @@ namespace FriendsUnitTests
             //    .UseEnvironment("Development")
             //    .UseStartup<Startup>());
             //_client = server.CreateClient();
+
             var appFactory = new WebApplicationFactory<Startup>();
             _client = appFactory.CreateClient();
         }
@@ -39,21 +39,9 @@ namespace FriendsUnitTests
         [TestInitialize]
         public void Initializer()
         {
-            _mockUserRepository = new Mock<IUserRepository>();
-            _mockMapper = new Mock<IMapper>();
-            _userController = new UserController(_mockUserRepository.Object, _mockMapper.Object);
-            _usersList = new List<User>() { new User(), new User(), new User() };
-
-            //_mockMapper.Setup(m => m.Map<UserDto>(It.IsAny<User>())).Returns((User src) => new UserDto()
-            //{
-            //    Id = src.Id,
-            //    FirstName = src.FirstName,
-            //    LastName = src.LastName,
-            //    BirthDate = src.BirthDate,
-            //    Email = src.Email,
-            //    Username = src.Username,
-            //    Password = src.Password
-            //});
+            //_mockUserRepository = new Mock<IUserRepository>();
+            //_mockMapper = new Mock<IMapper>();
+            //_userController = new UserController(_mockUserRepository.Object, _mockMapper.Object);
         }
 
         [TestMethod]
@@ -64,7 +52,7 @@ namespace FriendsUnitTests
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var users = JsonConvert.DeserializeObject<List<UserDto>>(json);
-            Assert.IsTrue(users.Count == 5);
+            Assert.IsTrue(users.Count == 6);
         }
 
 
@@ -79,8 +67,8 @@ namespace FriendsUnitTests
                     FirstName = "John",
                     LastName = "Travolta",
                     BirthDate = new DateTime(1934, 11, 14),
-                    Email = "ggg@mail.com",
-                    Username = "ggg",
+                    Email = "aaa@mail.com",
+                    Username = "aaa",
                     Password = "travolta123"
                 }
             };

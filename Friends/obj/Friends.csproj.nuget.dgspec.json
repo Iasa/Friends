@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends\\Friends\\Friends.csproj": {}
+    "C:\\Users\\iasas\\Desktop\\Amdaris Internship\\Friends\\Friends\\Friends.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends\\Friends\\Friends.csproj": {
+    "C:\\Users\\iasas\\Desktop\\Amdaris Internship\\Friends\\Friends\\Friends.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends\\Friends\\Friends.csproj",
+        "projectUniqueName": "C:\\Users\\iasas\\Desktop\\Amdaris Internship\\Friends\\Friends\\Friends.csproj",
         "projectName": "Friends",
-        "projectPath": "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends\\Friends\\Friends.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\Desktop\\Iasa\\AMDARIS\\Friends\\Friends\\obj\\",
+        "projectPath": "C:\\Users\\iasas\\Desktop\\Amdaris Internship\\Friends\\Friends\\Friends.csproj",
+        "packagesPath": "C:\\Users\\iasas\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\iasas\\Desktop\\Amdaris Internship\\Friends\\Friends\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\iasas\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,6 +26,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -37,6 +38,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
@@ -65,6 +67,12 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[3.1.9, )"
+            },
+            "Microsoft.TypeScript.MSBuild": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[4.0.3, )"
             },
             "Swashbuckle.AspNetCore.Swagger": {
               "target": "Package",
@@ -101,7 +109,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

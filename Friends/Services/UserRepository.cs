@@ -58,7 +58,7 @@ namespace Friends
         {
             User user = _userRepository.Find(id);
 
-            if (!_userRepository.GetAll().Any(u => u.Id == id))
+            if (user == null)
                 throw new NotFoundException("User not found!");
 
             if (updatedUser.Email != user.Email && _userRepository.GetAll().Any(u => u.Email == updatedUser.Email))

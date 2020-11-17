@@ -6,6 +6,7 @@ using AutoMapper;
 using Friends.Domain;
 using Friends.Dtos;
 using Friends.Exceptions;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

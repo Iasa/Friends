@@ -5,7 +5,27 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Friends", "Friends\Friends.csproj", "{CBE2478A-1F55-4AD9-8ECD-E2C0B689FF44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FriendsUnitTests", "FriendsUnitTests\FriendsUnitTests.csproj", "{7A84B7AD-F852-448C-8560-40A960BB55C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FriendsUnitTests", "FriendsUnitTests\FriendsUnitTests.csproj", "{7A84B7AD-F852-448C-8560-40A960BB55C7}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Friends React", "Friends React\", "{505C35F4-D312-47F8-8F6D-142730C5E540}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_52791"
+		Debug.AspNetCompiler.PhysicalPath = "Friends React\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52791\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_52791"
+		Release.AspNetCompiler.PhysicalPath = "Friends React\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52791\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "52791"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +41,10 @@ Global
 		{7A84B7AD-F852-448C-8560-40A960BB55C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A84B7AD-F852-448C-8560-40A960BB55C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A84B7AD-F852-448C-8560-40A960BB55C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{505C35F4-D312-47F8-8F6D-142730C5E540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{505C35F4-D312-47F8-8F6D-142730C5E540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{505C35F4-D312-47F8-8F6D-142730C5E540}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{505C35F4-D312-47F8-8F6D-142730C5E540}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

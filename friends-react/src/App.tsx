@@ -1,16 +1,14 @@
 import React from 'react';
 import './App.css';
-import User from './User';
-import Profile from './Components/Profile';
+import UsersList from './Components/UsersList';
+import Register from './Components/Register';
 
 function App() {
-  
   return (
     <div className="App">
-      <Profile id={1}/>
+      <Register />
     </div>
   );
-  
 }
 
 export default App;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {getUserById} from '../Services/UserServices';
 
 function Profile(props : { id : number }) {
@@ -15,10 +15,11 @@ function Profile(props : { id : number }) {
 
     return(
         <div>
-           <h1>{user.username}</h1>
-            <h2>{user.email}</h2>
+            <h3>Username: {user.username}</h3>
+            <h3>Password: {user.email}</h3>
         </div>
     );
 }
+
 
 export default Profile;

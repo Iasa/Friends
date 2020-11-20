@@ -6,10 +6,28 @@ import Grid from '@material-ui/core/Grid'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import {addUser} from '../Services/UserServices';
-//import {createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import {createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 
+
+const useStyles = makeStyles((theme) => ({
+    container: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    regForm: {
+        marginTop: theme.spacing(2),
+        width: '100%'
+    },
+    submitButton: {
+        marginTop: theme.spacing(2)
+    }
+}))
 
 function Register() {
+
+    const classes = useStyles();
 
     const validationSchema = yup.object().shape({
         firstName: yup.string().required("First Name is required").min(3, "First Name is too short").max(50, "Last Name is too long"),
@@ -31,11 +49,11 @@ function Register() {
 
     return (
         <Container component="main" maxWidth="xs">
-            <div>
+            <div className={classes.container}>
                 <Typography component="h1" variant="h5">
                     Register
                 </Typography>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} className={classes.regForm}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField 
@@ -48,7 +66,6 @@ function Register() {
                                 helperText = {errors.firstName ? errors.firstName.message : ""}
                                 error = {errors.firstName ? true : false}
                             />
-                            
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField 
@@ -111,6 +128,7 @@ function Register() {
                             variant = "contained"
                             fullWidth
                             color = "primary"
+                            className = {classes.submitButton}
                         >
                             Register
                         </Button>

@@ -42,3 +42,7 @@ export const addUser = async (user : User) => {
     return;
 }
 
+export const logInUser(username: string, password: string) {
+    const response = fetch("")
+}
+

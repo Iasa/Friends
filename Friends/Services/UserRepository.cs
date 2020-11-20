@@ -85,7 +85,7 @@ namespace Friends
             User user = _userRepository.Find(id);
 
             if (!string.IsNullOrWhiteSpace(updatedUser.FirstName))
-                user.FirstName = updatedUser.LastName;
+                user.FirstName = updatedUser.FirstName;
 
             if (!string.IsNullOrWhiteSpace(updatedUser.LastName))
                 user.LastName = updatedUser.LastName;

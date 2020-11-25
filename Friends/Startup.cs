@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Friends.CodeFirst;
 using Friends.Mappings;
+using Friends.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,8 +40,8 @@ namespace Friends
             });
 
             services.AddSingleton(mapperConfig.CreateMapper());
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+            services.AddScoped<IUserServices, UserServices>();
 
             services.AddControllersWithViews();
             ConfigureSwagger(services);

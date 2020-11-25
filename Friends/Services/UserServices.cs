@@ -2,6 +2,7 @@
 using Friends.Domain;
 using Friends.Dtos;
 using Friends.Exceptions;
+using Friends.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ using System.Text;
 
 namespace Friends
 {
-    class UserRepository : IUserRepository
+    class UserServices : IUserServices
     {
-        private readonly IRepository<User> _userRepository;
-        public UserRepository(IRepository<User> userRepository)
+        private readonly IUserRepository _userRepository;
+        public UserServices(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
@@ -127,6 +128,30 @@ namespace Friends
             User user = _userRepository.Find(id);
             _userRepository.Remove(user);
             _userRepository.Save();
+        }
+
+        public bool CheckIfEmailAlreadyExists(string email)
+        {
+            if(_userRepository.GetAll().Any(u => u.Email == email))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool CheckIfUsernameAlreadyExists(string username)
+        {
+            if(_userRepository.GetAll().Any(u => u.Username == username))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
 

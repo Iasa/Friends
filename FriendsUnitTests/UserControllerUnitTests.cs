@@ -18,7 +18,7 @@ namespace FriendsUnitTests
     [TestClass]
     public class UserControllerUnitTests
     {
-        private Mock<IUserRepository> _mockUserRepository;
+        private Mock<IUserServices> _mockUserRepository;
         private Mock<IMapper> _mockMapper;  
         private UserController _userController;
         private List<User> _usersList;
@@ -26,7 +26,7 @@ namespace FriendsUnitTests
         [TestInitialize]
         public void Initializer()
         {
-            _mockUserRepository = new Mock<IUserRepository>();
+            _mockUserRepository = new Mock<IUserServices>();
             _mockMapper = new Mock<IMapper>();
             _userController = new UserController(_mockUserRepository.Object, _mockMapper.Object);
 

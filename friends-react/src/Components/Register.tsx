@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Button, Container, TextField, Typography } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import IUser from '../IUser';
@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
 
 function Register() {
 
+    const emailField = useRef(null);
+    const usernameField = useRef(null);
+
     const classes = useStyles();
 
     const validationSchema = yup.object().shape({
@@ -44,6 +47,7 @@ function Register() {
 
     const onSubmit = async (data : IUser) => {
         console.log(data);
+
         const request = await addUser(data);
     };
 
@@ -93,6 +97,7 @@ function Register() {
                             <TextField 
                                 name = "email"
                                 variant = "outlined"
+                                ref = {emailField}
                                 fullWidth
                                 label = "Email"
                                 inputRef = { register }
@@ -104,6 +109,7 @@ function Register() {
                             <TextField 
                                 name = "username"
                                 variant = "outlined"
+                                ref = {usernameField}
                                 fullWidth
                                 label = "Username"
                                 inputRef = { register }

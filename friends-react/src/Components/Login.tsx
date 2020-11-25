@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Login() {
 
-    const [regState, setRegState] = useState(0);
+    //const [regState, setRegState] = useState(0);
 
     const classes = useStyles();
 
@@ -47,7 +47,7 @@ function Login() {
 
     const onSubmit = async (data : loginFormData) => {
         console.log(data);
-        setRegState(5);
+        //setRegState(5);
         //const request = await addUser(data);
     };
 
@@ -55,7 +55,7 @@ function Login() {
         <Container component="main" maxWidth="xs">
             <div className={classes.container}>
                 <Typography component="h1" variant="h5">
-                    Log in {regState}
+                    Log in
                 </Typography>
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.loginForm}>
                     <Grid container spacing={2}>

@@ -3,16 +3,32 @@ import './App.css';
 import UsersList from './Components/UsersList';
 import Register from './Components/Register';
 import Login from './Components/Login';
-import { Switch } from '@material-ui/core';
-import { Route } from 'react-router';
+import Navbar from './Components/Navbar'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 
 function App() {
   return (
     <div className="App">
-      <Switch>
-        <Route />
-      </Switch>
+      <Navbar />
+    <Router>
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/users">
+            <UsersList />
+          </Route>
+        </Switch>
+    </Router>
     </div>
   );
 }

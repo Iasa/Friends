@@ -8,10 +8,10 @@ using System.Text;
 
 namespace Friends
 {
-    class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        protected readonly FriendsDbContext _context;
-        public Repository(FriendsDbContext context)
+        protected readonly DbContext _context;
+        public Repository(DbContext context)
         {
             _context = context;
         }

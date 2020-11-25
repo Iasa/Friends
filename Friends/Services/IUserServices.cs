@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Friends
 {
-    public interface IUserRepository
+    public interface IUserServices
     {
         IEnumerable<User> GetUsers();
         User GetUserById(long id);
@@ -14,5 +14,7 @@ namespace Friends
         void UpdateUser(long id, CreateUserDto updatedUser);
         User UpdateUserDetails(long ig, UpdateUserDto updatedUser);
         void RemoveUserById(long id);
+        bool CheckIfEmailAlreadyExists(string email);
+        bool CheckIfUsernameAlreadyExists(string username);
     }
 }

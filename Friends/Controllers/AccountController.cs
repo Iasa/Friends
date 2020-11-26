@@ -129,15 +129,9 @@ namespace Friends.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
 
                 var encodedToken = tokenHandler.WriteToken(jwtSecurityToken);
-                var user = _userManager.FindByNameAsync(model.Username);
-                byte[] decodedHashedPassword = Convert.FromBase64String(user.Result.PasswordHash);
-                foreach (var item in decodedHashedPassword)
-                {
-
-                }
                 return new UserManagerResponse
                 {
-                    Message = "Successfully: " + decodedHashedPassword,
+                    Message = "Successfully: ",
                     IsSucces = true,
                     ExpireDate = jwtSecurityToken.ValidTo,
                     Token = encodedToken

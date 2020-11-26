@@ -25,7 +25,7 @@ namespace Friends
                 throw new EntryAlreadyExistsException("This Email is already being used by another user");
             }
 
-            if (_userRepository.GetAll().Any(u => u.Username == newUser.Username))
+            if (_userRepository.GetAll().Any(u => u.UserName == newUser.Username))
             {
                 throw new EntryAlreadyExistsException("This Username is already being used by another user");
             }
@@ -35,8 +35,7 @@ namespace Friends
                 FirstName = newUser.FirstName,
                 LastName = newUser.LastName,
                 BirthDate = newUser.BirthDate,
-                Username = newUser.Username,
-                Password = newUser.Password,
+                UserName = newUser.Username,
                 Email = newUser.Email
             };
 
@@ -65,14 +64,13 @@ namespace Friends
             if (updatedUser.Email != user.Email && _userRepository.GetAll().Any(u => u.Email == updatedUser.Email))
                 throw new EntryAlreadyExistsException("This Email is already being used by another user");
 
-            if (updatedUser.Username != user.Username && _userRepository.GetAll().Any(u => u.Username == updatedUser.Username))
+            if (updatedUser.Username != user.UserName && _userRepository.GetAll().Any(u => u.UserName == updatedUser.Username))
                 throw new EntryAlreadyExistsException("This Username is already being used by another user");
 
             user.FirstName = updatedUser.FirstName;
             user.LastName = updatedUser.LastName;
             user.BirthDate = updatedUser.BirthDate;
-            user.Username = updatedUser.Username;
-            user.Password = updatedUser.Password;
+            user.UserName = updatedUser.Username;
             user.Email = updatedUser.Email;
 
             _userRepository.Save();
@@ -91,13 +89,13 @@ namespace Friends
             if (!string.IsNullOrWhiteSpace(updatedUser.LastName))
                 user.LastName = updatedUser.LastName;
 
-            if (!string.IsNullOrWhiteSpace(updatedUser.Username) && user.Username != updatedUser.Username)
+            if (!string.IsNullOrWhiteSpace(updatedUser.Username) && user.UserName != updatedUser.Username)
             {
-                if (_userRepository.GetAll().Any(u => u.Username == updatedUser.Username))
+                if (_userRepository.GetAll().Any(u => u.UserName == updatedUser.Username))
                 {
                     throw new EntryAlreadyExistsException("This Username is already being used by another user");
                 }    
-                user.Username = updatedUser.Username;
+                user.UserName = updatedUser.Username;
             }
                 
             if (!string.IsNullOrWhiteSpace(updatedUser.Email) && user.Email != updatedUser.Email)
@@ -108,9 +106,6 @@ namespace Friends
                 }
                 user.Email = updatedUser.Email;
             }
-
-            if (!string.IsNullOrWhiteSpace(updatedUser.Password))
-                user.Password = updatedUser.Password;
 
             if (updatedUser.BirthDate.HasValue)
                 user.BirthDate = updatedUser.BirthDate.Value;
@@ -144,7 +139,7 @@ namespace Friends
 
         public bool CheckIfUsernameAlreadyExists(string username)
         {
-            if(_userRepository.GetAll().Any(u => u.Username == username))
+            if(_userRepository.GetAll().Any(u => u.UserName == username))
             {
                 return true;
             }

@@ -6,14 +6,18 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WebApi.Identity;
 
 namespace Friends
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+            //IHost host = CreateHostBuilder(args).Build();
+            //host.SeedData();
+            //await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -8,6 +8,7 @@ namespace Friends.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
+        User Find(long id);
         bool CheckIfEmailAlreadyExists(string email);
         bool CheckIfUsernameAlreadyExists(string username);
     }

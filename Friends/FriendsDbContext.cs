@@ -5,10 +5,13 @@ using System.Text;
 using Friends.Domain;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Friends.Domain.Models.Auth;
+using WebApi;
 
 namespace Friends.CodeFirst
 {
-    public class FriendsDbContext : DbContext
+    public class FriendsDbContext : IdentityDbContext<User, Role, long, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
         public FriendsDbContext(DbContextOptions options) : base(options)
         {
@@ -20,15 +23,26 @@ namespace Friends.CodeFirst
             modelBuilder.ApplyConfiguration(new ChatConfig());
             modelBuilder.ApplyConfiguration(new MessageConfig());
             modelBuilder.ApplyConfiguration(new UserChatConfig());
+            ApplyIdentityMapConfiguration(modelBuilder);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           // optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DbConnection"));
             optionsBuilder.UseLazyLoadingProxies();
         }
-        public DbSet<User> Users { get; set; }
+
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
+
+        private void ApplyIdentityMapConfiguration(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().ToTable("Users", SchemaConsts.Auth);
+            modelBuilder.Entity<UserClaim>().ToTable("UserClaims", SchemaConsts.Auth);
+            modelBuilder.Entity<UserLogin>().ToTable("UserLogins", SchemaConsts.Auth);
+            modelBuilder.Entity<UserToken>().ToTable("UserRoles", SchemaConsts.Auth);
+            modelBuilder.Entity<Role>().ToTable("Roles", SchemaConsts.Auth);
+            modelBuilder.Entity<RoleClaim>().ToTable("RoleClaims", SchemaConsts.Auth);
+            modelBuilder.Entity<UserRole>().ToTable("UserRole", SchemaConsts.Auth);
+        }
 
     }
 }

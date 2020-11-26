@@ -37,8 +37,7 @@ namespace FriendsUnitTests
                 LastName = src.LastName,
                 BirthDate = src.BirthDate,
                 Email = src.Email,
-                Username = src.Username,
-                Password = src.Password
+                Username = src.UserName
             });
 
             _usersList = new List<User>()
@@ -50,8 +49,7 @@ namespace FriendsUnitTests
                     LastName = "Eminescu",
                     BirthDate = new DateTime(1988,04,01),
                     Email = "eminescu@mail.com",
-                    Username = "eminescu",
-                    Password = "eminescu123"
+                    UserName = "eminescu"
                 },
                 new User()
                 {
@@ -60,8 +58,7 @@ namespace FriendsUnitTests
                     LastName = "Travolta",
                     BirthDate = new DateTime(1934,11,14),
                     Email = "travolta@mail.com",
-                    Username = "travolta",
-                    Password = "travolta123"
+                    UserName = "travolta"
                 },
                 new User()
                 {
@@ -70,8 +67,7 @@ namespace FriendsUnitTests
                     LastName = "Johnes",
                     BirthDate = new DateTime(1954,12,17),
                     Email = "indiana@mail.com",
-                    Username = "indiana",
-                    Password = "indiana123"
+                    UserName = "indiana"
                 }
             };
         }
@@ -125,8 +121,7 @@ namespace FriendsUnitTests
                     LastName = dto.LastName,
                     BirthDate = dto.BirthDate,
                     Email = dto.Email,
-                    Username = dto.Username,
-                    Password = dto.Password
+                    UserName = dto.Username
                 });
 
             var result = _userController.CreateUser(user) as CreatedAtActionResult;

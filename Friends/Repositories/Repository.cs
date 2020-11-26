@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Friends
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext _context;
         public Repository(DbContext context)
@@ -20,10 +20,10 @@ namespace Friends
             _context.Set<TEntity>().Add(entity);
         }
 
-        public TEntity Find(long id)
-        {
-            return _context.Set<TEntity>().FirstOrDefault(u => u.Id == id);
-        }
+        //public TEntity Find(long id)
+        //{
+        //    return _context.Set<TEntity>().FirstOrDefault(u => u.Id == id);
+        //}
 
         public IQueryable<TEntity> GetAll()
         {

@@ -7,6 +7,8 @@ using AutoMapper;
 using Friends.Domain;
 using Friends.Dtos;
 using Friends.Exceptions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +27,8 @@ namespace Friends.Controllers
             _mapper = mapper;
         }
 
+        //[Authorize(Roles = "user")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
@@ -33,7 +37,7 @@ namespace Friends.Controllers
 
             return Ok(result);
         }
-
+        [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
         public IActionResult GetUserById(long id)
         {

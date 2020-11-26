@@ -13,6 +13,7 @@ namespace Friends.Mappings
         public UserMappingProfile()
         {
             CreateMap<User, UserDto>();
+            CreateMap<User, LoginDto>();
         }
     }
 }

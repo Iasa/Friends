@@ -27,7 +27,7 @@ namespace Friends.Repositories
 
         public bool CheckIfUsernameAlreadyExists(string username)
         {
-            if (GetAll().Any(u => u.Username == username))
+            if (GetAll().Any(u => u.UserName == username))
             {
                 return true;
             }
@@ -35,6 +35,11 @@ namespace Friends.Repositories
             {
                 return false;
             }
+        }
+
+        public User Find(long id)
+        {
+            return _context.Set<User>().FirstOrDefault(u => u.Id == id);
         }
     }
 }

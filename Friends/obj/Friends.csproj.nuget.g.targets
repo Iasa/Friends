@@ -4,6 +4,6 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)microsoft.typescript.msbuild\4.0.3\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.typescript.msbuild\4.0.3\build\Microsoft.TypeScript.MSBuild.targets')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.typescript.msbuild\4.1.2\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.typescript.msbuild\4.1.2\build\Microsoft.TypeScript.MSBuild.targets')" />
   </ImportGroup>
 </Project>

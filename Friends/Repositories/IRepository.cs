@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Friends
 {
-    public interface IRepository<TEntity> where TEntity : BaseEntity
+    public interface IRepository<TEntity> where TEntity : class
     {
-        TEntity Find(long id);
+        //TEntity Find(long id);
         IQueryable<TEntity> GetAll();
         void Add(TEntity entity);
         void Remove(TEntity entity);

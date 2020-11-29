@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+import IUserRegisterResponse from '../IUserRegisterResponse';
 import User from '../User';
 
 export const getUserById = async (id:number) => {
@@ -18,27 +20,10 @@ export const getAllUsers = async () => {
     return usersJson;
 }
 
-export const addUser = async (user : User) => {
-    const requestOptions = {
-        method: 'POST',
-        headers : { 'Content-Type': 'application/json' },
-        body : JSON.stringify({
-            firstName : user.firstName,
-            lastName : user.lastName,
-            birthDate : user.birthDate,
-            username : user.username,
-            email : user.email,
-            password : user.password
-        })
-    };
+export const registerUser = async (user : User) => {
 
-    fetch("https://localhost:44329/api/User/CreateUser", requestOptions)
-        .then(response => response.json())
-        .catch(error => {
-            alert("Errorooooooor");
-        });
+    return (await axios.post("https://localhost:44329/api/Account/register", user)).data;
 
-    return;
 }
 
 // export const logInUser(username: string, password: string) {

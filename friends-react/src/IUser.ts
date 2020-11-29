@@ -7,6 +7,7 @@ interface IUser {
     birthDate: string;
     username: string;
     password: string;
+    confirmedPassword: string;
     email: string;
 }
 

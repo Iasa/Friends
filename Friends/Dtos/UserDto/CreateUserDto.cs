@@ -23,7 +23,13 @@ namespace Friends.Dtos
         public string Username { get; set; }
 
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required]
+        [Compare("Password", ErrorMessage = "Passwords are not the same")]
+        [DataType(DataType.Password)]
+        public string ConfirmedPassword { get; set; }
 
         [Required]
         [EmailAddress]

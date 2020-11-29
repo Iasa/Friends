@@ -1,6 +1,7 @@
 ﻿using Friends.Domain;
 using Friends.Domain.Models.Auth;
 using Friends.Dtos;
+using Friends.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -38,19 +39,20 @@ namespace Friends.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("register")]
-        public async Task<UserManagerResponse> Register([FromBody] CreateUserDto model)
+        public async Task<UserRegisterResponse> Register([FromBody] CreateUserDto model)
         {
             if (ModelState.IsValid)
             {
-                //if (model.Password != model.PasswordConfirm)
+                //if (model.Password != model.ConfirmedPassword)
                 //{
-                //    return new UserManagerResponse
+                //    return new UserRegisterResponse
                 //    {
                 //        Message = "Passwords are not the same"
                 //    };
                 //}
-                var userCheck = await _userManager.FindByEmailAsync(model.Email);
-                if (userCheck == null)
+                var userEmail = await _userManager.FindByEmailAsync(model.Email);
+                var userUserName = await _userManager.FindByNameAsync(model.Username);
+                if (userEmail == null && userUserName == null)
                 {
                     var user = new User
                     {
@@ -68,43 +70,47 @@ namespace Friends.Controllers
                         {
                             var role = new Role("user");
                             var roleResult = _roleManager.CreateAsync(role).Result;
-                            if (!roleResult.Succeeded)
-                            {
-                                return new UserManagerResponse
-                                {
-                                    Message = "Such User Already Exist"
-                                };
-                            }
+                            //if (!roleResult.Succeeded)
+                            //{
+                            //    return new UserManagerResponse
+                            //    {
+                            //        Message = "Such User Already Exist"
+                            //    };
+                            //}
                         }
                         await _userManager.AddToRoleAsync(user, "user");
                         await _signInManager.SignInAsync(user, false);
-                        return new UserManagerResponse
+                        return new UserRegisterResponse
                         {
                             IsSucces = true
                         };
                     }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(string.Empty, error.Description);
-                            return new UserManagerResponse
-                            {
-                                Message = "Such User Already Exist"
-                            };
-                        }
-                    }
-
-                    return new UserManagerResponse
-                    {
-                        Message = "Such User Already Exist"
-                    };
+                    //else
+                    //{
+                    //    foreach (var error in result.Errors)
+                    //    {
+                    //        ModelState.AddModelError(string.Empty, error.Description);
+                    //        return new UserManagerResponse
+                    //        {
+                    //            Message = "Such User Already Exist"
+                    //        };
+                    //    }
+                    //}
                 }
+
+                return new UserRegisterResponse
+                {
+                    IsSucces = false,
+                    EmailIsAlreadyUsed = userEmail != null ? true : false,
+                    UsernameIsAlreadyUsed = userUserName != null ? true : false
+                };
+                
             }
-            return new UserManagerResponse
+
+            return new UserRegisterResponse
             {
-                Message = "Successfully",
-                IsSucces = true
+                Message = "Model State Invalid",
+                IsSucces = false
             };
         }
 
@@ -140,7 +146,7 @@ namespace Friends.Controllers
 
             return new UserManagerResponse
             {
-                Message = "Incorect password "
+                Message = "Incorect password"
             };
         }
 

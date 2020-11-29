@@ -5,7 +5,7 @@ import IUser from '../IUser';
 import Grid from '@material-ui/core/Grid'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import {addUser} from '../Services/UserServices';
+import {registerUser} from '../Services/UserServices';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 
 

@@ -5,8 +5,9 @@ import IUser from '../IUser';
 import Grid from '@material-ui/core/Grid'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import {addUser} from '../Services/UserServices';
+import { registerUser } from '../Services/UserServices';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import IUserRegisterResponse from '../IUserRegisterResponse';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,7 @@ function Register() {
         email: yup.string().email("Enter a valid email").required("Email is required"),
         username: yup.string().required("Username is required").min(3, "Username is too short").max(50, "Username is too long"),
         password: yup.string().required("Password is required").min(3, "Password is too short").max(50, "Password is too long"),
+        confirmedPassword: yup.string().oneOf([yup.ref('password')], 'Passwords must match'),
         birthDate: yup.string().required("Select your birth date")
     });
 
@@ -45,10 +47,14 @@ function Register() {
         resolver: yupResolver(validationSchema)
     });
 
-    const onSubmit = async (data : IUser) => {
-        console.log(data);
-
-        const request = await addUser(data);
+    const onSubmit = (data : IUser) => {
+        registerUser(data)
+        .then(response => {
+            if(response.emailIsAlreadyUsed) {
+                
+            }
+            console.log(response.emailIsAlreadyUsed);
+        });
     };
 
     return (
@@ -97,6 +103,7 @@ function Register() {
                             <TextField 
                                 name = "email"
                                 variant = "outlined"
+                                //innerRef = { emailField }
                                 ref = {emailField}
                                 fullWidth
                                 label = "Email"
@@ -127,6 +134,18 @@ function Register() {
                                 inputRef = { register }
                                 helperText = {errors.password ? errors.password.message : ""}
                                 error = {errors.password ? true : false}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField 
+                                name = "confirmedPassword"
+                                variant = "outlined"
+                                type = "password"
+                                fullWidth
+                                label = "Confirm password"
+                                inputRef = { register }
+                                helperText = {errors.confirmedPassword ? errors.confirmedPassword.message : ""}
+                                error = {errors.confirmedPassword ? true : false}
                             />
                         </Grid>
                         <Button 

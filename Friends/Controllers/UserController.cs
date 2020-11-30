@@ -27,6 +27,20 @@ namespace Friends.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
+        [HttpGet("CheckIfEmailExists/{email}")]
+        public bool CheckIfEmailExists(string email)
+        {
+            return _userServices.CheckIfEmailAlreadyExists(email);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("CheckIfUsernameExists/{username}")]
+        public bool CheckIfUsernameExists(string username)
+        {
+            return _userServices.CheckIfUsernameAlreadyExists(username);
+        }
+
         //[Authorize(Roles = "user")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("GetAllUsers")]

@@ -1,9 +1,7 @@
 ﻿using Friends.Domain;
 using Friends.Domain.Models.Auth;
 using Friends.Dtos;
-using Friends.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -11,7 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApi.Identity;
@@ -39,17 +36,18 @@ namespace Friends.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("register")]
-        public async Task<UserRegisterResponse> Register([FromBody] CreateUserDto model)
+        public async Task<UserManagerResponse> Register([FromBody] CreateUserDto model)
         {
             if (ModelState.IsValid)
             {
-                //if (model.Password != model.ConfirmedPassword)
-                //{
-                //    return new UserRegisterResponse
-                //    {
-                //        Message = "Passwords are not the same"
-                //    };
-                //}
+                if (model.Password != model.ConfirmedPassword)
+                {
+                    return new UserManagerResponse
+                    {
+                        IsSucces = false,
+                        Message = "Passwords are not the same"
+                    };
+                }
                 var userEmail = await _userManager.FindByEmailAsync(model.Email);
                 var userUserName = await _userManager.FindByNameAsync(model.Username);
                 if (userEmail == null && userUserName == null)
@@ -80,7 +78,7 @@ namespace Friends.Controllers
                         }
                         await _userManager.AddToRoleAsync(user, "user");
                         await _signInManager.SignInAsync(user, false);
-                        return new UserRegisterResponse
+                        return new UserManagerResponse
                         {
                             IsSucces = true
                         };
@@ -98,16 +96,15 @@ namespace Friends.Controllers
                     //}
                 }
 
-                return new UserRegisterResponse
+                return new UserManagerResponse
                 {
                     IsSucces = false,
-                    EmailIsAlreadyUsed = userEmail != null ? true : false,
-                    UsernameIsAlreadyUsed = userUserName != null ? true : false
+                    Message = "Email or username is already used"
                 };
                 
             }
 
-            return new UserRegisterResponse
+            return new UserManagerResponse
             {
                 Message = "Model State Invalid",
                 IsSucces = false

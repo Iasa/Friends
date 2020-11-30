@@ -1,13 +1,12 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Button, Container, TextField, Typography } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import IUser from '../IUser';
 import Grid from '@material-ui/core/Grid'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { registerUser } from '../Services/UserServices';
+import { checkIfEmailExists, checkIfUsernameExists, registerUser } from '../Services/UserServices';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import IUserRegisterResponse from '../IUserRegisterResponse';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,16 +27,23 @@ const useStyles = makeStyles((theme) => ({
 
 function Register() {
 
-    const emailField = useRef(null);
-    const usernameField = useRef(null);
-
     const classes = useStyles();
 
     const validationSchema = yup.object().shape({
         firstName: yup.string().required("First Name is required").min(3, "First Name is too short").max(50, "Last Name is too long"),
         lastName: yup.string().required("Last Name is required").min(3, "Last Name is too short").max(50, "Last Name is too long"),
-        email: yup.string().email("Enter a valid email").required("Email is required"),
-        username: yup.string().required("Username is required").min(3, "Username is too short").max(50, "Username is too long"),
+        email: yup.string().email("Enter a valid email").required("Email is required")
+        .test(
+            'unique-email',
+            'This email is already taken, please specify another one',
+            value => checkIfEmailExists(value as string).then(response => {return !response.data})
+        ),
+        username: yup.string().required("Username is required").min(3, "Username is too short").max(50, "Username is too long")
+        .test(
+            'unique-username',
+            'This username is already taken, please specify another one',
+            value => checkIfUsernameExists(value as string).then(response => {return !response.data})
+        ),
         password: yup.string().required("Password is required").min(3, "Password is too short").max(50, "Password is too long"),
         confirmedPassword: yup.string().oneOf([yup.ref('password')], 'Passwords must match'),
         birthDate: yup.string().required("Select your birth date")
@@ -48,12 +54,9 @@ function Register() {
     });
 
     const onSubmit = (data : IUser) => {
-        registerUser(data)
-        .then(response => {
-            if(response.emailIsAlreadyUsed) {
-                
-            }
-            console.log(response.emailIsAlreadyUsed);
+         registerUser(data).then(response => {
+             console.log(response.message);
+             if(!response.isSucces) alert(response.message);
         });
     };
 
@@ -103,8 +106,6 @@ function Register() {
                             <TextField 
                                 name = "email"
                                 variant = "outlined"
-                                //innerRef = { emailField }
-                                ref = {emailField}
                                 fullWidth
                                 label = "Email"
                                 inputRef = { register }
@@ -116,7 +117,6 @@ function Register() {
                             <TextField 
                                 name = "username"
                                 variant = "outlined"
-                                ref = {usernameField}
                                 fullWidth
                                 label = "Username"
                                 inputRef = { register }

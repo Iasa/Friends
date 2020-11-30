@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import IUserRegisterResponse from '../IUserRegisterResponse';
 import User from '../User';
 
 export const getUserById = async (id:number) => {
@@ -24,6 +23,14 @@ export const registerUser = async (user : User) => {
 
     return (await axios.post("https://localhost:44329/api/Account/register", user)).data;
 
+}
+
+export const checkIfEmailExists = async (email : string) => {
+    return await axios.get(`https://localhost:44329/api/User/CheckIfEmailExists/${email}`);
+}
+
+export const checkIfUsernameExists = async (username : string) => {
+    return await axios.get(`https://localhost:44329/api/User/CheckIfUsernameExists/${username}`);
 }
 
 // export const logInUser(username: string, password: string) {

@@ -5,8 +5,9 @@ import IUser from '../IUser';
 import Grid from '@material-ui/core/Grid'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import {registerUser} from '../Services/UserServices';
+import {checkIfUsernameExists, logInUser} from '../Services/UserServices';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import UserLogInModel from '../UserLogInModel';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,22 +32,41 @@ function Login() {
 
     const classes = useStyles();
 
-    type loginFormData = {
-        username : string,
-        password : string
-    }
+    // type UserLogInModel = {
+    //     username : string,
+    //     password : string
+    // }
 
     const validationSchema = yup.object().shape({
-        username: yup.string().required("Username is required"),
+        username: yup.string().required("Username is required")
+        .test(
+            'checkUsername',
+            'No user with such username exists',
+            value => checkIfUsernameExists(value as string).then(response => {return response.data})
+        ),
         password: yup.string().required("Password is required")
+        .test(
+            'checkPassword',
+            'Wrong password',
+            function(value) {
+                let user = new UserLogInModel();
+                user.username =  this.parent.username;
+                user.password = value as string;
+                let result = false;
+                logInUser(user).then(response => result = response.data.isSucces).catch(error => result = error.isSucces);
+                return result;
+            }
+        )
     });
 
-    const {register, handleSubmit, errors} = useForm<loginFormData>({
+    const {register, handleSubmit, errors} = useForm<UserLogInModel>({
         resolver: yupResolver(validationSchema)
     });
 
-    const onSubmit = async (data : loginFormData) => {
+    const onSubmit = async (data : UserLogInModel) => {
         console.log(data);
+        logInUser(data).then(response => console.log(response.isSucces));
+
         //setRegState(5);
         //const request = await addUser(data);
     };

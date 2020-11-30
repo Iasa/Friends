@@ -134,7 +134,7 @@ namespace Friends.Controllers
                 var encodedToken = tokenHandler.WriteToken(jwtSecurityToken);
                 return new UserManagerResponse
                 {
-                    Message = "Successfully: ",
+                    Message = "Success",
                     IsSucces = true,
                     ExpireDate = jwtSecurityToken.ValidTo,
                     Token = encodedToken
@@ -143,6 +143,7 @@ namespace Friends.Controllers
 
             return new UserManagerResponse
             {
+                IsSucces = false,
                 Message = "Incorect password"
             };
         }

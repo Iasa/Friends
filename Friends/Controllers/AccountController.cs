@@ -1,6 +1,8 @@
 ﻿using Friends.Domain;
 using Friends.Domain.Models.Auth;
 using Friends.Dtos;
+using Friends.Identity;
+using Friends.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -132,12 +134,25 @@ namespace Friends.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
 
                 var encodedToken = tokenHandler.WriteToken(jwtSecurityToken);
+
+                var user = _userManager.FindByNameAsync(model.Username);
+                var userInfo = new UserInfo
+                {
+                    Id = user.Result.Id,
+                    FirstName = user.Result.FirstName,
+                    LastName = user.Result.LastName,
+                    BirthDate = user.Result.BirthDate,
+                    Email = user.Result.Email,
+                    Username = user.Result.UserName
+                };
+
                 return new UserManagerResponse
                 {
                     Message = "Success",
                     IsSucces = true,
                     ExpireDate = jwtSecurityToken.ValidTo,
-                    Token = encodedToken
+                    Token = encodedToken,
+                    User = userInfo
                 };
             }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Friends.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace WebApi.Identity
         public bool IsSucces { get; set; }
         public DateTime ExpireDate { get; set; }
         public string Token { get; set; }
+        public UserInfo User { get; set; }
 
     }
 }

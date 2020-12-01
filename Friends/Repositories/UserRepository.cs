@@ -41,5 +41,6 @@ namespace Friends.Repositories
         {
             return _context.Set<User>().FirstOrDefault(u => u.Id == id);
         }
+
     }
 }

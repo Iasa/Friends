@@ -1,6 +1,6 @@
 import React from 'react';
 
-class User {
+class UserRegisterModel {
     id: number = 0;
     firstName: string = '';
     lastName: string = '';
@@ -11,4 +11,4 @@ class User {
     email: string = '';
 }
 
-export default User;
+export default UserRegisterModel;

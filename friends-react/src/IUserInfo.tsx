@@ -1,14 +1,13 @@
-import React from 'react';
+import React from "react";
 
-interface IUser {
+interface IUserInfo {
     id: number;
     firstName: string;
     lastName: string;
     birthDate: string;
     username: string;
-    password: string;
-    confirmedPassword: string;
     email: string;
+    token: string;
 }
 
-export default IUser;
+export default IUserInfo;

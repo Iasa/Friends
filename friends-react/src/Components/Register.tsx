@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Container, TextField, Typography } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
-import IUser from '../IUser';
+import IUserRegisterModel from '../IUserRegisterModel';
 import Grid from '@material-ui/core/Grid'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -49,11 +49,11 @@ function Register() {
         birthDate: yup.string().required("Select your birth date")
     });
 
-    const {register, handleSubmit, errors} = useForm<IUser>({
+    const {register, handleSubmit, errors} = useForm<IUserRegisterModel>({
         resolver: yupResolver(validationSchema)
     });
 
-    const onSubmit = (data : IUser) => {
+    const onSubmit = (data : IUserRegisterModel) => {
          registerUser(data).then(response => {
              console.log(response.message);
              if(!response.isSucces) alert(response.message);

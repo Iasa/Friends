@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Container, TextField, Typography } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
-import IUser from '../IUser';
+import IUserRegisterModel from '../IUserRegisterModel';
 import Grid from '@material-ui/core/Grid'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import {checkIfUsernameExists, logInUser} from '../Services/UserServices';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import UserLogInModel from '../UserLogInModel';
+import { red } from '@material-ui/core/colors';
+import { UserContext } from '../UserContext';
+import { Redirect } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -23,14 +26,21 @@ const useStyles = makeStyles((theme) => ({
     },
     submitButton: {
         marginTop: theme.spacing(2)
+    },
+    worngPassword: {
+        alignItems: 'center',
+        color: 'red',
+        width: '100%'
     }
 }))
 
 function Login() {
 
-    //const [regState, setRegState] = useState(0);
+    const [passwordIsWrong, setPasswordIsWrong] = useState(false);
 
     const classes = useStyles();
+
+    const userContext = useContext(UserContext);
 
     // type UserLogInModel = {
     //     username : string,
@@ -45,18 +55,18 @@ function Login() {
             value => checkIfUsernameExists(value as string).then(response => {return response.data})
         ),
         password: yup.string().required("Password is required")
-        .test(
-            'checkPassword',
-            'Wrong password',
-            function(value) {
-                let user = new UserLogInModel();
-                user.username =  this.parent.username;
-                user.password = value as string;
-                let result = false;
-                logInUser(user).then(response => result = response.data.isSucces).catch(error => result = error.isSucces);
-                return result;
-            }
-        )
+        // .test(
+        //     'checkPassword',
+        //     'Wrong password',
+        //     function(value) {
+        //         let user = new UserLogInModel();
+        //         user.username =  this.parent.username;
+        //         user.password = value as string;
+        //         let result = false;
+        //         logInUser(user).then(response => {result = response.isSucces; console.log("successsss " + response.isSucces)});
+        //         return result;
+        //     }
+        // )
     });
 
     const {register, handleSubmit, errors} = useForm<UserLogInModel>({
@@ -65,12 +75,24 @@ function Login() {
 
     const onSubmit = async (data : UserLogInModel) => {
         console.log(data);
-        logInUser(data).then(response => console.log(response.isSucces));
+        logInUser(data).then(response => {
+            if( !response.isSucces )  {
+                setPasswordIsWrong(true);
+            }
+            else {
+                setPasswordIsWrong(false);
+                userContext.logIn(response.user);
+            }
+        });
 
         //setRegState(5);
         //const request = await addUser(data);
     };
 
+    if(localStorage.getItem('token')) {
+        return <Redirect to="/messenger"/>
+    }
+    else 
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.container}>
@@ -103,6 +125,7 @@ function Login() {
                                 error = {errors.password ? true : false}
                             />
                         </Grid>
+                        <div className={classes.worngPassword}>{passwordIsWrong ? <p>Wrong password</p> : "" }</div>
                         <Button 
                             type = "submit"
                             variant = "contained"

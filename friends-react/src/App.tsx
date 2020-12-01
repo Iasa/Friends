@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import './App.css';
 import UsersList from './Components/UsersList';
 import Register from './Components/Register';
@@ -10,23 +10,35 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { UserContext } from './UserContext';
+import Messenger from './Components/Messenger';
+import { getCurrentUser } from './Services/UserServices';
+import IUserInfo from './IUserInfo';
+import  MessengerProtectedRoute from './Components/MessengerProtectedRoute';
+import LoginRoute from './LoginRoute';
 
 
 function App() {
+
+  const [user, setUser] = useState(getCurrentUser());
+  //const value = useMemo(() => ({ user, setUser }), [user, setUser]);
+  const logIn = (user:IUserInfo) => {
+    setUser(user);
+  }
+  const logOut = () => {
+    setUser({} as IUserInfo);
+  }
+
   return (
     <div className="App">
       <Navbar />
     <Router>
         <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/users">
-            <UsersList />
-          </Route>
+        <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut}}>
+          <LoginRoute path="/login" component={Login}/>
+          <Route path="/register" component={Register} />
+          <MessengerProtectedRoute path="/messenger" component={Messenger} />
+        </UserContext.Provider>
         </Switch>
     </Router>
     </div>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {getAllUsers} from '../Services/UserServices';
-import User from '../User';
+import UserRegisterModel from '../UserRegisterModel';
 
 function UsersList() {
     
-    const [users, setUsers] = useState([{} as User]);
+    const [users, setUsers] = useState([{} as UserRegisterModel]);
 
     useEffect(() => {
         fetchUsers();

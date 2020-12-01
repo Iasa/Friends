@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import User from '../User';
+import UserRegisterModel from '../UserRegisterModel';
 import UserLogInModel from '../UserLogInModel';
+import IUserInfo from '../IUserInfo';
 
 export const getUserById = async (id:number) => {
     const response = await fetch(`https://localhost:44329/api/User/${id}`);
@@ -15,7 +16,7 @@ export const getAllUsers = async () => {
     return usersJson;
 }
 
-export const registerUser = async (user : User) => {
+export const registerUser = async (user : UserRegisterModel) => {
     return (await axios.post("https://localhost:44329/api/Account/register", user)).data;
 }
 
@@ -31,7 +32,17 @@ export const checkIfUsernameExists = async (username : string) => {
 
 export const logInUser = async (logInModel : UserLogInModel) => {
     const result = await axios.post("https://localhost:44329/api/Account/login", logInModel);
-    console.log(result.data);
+    if( result.data.isSucces ) {
+        let user : IUserInfo = result.data.user;
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', result.data.token);
+    }
     return result.data;
+}
+
+export const getCurrentUser = () : IUserInfo => {
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) as IUserInfo : {} as IUserInfo;
+    return user;
 }
 

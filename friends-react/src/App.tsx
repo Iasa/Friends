@@ -16,6 +16,8 @@ import { getCurrentUser } from './Services/UserServices';
 import IUserInfo from './IUserInfo';
 import  MessengerProtectedRoute from './Components/MessengerProtectedRoute';
 import LoginRoute from './LoginRoute';
+import RegisterRoute from './RegisterRoute';
+import MenuAppBar from './Components/Experiment';
 
 
 function App() {
@@ -31,16 +33,18 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
-    <Router>
+      
+       <Navbar />
+     
+    <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut}}>
+      <Router>
         <Switch>
-        <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut}}>
-          <LoginRoute path="/login" component={Login}/>
-          <Route path="/register" component={Register} />
+          <RegisterRoute path="/register" component={Register} /> 
+          <LoginRoute path="/login" component={Login}/>        
           <MessengerProtectedRoute path="/messenger" component={Messenger} />
-        </UserContext.Provider>
-        </Switch>
-    </Router>
+        </Switch> 
+      </Router>
+    </UserContext.Provider>
     </div>
   );
 }

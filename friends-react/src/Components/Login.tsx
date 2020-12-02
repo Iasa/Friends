@@ -89,10 +89,6 @@ function Login() {
         //const request = await addUser(data);
     };
 
-    if(localStorage.getItem('token')) {
-        return <Redirect to="/messenger"/>
-    }
-    else 
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.container}>

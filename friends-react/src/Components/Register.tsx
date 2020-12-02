@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Container, TextField, Typography } from '@material-ui/core';
+import { Button, Container, Divider, TextField, Typography } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import IUserRegisterModel from '../IUserRegisterModel';
 import Grid from '@material-ui/core/Grid'
@@ -11,21 +11,30 @@ import {createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
     },
     regForm: {
-        marginTop: theme.spacing(2),
+        marginTop: theme.spacing(3),
         width: '100%'
     },
-    submitButton: {
-        marginTop: theme.spacing(2)
+    button: {
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3)
+    },
+    registerText: {
+        fontFamily: "Corbel",
+        fontSize: 30
+    },
+    smallText: {
+        fontFamily: "Corbel",
+        fontSize: 14
     }
 }))
 
-function Register() {
+function Register(props : any) {
 
     const classes = useStyles();
 
@@ -63,7 +72,7 @@ function Register() {
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.container}>
-                <Typography component="h1" variant="h5">
+                <Typography className={classes.registerText} component="h1" variant="h5">
                     Register
                 </Typography>
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.regForm}>
@@ -152,13 +161,26 @@ function Register() {
                             type = "submit"
                             variant = "contained"
                             fullWidth
-                            color = "primary"
-                            className = {classes.submitButton}
+                            color = "secondary"
+                            className = {classes.button}
                         >
                             Register
                         </Button>
                     </Grid>
                 </form>
+                <Divider />
+                <Typography className={classes.smallText}>
+                    Already have an account ?
+                </Typography>
+                    <Button 
+                        variant = "contained"
+                        color = "primary"
+                        fullWidth
+                        className = {classes.button}
+                        onClick={() => props.history.push('/login')}
+                    >
+                        Log in
+                    </Button>
             </div>
         </Container>
     );

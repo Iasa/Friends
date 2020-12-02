@@ -24,17 +24,22 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
         width: '100%'
     },
-    submitButton: {
-        marginTop: theme.spacing(2)
-    },
     worngPassword: {
         alignItems: 'center',
         color: 'red',
         width: '100%'
+    },
+    button: {
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3)
+    },
+    smallText: {
+        fontFamily: "Corbel",
+        fontSize: 14
     }
 }))
 
-function Login() {
+function Login(props : any) {
 
     const [passwordIsWrong, setPasswordIsWrong] = useState(false);
 
@@ -91,6 +96,7 @@ function Login() {
 
     return (
         <Container component="main" maxWidth="xs">
+            {userContext.user.email}
             <div className={classes.container}>
                 <Typography component="h1" variant="h5">
                     Log in
@@ -126,13 +132,25 @@ function Login() {
                             type = "submit"
                             variant = "contained"
                             fullWidth
-                            color = "primary"
-                            className = {classes.submitButton}
+                            color = "secondary"
+                            className = {classes.button}
                         >
                             Log in
                         </Button>
                     </Grid>
                 </form>
+                <Typography className={classes.smallText}>
+                    Don't have an account ?
+                </Typography>
+                    <Button 
+                        variant = "contained"
+                        color = "primary"
+                        fullWidth
+                        className={classes.button}
+                        onClick={() => props.history.push('/Register')}
+                    >
+                        Register
+                    </Button>
             </div>
         </Container>
     );

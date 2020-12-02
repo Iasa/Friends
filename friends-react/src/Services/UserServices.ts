@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
 import UserRegisterModel from '../UserRegisterModel';
 import UserLogInModel from '../UserLogInModel';
 import IUserInfo from '../IUserInfo';
+import { UserContext } from '../UserContext';
 
 export const getUserById = async (id:number) => {
     const response = await fetch(`https://localhost:44329/api/User/${id}`);
@@ -40,9 +41,15 @@ export const logInUser = async (logInModel : UserLogInModel) => {
     return result.data;
 }
 
+export const logOutUser = async () => {
+    localStorage.clear();
+}
+
 export const getCurrentUser = () : IUserInfo => {
     const userString = localStorage.getItem('user');
     const user = userString ? JSON.parse(userString) as IUserInfo : {} as IUserInfo;
     return user;
 }
+
+
 

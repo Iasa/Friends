@@ -1,8 +1,9 @@
-import { AppBar, Badge, Button, Grid, IconButton, Link, makeStyles, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
+import { AppBar, Badge, Button, Grid, IconButton, makeStyles, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
+import React, { useContext, useState } from 'react';
 import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import { AccountCircle } from '@material-ui/icons';
+import { logOutUser } from '../Services/UserServices';
+import { UserContext } from '../UserContext';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -19,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
         cursor: 'pointer',
         fontSize: 30,
-        fontFamily: 'Brush Script MT'
+        fontFamily: 'Brush Script MT',
+        underline: 'none'
     },
     menuLinks: {
         //flexGrow: 0.7
@@ -31,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-function Navbar() {
+function Navbar(props : any) {
     const classes = useStyles();
-    const auth = true;
+    const userContext = useContext(UserContext);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -44,56 +46,66 @@ function Navbar() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    // const onLogOut = async () => {
+    //     await logOutUser();
+    //     userContext.logOut;
+    // }
     
     return (
-        <AppBar  position="static" className={classes.container}>
+        <AppBar position="sticky" className={classes.container}>
             <Toolbar className={classes.toolbar}>
                 <Grid container spacing={8} justify="space-between" >
                     <Grid item xs={4}>
-                        <Typography>
-                            <Link className={classes.logo}  underline="none">Friends</Link>
+                        <Typography className={classes.logo}>
+                            Friends 
                         </Typography>
                     </Grid>
+                    { localStorage.getItem('token') &&
+                        <Grid item xs={4}>
+                                <IconButton 
+                                    color="inherit" 
+                                    onClick={() => props.history.push('/messenger')}
+                                >
+                                    <Badge badgeContent={0} color="secondary">
+                                        <MailIcon />
+                                    </Badge>
+                                </IconButton> 
+                        </Grid>                 
+                    }
 
-                    <Grid item xs={4}>
-                        <Link href="/messenger" color="inherit">
-                            <IconButton color="inherit" >
-                                <Badge badgeContent={0} color="secondary">
-                                    <MailIcon />
-                                </Badge>
-                            </IconButton> 
-                        </Link>
-                    </Grid>
-
-                    <Grid item xs={4}>
-                        <IconButton 
-                            aria-controls="accountMenu"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                        <Menu
-                            id="accountMenu"
-                            anchorEl={anchorEl}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right'
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right'
-                            }}
-                            open={open}
-                            onClose={handleClose}
-                        >
-                            <MenuItem>Profile</MenuItem>
-                            <MenuItem>Log out</MenuItem>
-                        </Menu>
-                    </Grid>
-
+                    { localStorage.getItem('token') && 
+                        <Grid item xs={4}>
+                            <IconButton 
+                                aria-controls="accountMenu"
+                                aria-haspopup="true"
+                                onClick={handleMenu}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                            <Menu
+                                id="accountMenu"
+                                anchorEl={anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right'
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right'
+                                }}
+                                open={open}
+                                onClose={handleClose}
+                            >
+                                <MenuItem>Profile</MenuItem>
+                                <MenuItem >
+                                    <Button type="submit" onClick={() => {logOutUser();}}>Log out</Button>
+                                </MenuItem>
+                            </Menu>
+                        </Grid>
+                    }
                 </Grid>
                 
             </Toolbar>

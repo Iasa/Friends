@@ -34,7 +34,7 @@ function App() {
   return (
     <div className="App">
       
-       <Navbar />
+    <Navbar />
      
     <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut}}>
       <Router>

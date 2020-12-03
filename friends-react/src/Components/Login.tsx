@@ -96,7 +96,7 @@ function Login(props : any) {
 
     return (
         <Container component="main" maxWidth="xs">
-            {userContext.user.email}
+            
             <div className={classes.container}>
                 <Typography component="h1" variant="h5">
                     Log in

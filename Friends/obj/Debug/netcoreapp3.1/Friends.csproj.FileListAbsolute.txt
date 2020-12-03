@@ -271,3 +271,10 @@ C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.
 C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
 C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
 C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.1\System.Web.Mvc.dll
+C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.1\System.Web.Razor.dll
+C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.1\System.Web.Helpers.dll
+C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.1\System.Web.WebPages.Deployment.dll
+C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.1\System.Web.WebPages.Razor.dll
+C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.1\System.Web.WebPages.dll
+C:\Users\iasas\Desktop\Amdaris Internship\Friends\Friends\bin\Debug\netcoreapp3.1\Microsoft.Web.Infrastructure.dll

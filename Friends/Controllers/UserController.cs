@@ -7,6 +7,7 @@ using AutoMapper;
 using Friends.Domain;
 using Friends.Dtos;
 using Friends.Exceptions;
+using Friends.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -20,11 +21,13 @@ namespace Friends.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserServices _userServices;
+        private readonly IChatServices _chatServices;
         private readonly IMapper _mapper;
-        public UserController(IUserServices userServices, IMapper mapper)
+        public UserController(IChatServices chatServices, IUserServices userServices, IMapper mapper)
         {
             _userServices = userServices;
             _mapper = mapper;
+            _chatServices = chatServices;
         }
 
         [AllowAnonymous]
@@ -99,5 +102,13 @@ namespace Friends.Controllers
             return NoContent();
         }
 
+        [AllowAnonymous]
+        [HttpGet("/chats/{id}")]
+        public IActionResult GetUserChats(long id)
+        {
+            var result = _chatServices.GetUserChats(id);
+
+            return Ok(result);
+        }
     }
 }

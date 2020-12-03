@@ -1,9 +1,10 @@
-import { AppBar, Badge, Button, Grid, IconButton, makeStyles, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Badge, Grid, IconButton, makeStyles, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
 import MailIcon from '@material-ui/icons/Mail';
 import { AccountCircle } from '@material-ui/icons';
 import { logOutUser } from '../Services/UserServices';
 import { UserContext } from '../UserContext';
+import { Link, useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -33,11 +34,12 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-function Navbar(props : any) {
+function Navbar() {
     const classes = useStyles();
     const userContext = useContext(UserContext);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const history = useHistory();
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -47,10 +49,12 @@ function Navbar(props : any) {
         setAnchorEl(null);
     };
 
-    // const onLogOut = async () => {
-    //     await logOutUser();
-    //     userContext.logOut;
-    // }
+    const onLogOut = async () => {
+        await logOutUser();
+        userContext.logOut();
+        setAnchorEl(null);
+        history.replace("/login");
+    }
     
     return (
         <AppBar position="sticky" className={classes.container}>
@@ -63,14 +67,15 @@ function Navbar(props : any) {
                     </Grid>
                     { localStorage.getItem('token') &&
                         <Grid item xs={4}>
+                            <Link to="/messenger" style={{ color: "inherit" }}>    
                                 <IconButton 
                                     color="inherit" 
-                                    onClick={() => props.history.push('/messenger')}
                                 >
                                     <Badge badgeContent={0} color="secondary">
                                         <MailIcon />
                                     </Badge>
                                 </IconButton> 
+                            </Link>
                         </Grid>                 
                     }
 
@@ -100,8 +105,8 @@ function Navbar(props : any) {
                                 onClose={handleClose}
                             >
                                 <MenuItem>Profile</MenuItem>
-                                <MenuItem >
-                                    <Button type="submit" onClick={() => {logOutUser();}}>Log out</Button>
+                                <MenuItem onClick={onLogOut}>
+                                    Log out
                                 </MenuItem>
                             </Menu>
                         </Grid>

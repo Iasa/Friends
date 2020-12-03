@@ -11,13 +11,12 @@ import {
   Link
 } from "react-router-dom";
 import { UserContext } from './UserContext';
-import Messenger from './Components/Messenger';
+import Messenger from './Components/Messenger/Messenger';
 import { getCurrentUser } from './Services/UserServices';
 import IUserInfo from './IUserInfo';
 import  MessengerProtectedRoute from './Components/MessengerProtectedRoute';
 import LoginRoute from './LoginRoute';
 import RegisterRoute from './RegisterRoute';
-import MenuAppBar from './Components/Experiment';
 
 
 function App() {
@@ -33,11 +32,9 @@ function App() {
 
   return (
     <div className="App">
-      
-    <Navbar />
-     
     <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut}}>
       <Router>
+        <Navbar />
         <Switch>
           <RegisterRoute path="/register" component={Register} /> 
           <LoginRoute path="/login" component={Login}/>        

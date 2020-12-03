@@ -51,5 +51,11 @@ export const getCurrentUser = () : IUserInfo => {
     return user;
 }
 
+export const getChatList = async (userId : number) => {
+    const chatList = await axios.get(`https://localhost:44329/chats/${userId}`);
+    console.log(chatList);
+    return chatList;
+}
+
 
 

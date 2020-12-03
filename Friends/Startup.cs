@@ -8,6 +8,7 @@ using Friends.Domain;
 using Friends.Domain.Models.Auth;
 using Friends.Mappings;
 using Friends.Repositories;
+using Friends.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -63,6 +64,8 @@ namespace Friends
             services.AddSingleton(mapperConfig.CreateMapper());
             services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
             services.AddScoped<IUserServices, UserServices>();
+            services.AddScoped(typeof(IChatRepository), typeof(ChatRepository));
+            services.AddScoped<IChatServices, ChatServices>();
 
             services.AddControllersWithViews();
             ConfigureSwagger(services);

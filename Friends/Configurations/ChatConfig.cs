@@ -11,7 +11,7 @@ namespace Friends.CodeFirst
     {
         public void Configure(EntityTypeBuilder<Chat> builder)
         {
-            builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.Name).HasMaxLength(50);
         }
     }
 }

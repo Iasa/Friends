@@ -14,15 +14,17 @@ namespace Friends.Repositories
         {
         }
 
-        public IEnumerable<Object> GetUserChats(long userId)
+        public IEnumerable<ChatDto> GetUserChats(long userId)
         {
             List<ChatDto> chatList = new List<ChatDto>();
 
             return _context.Set<UserChat>().Where(uc => uc.UserId == userId)
-                .Select(uc => new
+                .Select(uc => new ChatDto
                 {
                     ChatId = uc.ChatId,
-                    Name = uc.Chat.IsGroup ? uc.Chat.Name : _context.Set<UserChat>().FirstOrDefault(x => (x.ChatId == uc.ChatId) && (x.UserId != userId)).User.UserName
+                    Name = uc.Chat.IsGroup ? uc.Chat.Name : 
+                        _context.Set<UserChat>().FirstOrDefault(x => (x.ChatId == uc.ChatId) && (x.UserId != userId)).User.FirstName + " " +
+                        _context.Set<UserChat>().FirstOrDefault(x => (x.ChatId == uc.ChatId) && (x.UserId != userId)).User.LastName
                 }).ToList();
 
 

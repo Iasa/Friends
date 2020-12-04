@@ -7,11 +7,9 @@ const  LoginRoute: React.FC<{
 }> = (props) => {
 
     if( !localStorage.getItem('token') ) {
-        console.log("login route no token ");
         return (<Route  path={props.path} component={props.component} />)
     }
     else {
-        console.log("login route token ");
         return ( <Redirect to="/messenger" /> );
     }
 }; 

@@ -2,6 +2,7 @@ import { List } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import { getChatList } from "../../Services/UserServices";
 import { UserContext } from "../../UserContext";
+import ChatItem from "./ChatItem";
 import ChatModel from "./ChatModel";
 
 function ChatList() {
@@ -15,14 +16,18 @@ function ChatList() {
 
     const fetchChats = async () => {
         const chatList = await getChatList(userContext.user.id);
-        console.log(chatList);
-        //setChats(chatList);
+        setChats(chatList);
     }
 
     return(
-        <div>
-        
-        </div>
+        <List>
+            { chats.map(chat => 
+                { 
+                    const model = { chatId: chat.chatId, name: chat.name  }; 
+                    return ( <ChatItem {...model}/> ) 
+                }
+            )}
+        </List>
     );
 }
 

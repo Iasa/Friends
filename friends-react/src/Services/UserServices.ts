@@ -52,9 +52,8 @@ export const getCurrentUser = () : IUserInfo => {
 }
 
 export const getChatList = async (userId : number) => {
-    const chatList = await axios.get(`https://localhost:44329/chats/${userId}`);
-    console.log(chatList);
-    return chatList;
+    const chatList = await axios.get(`https://localhost:44329/chats/${userId}`, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
+    return chatList.data;
 }
 
 

@@ -1,13 +1,14 @@
 ﻿using Friends.Dtos;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Friends.Services
+namespace Friends.Hubs
 {
-    public interface IChatServices
+    public class MessageHub : Hub<IMessageClient>
     {
-        IEnumerable<ChatDto> GetUserChats(long userId);
+        
     }
 }

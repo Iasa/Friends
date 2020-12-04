@@ -9,6 +9,6 @@ namespace Friends.Repositories
 {
     public interface IChatRepository : IRepository<Chat>
     {
-        IEnumerable<Object> GetUserChats(long userId);
+        IEnumerable<ChatDto> GetUserChats(long userId);
     }
 }

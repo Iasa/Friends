@@ -79,7 +79,6 @@ function Login(props : any) {
     });
 
     const onSubmit = async (data : UserLogInModel) => {
-        console.log(data);
         logInUser(data).then(response => {
             if( !response.isSucces )  {
                 setPasswordIsWrong(true);

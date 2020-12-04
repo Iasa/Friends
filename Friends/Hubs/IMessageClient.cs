@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Friends.Services
+namespace Friends.Hubs
 {
-    public interface IChatServices
+    public interface IMessageClient
     {
-        IEnumerable<ChatDto> GetUserChats(long userId);
+        Task SendMessageToClients(NewMessageDto newMessage);
     }
 }

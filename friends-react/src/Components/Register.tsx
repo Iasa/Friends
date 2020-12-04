@@ -64,7 +64,6 @@ function Register(props : any) {
 
     const onSubmit = (data : IUserRegisterModel) => {
          registerUser(data).then(response => {
-             console.log(response.message);
              if(!response.isSucces) alert(response.message);
         });
     };

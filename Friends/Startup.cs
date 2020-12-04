@@ -6,6 +6,7 @@ using AutoMapper;
 using Friends.CodeFirst;
 using Friends.Domain;
 using Friends.Domain.Models.Auth;
+using Friends.Hubs;
 using Friends.Mappings;
 using Friends.Repositories;
 using Friends.Services;
@@ -67,6 +68,8 @@ namespace Friends
             services.AddScoped(typeof(IChatRepository), typeof(ChatRepository));
             services.AddScoped<IChatServices, ChatServices>();
 
+            services.AddSignalR();
+
             services.AddControllersWithViews();
             ConfigureSwagger(services);
             services.AddControllers();
@@ -76,8 +79,9 @@ namespace Friends
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.AllowAnyOrigin()
+                        builder.WithOrigins("http://localhost:3000")
                         .AllowAnyMethod()
+                        .AllowCredentials()
                         .AllowAnyHeader();
                     });
             });
@@ -116,6 +120,8 @@ namespace Friends
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<MessageHub>("/api/Message/messages");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

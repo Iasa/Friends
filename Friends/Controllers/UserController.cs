@@ -102,7 +102,7 @@ namespace Friends.Controllers
             return NoContent();
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("/chats/{id}")]
         public IActionResult GetUserChats(long id)
         {

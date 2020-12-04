@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Friends.Dtos
 {
-    public class CreateMessageDto
+    public class NewMessageDto
     {
         [Required]
         public long SenderId { get; set; }

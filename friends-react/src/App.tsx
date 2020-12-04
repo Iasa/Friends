@@ -17,11 +17,13 @@ import IUserInfo from './IUserInfo';
 import  MessengerProtectedRoute from './Components/MessengerProtectedRoute';
 import LoginRoute from './LoginRoute';
 import RegisterRoute from './RegisterRoute';
+import Messengerr from './Components/Experiment';
 
 
 function App() {
 
   const [user, setUser] = useState(getCurrentUser());
+  const [chatId, setId] = useState(0);
   //const value = useMemo(() => ({ user, setUser }), [user, setUser]);
   const logIn = (user:IUserInfo) => {
     setUser(user);
@@ -29,10 +31,14 @@ function App() {
   const logOut = () => {
     setUser({} as IUserInfo);
   }
+  const setChatId = (chatId:number) => {
+    setId(chatId);
+  }
 
   return (
     <div className="App">
-    <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut}}>
+     {/* <Messengerr /> */}
+    <UserContext.Provider value={{user:user, activeChatId:chatId, setChatId:setChatId, logIn:logIn, logOut:logOut}}>
       <Router>
         <Navbar />
         <Switch>

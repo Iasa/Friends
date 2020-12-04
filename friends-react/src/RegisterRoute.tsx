@@ -7,11 +7,9 @@ const RegisterRoute: React.FC<{
 }> = (props) => {
 
     if( !localStorage.getItem('token') ) {
-        console.log("register route no token ");
         return ( <Route path={props.path} component={props.component}/> );
     }
     else {
-        console.log("register route token ");
         return ( <Redirect to="/messenger"/> );
     }
 

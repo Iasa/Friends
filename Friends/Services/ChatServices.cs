@@ -1,4 +1,5 @@
-﻿using Friends.Repositories;
+﻿using Friends.Dtos;
+using Friends.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Friends.Services
         {
             _chatRepository = chatRepository;
         }
-        public IEnumerable<Object> GetUserChats(long userId)
+        public IEnumerable<ChatDto> GetUserChats(long userId)
         {
             return _chatRepository.GetUserChats(userId);
         }

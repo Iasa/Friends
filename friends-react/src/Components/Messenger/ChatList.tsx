@@ -10,6 +10,8 @@ function ChatList() {
     const [chats, setChats] = useState([{} as ChatModel]);
     const userContext = useContext(UserContext);
 
+    
+
     useEffect(() => {
         fetchChats();
     }, []);

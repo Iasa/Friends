@@ -12,7 +12,7 @@ function ChatItem(props : ChatModel) {
 
 
     return(
-        <ListItem button key={props.chatId} onClick={() => { chatContext.onSelectingAChat(props.chatId); console.log("context chatId on select and propschatId" + chatContext.activeChatId + " " + props.chatId);}}>
+        <ListItem button key={props.chatId} onClick={() => { chatContext.onSelectingAChat(props.chatId);}}>
             <ListItemIcon> <AccountCircle /> </ListItemIcon>
             <ListItemText primary={props.name}/>
         </ListItem>

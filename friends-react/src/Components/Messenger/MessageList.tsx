@@ -6,9 +6,11 @@ import Message from "./Message";
 
 const MessageList : React.FC<{HubConnection: HubConnection}> = (hubConnection:{HubConnection: HubConnection}) =>{
 
-    const [messageList, addMessageToList] = useState([] as Message[]);
-    const userContext = useContext(UserContext);
     const chatContext = useContext(ChatContext);
+    //const [messageList, addMessageToList] = useState([] as Message[]);
+    const [messageList, addMessageToList] = useState(chatContext.chatMessages);
+    const userContext = useContext(UserContext);
+    
 
     useEffect(() => {
         hubConnection.HubConnection.on("SendMessageToClients", message => {       
@@ -22,7 +24,7 @@ const MessageList : React.FC<{HubConnection: HubConnection}> = (hubConnection:{H
    
     return (
         <div>
-        {chatContext.chatMessages.map((message) => <p>{message.content}</p>)} 
+        {messageList.map((message) => <p>{message.content}</p>)} 
         </div>
     );
 

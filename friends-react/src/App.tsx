@@ -32,29 +32,33 @@ function App() {
     setUser({} as IUserInfo);
   }
 
-  
-  const currentChat = useRef({activeChatId:2, chatMessages: [] as Message[]});
+  const [chat, setChat] = useState(0);
+  // const currentChat = useRef({activeChatId:0, chatMessages: [] as Message[]});
 
-  const onSelectingAChat = async (chatId:number) => {
-    currentChat.current.activeChatId = chatId;
-    const messages = await getChatMessages(chatId);
-    currentChat.current.chatMessages = messages as Message[];
-  }
+  // const onSelectingAChat = async (chatId:number) => {
+  //   currentChat.current.activeChatId = chatId;
+  //   const messages = await getChatMessages(chatId);
+  //   currentChat.current.chatMessages = messages as Message[];
+  //   setChat(chat + 1);
+  // }
 
   return (
     <div className="App">
      {/* <Messengerr /> */}
     <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut}}>
-      <ChatContext.Provider value={{activeChatId:currentChat.current.activeChatId, chatMessages:currentChat.current.chatMessages, onSelectingAChat:onSelectingAChat}}>
+      
         <Router>
           <Navbar />
           <Switch>
             <RegisterRoute path="/register" component={Register} /> 
-            <LoginRoute path="/login" component={Login}/>        
+            <LoginRoute path="/login" component={Login}/>    
+            {/* <ChatContext.Provider value={{activeChatId:currentChat.current.activeChatId, chatMessages:currentChat.current.chatMessages, onSelectingAChat:onSelectingAChat}}> 
+              
+            </ChatContext.Provider> */}
             <MessengerProtectedRoute path="/messenger" component={Messenger} />
           </Switch> 
         </Router>
-      </ChatContext.Provider>
+      
     </UserContext.Provider>
     </div>
   );

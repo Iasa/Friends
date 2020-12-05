@@ -47,6 +47,7 @@ export const logOutUser = async () => {
 
 export const getCurrentUser = () : IUserInfo => {
     const userString = localStorage.getItem('user');
+    console.log("get current user");
     const user = userString ? JSON.parse(userString) as IUserInfo : {} as IUserInfo;
     return user;
 }
@@ -54,6 +55,11 @@ export const getCurrentUser = () : IUserInfo => {
 export const getChatList = async (userId : number) => {
     const chatList = await axios.get(`https://localhost:44329/chats/${userId}`, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
     return chatList.data;
+}
+
+export const getChatMessages = async (chatId : number) => {
+    const messages = await axios.get(`https://localhost:44329/chatmessages/${chatId}`);
+    return messages.data;
 }
 
 

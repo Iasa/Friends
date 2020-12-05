@@ -10,5 +10,6 @@ namespace Friends.Repositories
     public interface IChatRepository : IRepository<Chat>
     {
         IEnumerable<ChatDto> GetUserChats(long userId);
+        IEnumerable<MessageDto> GetChatMessages(long chatId);
     }
 }

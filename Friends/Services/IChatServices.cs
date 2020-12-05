@@ -9,5 +9,6 @@ namespace Friends.Services
     public interface IChatServices
     {
         IEnumerable<ChatDto> GetUserChats(long userId);
+        IEnumerable<MessageDto> GetChatMessages(long chatId);
     }
 }

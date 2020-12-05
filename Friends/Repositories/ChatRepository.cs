@@ -14,6 +14,21 @@ namespace Friends.Repositories
         {
         }
 
+        public IEnumerable<MessageDto> GetChatMessages(long chatId)
+        {
+            return _context.Set<Message>().Where(m => m.ChatId == chatId)
+                .Select(m=> new MessageDto
+                {
+                    Id = m.Id,
+                    SenderId = m.SenderId,
+                    ChatId = m.ChatId,
+                    SendingTime = m.SendingTime,
+                    Content = m.Content
+                })
+                .OrderBy(m => m.SendingTime)
+                .ToList();
+        }
+
         public IEnumerable<ChatDto> GetUserChats(long userId)
         {
             List<ChatDto> chatList = new List<ChatDto>();

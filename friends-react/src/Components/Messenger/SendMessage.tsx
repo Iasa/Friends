@@ -4,11 +4,13 @@ import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import Message from "./Message";
 import axios from 'axios';
 import { UserContext } from "../../UserContext";
+import { ChatContext } from "../ChatContext";
 
 function SendMessage() {
     
     const [messageContent, setMessageContent] = useState("");
     const userContext = useContext(UserContext);
+    const chatContext = useContext(ChatContext);
 
     const messageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event && event.target) {
@@ -20,11 +22,11 @@ function SendMessage() {
         if(messageContent && messageContent.trim().length > 0) {
             const newMessage : Message = {
                 senderId : userContext.user.id,
-                chatId : userContext.activeChatId,
+                chatId : chatContext.activeChatId,
                 sendingTime : new Date(),
                 content : messageContent
             }    
-            
+            console.log("context chat id on submit " + chatContext.activeChatId)
             axios.post("https://localhost:44329/api/Message/messages", newMessage);
             setMessageContent("");
         } else console.log("no message");

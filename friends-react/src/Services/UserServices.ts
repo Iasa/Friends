@@ -4,6 +4,8 @@ import UserRegisterModel from '../UserRegisterModel';
 import UserLogInModel from '../UserLogInModel';
 import IUserInfo from '../IUserInfo';
 import { UserContext } from '../UserContext';
+import Message from '../Components/Messenger/Message';
+import NewMessageModel from '../NewMessageModel';
 
 export const getUserById = async (id:number) => {
     const response = await fetch(`https://localhost:44329/api/User/${id}`);
@@ -47,7 +49,6 @@ export const logOutUser = async () => {
 
 export const getCurrentUser = () : IUserInfo => {
     const userString = localStorage.getItem('user');
-    console.log("get current user");
     const user = userString ? JSON.parse(userString) as IUserInfo : {} as IUserInfo;
     return user;
 }
@@ -58,9 +59,13 @@ export const getChatList = async (userId : number) => {
 }
 
 export const getChatMessages = async (chatId : number) => {
-    const messages = await axios.get(`https://localhost:44329/chatmessages/${chatId}`);
+    const messages = await axios.get(`https://localhost:44329/chatmessages/${chatId}`, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
     return messages.data;
 }
 
+export const addMessage = async (newMessage : NewMessageModel) => {
+    const message = await axios.post("https://localhost:44329/api/Message/messages", newMessage, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
+    return message.data;
+}
 
 

@@ -9,9 +9,8 @@ namespace Friends.Dtos
     {
         public long Id { get; set; }
         public long SenderId { get; set; }
-        //public virtual UserDto Sender { get; set; }
+        public string SenderName { get; set; }
         public long ChatId { get; set; }
-        //public virtual ChatDto Chat { get; set; }
         public DateTimeOffset SendingTime { get; set; }
         public string Content { get; set; }
     }

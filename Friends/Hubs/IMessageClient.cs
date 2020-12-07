@@ -8,6 +8,6 @@ namespace Friends.Hubs
 {
     public interface IMessageClient
     {
-        Task SendMessageToClients(NewMessageDto newMessage);
+        Task SendMessageToClients(MessageDto newMessage);
     }
 }

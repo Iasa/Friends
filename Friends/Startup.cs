@@ -67,6 +67,8 @@ namespace Friends
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped(typeof(IChatRepository), typeof(ChatRepository));
             services.AddScoped<IChatServices, ChatServices>();
+            services.AddScoped(typeof(IMessageRepository), typeof(MessageRepository));
+            services.AddScoped<IMessageServices, MessageServices>();
 
             services.AddSignalR();
 

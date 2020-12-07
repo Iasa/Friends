@@ -1,6 +1,7 @@
 ﻿using Friends.CodeFirst;
 using Friends.Domain;
 using Friends.Dtos;
+using Friends.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +18,19 @@ namespace Friends.Repositories
         public IEnumerable<MessageDto> GetChatMessages(long chatId)
         {
             return _context.Set<Message>().Where(m => m.ChatId == chatId)
-                .Select(m=> new MessageDto
+                .Select(m => new MessageDto
                 {
                     Id = m.Id,
                     SenderId = m.SenderId,
+                    SenderName = _context.Set<User>().FirstOrDefault(u => u.Id == m.SenderId).FirstName + " " +
+                                 _context.Set<User>().FirstOrDefault(u => u.Id == m.SenderId).LastName,
                     ChatId = m.ChatId,
                     SendingTime = m.SendingTime,
                     Content = m.Content
                 })
-                .OrderBy(m => m.SendingTime)
-                .ToList();
+                .OrderBy(m => m.SendingTime).Page(1, 100).ToList();
         }
+
 
         public IEnumerable<ChatDto> GetUserChats(long userId)
         {

@@ -10,8 +10,7 @@ const Messengerr: React.FC = () => {
   .build();
    
   hubConnection.start();
- 
-  //var list: Message[] = [];
+
  
   interface MessageProps {
     HubConnection: HubConnection

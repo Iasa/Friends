@@ -5,6 +5,8 @@ import Message from "./Message";
 import axios from 'axios';
 import { UserContext } from "../../UserContext";
 import { ChatContext } from "../ChatContext";
+import { addMessage } from "../../Services/UserServices";
+import NewMessageModel from "../../NewMessageModel";
 
 function SendMessage() {
     
@@ -19,24 +21,23 @@ function SendMessage() {
     }
 
     const onSubmit = () => {
-        if(messageContent && messageContent.trim().length > 0) {
-            const newMessage : Message = {
+        if(chatContext.activeChatId > 0 && messageContent && messageContent.trim().length > 0) {
+            const newMessage : NewMessageModel = {
                 senderId : userContext.user.id,
                 chatId : chatContext.activeChatId,
                 sendingTime : new Date(),
                 content : messageContent
-            }    
-            console.log("context chat id on submit " + chatContext.activeChatId)
-            axios.post("https://localhost:44329/api/Message/messages", newMessage);
+            }
+            addMessage(newMessage);
             setMessageContent("");
-        } else console.log("no message");
+        }
     };
 
     return (
         <div>
-            <form >
+            <form > 
                 <TextField
-                    placeholder = "Write a message"
+                    placeholder = "Write a message "
                     variant = "outlined"
                     type = "text"
                     fullWidth

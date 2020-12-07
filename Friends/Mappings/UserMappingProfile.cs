@@ -14,6 +14,7 @@ namespace Friends.Mappings
         {
             CreateMap<User, UserDto>();
             CreateMap<User, LoginDto>();
+            CreateMap<NewMessageDto, Message>();
         }
     }
 }

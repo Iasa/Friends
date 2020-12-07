@@ -1,11 +1,10 @@
 import React from "react";
 
-interface Message {
+interface NewMessageModel {
     senderId : number;
     chatId : number;
-    senderName : string;
     sendingTime : Date;
     content : string;
 }
 
-export default Message;
+export default NewMessageModel;

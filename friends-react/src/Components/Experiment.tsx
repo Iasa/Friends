@@ -8,7 +8,7 @@ const Messengerr: React.FC = () => {
  
   const hubConnection = new HubConnectionBuilder().withUrl('https://localhost:44329/api/Message/messages').withAutomaticReconnect()
   .build();
-   
+    
   hubConnection.start();
 
  

@@ -4,14 +4,34 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../../UserContext";
 import { ChatContext } from "../ChatContext";
 import Message from "./Message";
+import { getChatMessages } from "../../Services/UserServices";
 
-const MessageList : React.FC = () =>{
+const numberOfMessagesPerPage = 10;
 
-    const chatContext = useContext(ChatContext);
-    const userContext = useContext(UserContext);
-    //const messagesFromContext : Message[] = chatContext.chatMessages;
-    const [connection, setConnection] = useState<HubConnection>();
-    const [messageList, setMessageList] = useState([] as Message[]);
+const MessageList : React.FC<{chatId:number}> = (currentChatIdd) =>{
+  
+  const chatContext = useContext(ChatContext);
+  const userContext = useContext(UserContext);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [connection, setConnection] = useState<HubConnection>();
+  const [messageList, setMessageList] = useState([] as Message[]);
+  const [currentChatId, setCurrentChatId] = useState(0);
+
+  useEffect(() => {
+    const response = getChatMessages(chatContext.activeChatId, pageNumber);
+    response.then(mess => {
+        console.log("number of messeges received " + (mess as Message[]).length + " pageNumber: " + pageNumber);
+        
+        setHasMore((mess as Message[]).length === numberOfMessagesPerPage);
+        if(pageNumber !== 1) {
+            const newMessageList = messageList;
+            newMessageList.unshift(...mess);
+            setMessageList([...newMessageList]);
+            console.log(messageList);
+        }
+    });
+  }, [pageNumber]);
 
     useEffect(() => {
       const newConnection = new HubConnectionBuilder()
@@ -19,51 +39,72 @@ const MessageList : React.FC = () =>{
           .withAutomaticReconnect()
           .build();
       setConnection(newConnection);
-    }, []);
-
+    }, [chatContext.activeChatId]);
 
     useEffect(() => {
       if (connection) {
-        connection.start()
-          .then(result => {
-            //console.log("connected");
-            connection.on("SendMessageToClients", message => {
-              setMessageList(messageList => [...messageList, message]);
-            });
-          })
-          .catch(e => console.log("connection failed: ", e));
+        connection.start();
+        connection.on("SendMessageToClients", message => {
+          
+          console.log("on receiving messageChatId " + (message as Message).chatId + " contextChatId: " + currentChatIdd.chatId);
+          if(isTheSameChat((message as Message))) {
+           // (message as Message).chatId === currentChatIdd.chatId
+            setMessageList(messageList => [...messageList, message]);
+          }
+        });
       }
     }, [connection]);
 
-   useEffect(() => {
-     setMessageList(chatContext.chatMessages);
-   }, [chatContext]);
-    
+    function isTheSameChat(m:Message):boolean {
+      console.log("isTheSameChat: messageCHat currentCHat " + m.chatId + " " + currentChatIdd.chatId);
+      return m.chatId === currentChatIdd.chatId;
+    }
 
-    // useEffect(() => {
-    //   console.log("message list use effect " + chatContext.activeChatId  + " " + chatContext.chatMessages);
-    //     hubConnection.HubConnection.on("SendMessageToClients", message => {       
-    //       console.log("message.chatId and context.chatId on receiving and localState " + (message as Message).chatId);
-    //       messageList.push(message);
-    //       console.log("message list " + messageList);
-    //       setDate(new Date());
-    //       // if((message as Message).chatId == chatId){
-    //       //   //addMessageToList(messageList =>[...messageList, message as Message]);
-    //       //   messageList.push(...message);
-    //       //   //updateState(state+1);
-    //       // }
-    //     }); 
+   useEffect(() => {
+    console.log("set messeges from context");
+      setMessageList(chatContext.chatMessages);
+      setHasMore(chatContext.chatMessages.length === numberOfMessagesPerPage);
+      console.log("active chat from effect " + chatContext.activeChatId);
+      setCurrentChatId(chatContext.activeChatId);
+      setPageNumber(1);
+      if (connection) {
+        connection.stop();
         
-    //   }, []);
+      }
+      
+      
+   }, [chatContext.activeChatId]);
+
+  //  useEffect(() => {
+  //   setCurrentChatId(chatContext.activeChatId);
+  //  },[chatContext.activeChatId])
 
  
-   
+  const showMoreMessages = () => {
+    if(hasMore) setPageNumber(pageNumber+1);
+  }
+
     return (
         <div>
-         <ListItem button>see older messeges </ListItem>
-        {messageList.map((message) => 
-          <ListItem>
-             <ListItemText
+       
+          {hasMore && <ListItem button  onClick={ showMoreMessages }>
+                        <ListItemText style={{width:'100%', textAlign:'center'}}>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            color="textSecondary"
+                          >
+                            see older messeges
+                          </Typography>
+                        </ListItemText>
+                      </ListItem> 
+          }
+
+          {messageList.map((message, index) => {
+       
+          return (
+          <ListItem key={message.id}>
+            <ListItemText
               style={{ 
                 marginLeft:  message.senderId == userContext.user.id ? '60%' : '', 
                 backgroundColor: message.senderId == userContext.user.id ? 'lightsteelblue' : '#d5d5d5',
@@ -89,7 +130,8 @@ const MessageList : React.FC = () =>{
                 </React.Fragment>
               }
               />
-          </ListItem>
+          </ListItem>)
+        }
         )} 
         </div>
     );

@@ -15,9 +15,9 @@ namespace Friends.Services
             _chatRepository = chatRepository;
         }
 
-        public IEnumerable<MessageDto> GetChatMessages(long chatId)
+        public IEnumerable<MessageDto> GetChatMessages(long chatId, int pageNumber)
         {
-            return _chatRepository.GetChatMessages(chatId);
+            return _chatRepository.GetChatMessages(chatId, pageNumber);
         }
 
         public IEnumerable<ChatDto> GetUserChats(long userId)

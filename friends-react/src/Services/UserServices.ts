@@ -58,8 +58,14 @@ export const getChatList = async (userId : number) => {
     return chatList.data;
 }
 
-export const getChatMessages = async (chatId : number) => {
-    const messages = await axios.get(`https://localhost:44329/chatmessages/${chatId}`, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
+export const getChatMessages = async (chatId : number, pageNumber = 1) => {
+    //const messages = await axios.get(`https://localhost:44329/chatmessages/${chatId}`, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
+    const messages = await axios({
+                        method: 'GET',
+                        url: `https://localhost:44329/chatmessages/${chatId}`,
+                        headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`},
+                        params: { page : pageNumber }
+                    })
     return messages.data;
 }
 

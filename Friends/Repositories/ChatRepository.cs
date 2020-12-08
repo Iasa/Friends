@@ -11,11 +11,12 @@ namespace Friends.Repositories
 {
     public class ChatRepository : Repository<Chat>, IChatRepository
     {
+        private readonly int _messagesPerPage = 10;
         public ChatRepository(FriendsDbContext context) : base(context)
         {
         }
 
-        public IEnumerable<MessageDto> GetChatMessages(long chatId)
+        public IEnumerable<MessageDto> GetChatMessages(long chatId, int pageNumber)
         {
             return _context.Set<Message>().Where(m => m.ChatId == chatId)
                 .Select(m => new MessageDto
@@ -28,7 +29,7 @@ namespace Friends.Repositories
                     SendingTime = m.SendingTime,
                     Content = m.Content
                 })
-                .OrderBy(m => m.SendingTime).Page(1, 100).ToList();
+                .OrderByDescending(m => m.SendingTime).Page(pageNumber, _messagesPerPage).OrderBy(m => m.SendingTime).ToList();
         }
 
 

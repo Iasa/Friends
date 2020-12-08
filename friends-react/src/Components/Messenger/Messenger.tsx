@@ -1,6 +1,6 @@
 import { AppBar, Container, createStyles, Divider, Drawer, Grid, IconButton, Link, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, makeStyles, Paper, Theme, Toolbar, Typography, useTheme } from "@material-ui/core";
 import { HubConnectionBuilder } from "@microsoft/signalr";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { getChatMessages } from "../../Services/UserServices";
 import { UserContext } from "../../UserContext";
 import { ChatContext } from "../ChatContext";
@@ -38,13 +38,13 @@ function Messenger() {
       containerId: "messageListPapar"
     });
   }, [currentChat]);
-// const scrollToBottom = () => {
-//   animateScroll.scrollToBottom({
-//     containerId: "messageListPapar"
-//   });
-//  };
 
-  
+
+  function scrollToBottom(){
+    animateScroll.scrollToBottom({
+      containerId: "messageListPapar"
+    });
+  };
 
 
 
@@ -72,7 +72,7 @@ function Messenger() {
             <List>
               <ChatContext.Provider value={{activeChatId:currentChat.activeChatId, chatMessages:currentChat.chatMessages, onSelectingAChat:onSelectingAChat}}>
               
-                <MessageList />
+                <MessageList chatId={currentChat.activeChatId}/>
                
               </ChatContext.Provider>
             </List>

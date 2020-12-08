@@ -113,9 +113,9 @@ namespace Friends.Controllers
 
         [AllowAnonymous]
         [HttpGet("/chatmessages/{id}")]
-        public IActionResult GetChatMessages(long id)
+        public IActionResult GetChatMessages(long id, int page)
         {
-            var result = _chatServices.GetChatMessages(id);
+            var result = _chatServices.GetChatMessages(id, page);
 
             return Ok(result);
         }

@@ -5,6 +5,7 @@ import { AccountCircle } from '@material-ui/icons';
 import { logOutUser } from '../Services/UserServices';
 import { UserContext } from '../UserContext';
 import { Link, useHistory } from 'react-router-dom';
+import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -60,13 +61,13 @@ function Navbar() {
         <AppBar position="sticky" className={classes.container}>
             <Toolbar className={classes.toolbar}>
                 <Grid container spacing={8} justify="space-between" >
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                         <Typography className={classes.logo}>
                             Friends 
                         </Typography>
                     </Grid>
                     { localStorage.getItem('token') &&
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
                             <Link to="/messenger" style={{ color: "inherit" }}>    
                                 <IconButton 
                                     color="inherit" 
@@ -79,8 +80,22 @@ function Navbar() {
                         </Grid>                 
                     }
 
+                    { localStorage.getItem('token') &&
+                        <Grid item xs={3}>
+                            <Link to="/addfriends" style={{ color: "inherit" }}>    
+                                <IconButton 
+                                    color="inherit" 
+                                >
+                                    <Badge badgeContent={0} color="secondary">
+                                        <GroupAddRoundedIcon />
+                                    </Badge>
+                                </IconButton> 
+                            </Link>
+                        </Grid>                 
+                    }
+
                     { localStorage.getItem('token') && 
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
                             <IconButton 
                                 aria-controls="accountMenu"
                                 aria-haspopup="true"

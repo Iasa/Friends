@@ -20,6 +20,8 @@ import RegisterRoute from './RegisterRoute';
 import Messengerr from './Components/Experiment';
 import { ChatContext } from './Components/ChatContext';
 import Message from './Components/Messenger/Message';
+import AddFriends from './Components/AddFriends';
+import AddFriendsRoute from './AddFriendsRoute';
 
 
 function App() {
@@ -51,7 +53,8 @@ function App() {
           <Navbar />
           <Switch>
             <RegisterRoute path="/register" component={Register} /> 
-            <LoginRoute path="/login" component={Login}/>    
+            <LoginRoute path="/login" component={Login}/>  
+            <AddFriendsRoute path="/addfriends" component={AddFriends}/>   
             {/* <ChatContext.Provider value={{activeChatId:currentChat.current.activeChatId, chatMessages:currentChat.current.chatMessages, onSelectingAChat:onSelectingAChat}}> 
               
             </ChatContext.Provider> */}

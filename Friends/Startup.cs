@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Friends.CodeFirst;
-using Friends.Domain;
+using Friends.API.Hubs;
+using Friends.API.Identity;
+using Friends.API.Mappings;
+using Friends.Core.Repositories;
+using Friends.Core.Repositories.Interfaces;
+using Friends.Core.Services;
+using Friends.Core.Services.Interfaces;
+using Friends.Domain.Models;
 using Friends.Domain.Models.Auth;
-using Friends.Hubs;
-using Friends.Mappings;
+using Friends.Infrastructure;
 using Friends.Repositories;
-using Friends.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,9 +23,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using WebApi.Identity;
 
-namespace Friends
+namespace Friends.API
 {
     public class Startup
     {

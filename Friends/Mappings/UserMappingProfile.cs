@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
-using Friends.Domain;
-using Friends.Dtos;
+using Friends.Core.Dtos.MessageDto;
+using Friends.Core.Dtos.UserDto;
+using Friends.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Friends.Mappings
+namespace Friends.API.Mappings
 {
     public class UserMappingProfile : Profile
     {

@@ -1,0 +1,154 @@
+﻿using Friends.Core.Dtos.UserDto;
+using Friends.Core.Exceptions;
+using Friends.Core.Repositories.Interfaces;
+using Friends.Core.Services.Interfaces;
+using Friends.Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Friends.Core.Services
+{
+    public class UserServices : IUserServices
+    {
+        private readonly IUserRepository _userRepository;
+        public UserServices(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
+        public User CreateUser(CreateUserDto newUser)
+        {
+            if (_userRepository.GetAll().Any(u => u.Email == newUser.Email))
+            {
+                throw new EntryAlreadyExistsException("This Email is already being used by another user");
+            }
+
+            if (_userRepository.GetAll().Any(u => u.UserName == newUser.Username))
+            {
+                throw new EntryAlreadyExistsException("This Username is already being used by another user");
+            }
+
+            User user = new User
+            {
+                FirstName = newUser.FirstName,
+                LastName = newUser.LastName,
+                BirthDate = newUser.BirthDate,
+                UserName = newUser.Username,
+                Email = newUser.Email
+            };
+
+            _userRepository.Add(user);
+            _userRepository.Save();
+            return user;
+        }
+
+        public IEnumerable<User> GetUsers()
+        {
+            return _userRepository.GetAll().ToList();
+        }
+
+        public User GetUserById(long id)
+        {
+            return _userRepository.Find(id);
+        }
+
+        public void UpdateUser(long id, CreateUserDto updatedUser)
+        {
+            User user = _userRepository.Find(id);
+
+            if (user == null)
+                throw new NotFoundException("User not found!");
+
+            if (updatedUser.Email != user.Email && _userRepository.GetAll().Any(u => u.Email == updatedUser.Email))
+                throw new EntryAlreadyExistsException("This Email is already being used by another user");
+
+            if (updatedUser.Username != user.UserName && _userRepository.GetAll().Any(u => u.UserName == updatedUser.Username))
+                throw new EntryAlreadyExistsException("This Username is already being used by another user");
+
+            user.FirstName = updatedUser.FirstName;
+            user.LastName = updatedUser.LastName;
+            user.BirthDate = updatedUser.BirthDate;
+            user.UserName = updatedUser.Username;
+            user.Email = updatedUser.Email;
+
+            _userRepository.Save();
+        }
+
+        public User UpdateUserDetails(long id, UpdateUserDto updatedUser)
+        {
+            if (!_userRepository.GetAll().Any(u => u.Id == id))
+                throw new NotFoundException("User not found");
+
+            User user = _userRepository.Find(id);
+
+            if (!string.IsNullOrWhiteSpace(updatedUser.FirstName))
+                user.FirstName = updatedUser.FirstName;
+
+            if (!string.IsNullOrWhiteSpace(updatedUser.LastName))
+                user.LastName = updatedUser.LastName;
+
+            if (!string.IsNullOrWhiteSpace(updatedUser.Username) && user.UserName != updatedUser.Username)
+            {
+                if (_userRepository.GetAll().Any(u => u.UserName == updatedUser.Username))
+                {
+                    throw new EntryAlreadyExistsException("This Username is already being used by another user");
+                }    
+                user.UserName = updatedUser.Username;
+            }
+                
+            if (!string.IsNullOrWhiteSpace(updatedUser.Email) && user.Email != updatedUser.Email)
+            {
+                if (_userRepository.GetAll().Any(u=>u.Email == updatedUser.Email))
+                {
+                    throw new EntryAlreadyExistsException("This Email is already being used by another user");
+                }
+                user.Email = updatedUser.Email;
+            }
+
+            if (updatedUser.BirthDate.HasValue)
+                user.BirthDate = updatedUser.BirthDate.Value;
+
+            _userRepository.Save();
+
+            return user;
+        }
+
+        public void RemoveUserById(long id)
+        {
+            if (!_userRepository.GetAll().Any(u => u.Id == id))
+                throw new NotFoundException("User not foun");
+
+            User user = _userRepository.Find(id);
+            _userRepository.Remove(user);
+            _userRepository.Save();
+        }
+
+        public bool CheckIfEmailAlreadyExists(string email)
+        {
+            if(_userRepository.GetAll().Any(u => u.Email == email))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool CheckIfUsernameAlreadyExists(string username)
+        {
+            if(_userRepository.GetAll().Any(u => u.UserName == username))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+    }
+}

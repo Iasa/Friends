@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Friends\Friends.csproj" />
+    <ProjectReference Include="..\Friends\Friends.API.csproj" />
   </ItemGroup>
 
 </Project>

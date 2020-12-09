@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Friends.Models;
 
-namespace Friends.Controllers
+namespace Friends.API.Controllers
 {
     public class HomeController : Controller
     {

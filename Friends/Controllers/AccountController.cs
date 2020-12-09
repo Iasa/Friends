@@ -1,8 +1,7 @@
-﻿using Friends.Domain;
+﻿using Friends.API.Identity;
+using Friends.Core.Dtos.UserDto;
+using Friends.Domain.Models;
 using Friends.Domain.Models.Auth;
-using Friends.Dtos;
-using Friends.Identity;
-using Friends.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +12,8 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using WebApi.Identity;
 
-namespace Friends.Controllers
+namespace Friends.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

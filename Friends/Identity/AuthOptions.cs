@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApi.Identity
+namespace Friends.API.Identity
 {
     public class AuthOptions
     {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Friends", "Friends\Friends.csproj", "{CBE2478A-1F55-4AD9-8ECD-E2C0B689FF44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Friends.API", "Friends\Friends.API.csproj", "{CBE2478A-1F55-4AD9-8ECD-E2C0B689FF44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FriendsUnitTests", "FriendsUnitTests\FriendsUnitTests.csproj", "{7A84B7AD-F852-448C-8560-40A960BB55C7}"
 EndProject
@@ -28,6 +28,12 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "friends-react", "friends-re
 		SlnRelativePath = "friends-react\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friends.Core", "Friends.Core\Friends.Core.csproj", "{EF26277D-01EE-4E5D-9288-18F4FBE4E093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friends.Infrastructure", "Friends.Infrastructure\Friends.Infrastructure.csproj", "{3089DC1E-87A6-46D1-A525-F8B07F530EA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friends.Domain", "Friends.Domain\Friends.Domain.csproj", "{AD4FBC7F-4573-4266-8F99-26EEC4C61B6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +52,18 @@ Global
 		{C7FCA249-1FFD-4B25-BA55-8251C4FC3A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7FCA249-1FFD-4B25-BA55-8251C4FC3A3A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7FCA249-1FFD-4B25-BA55-8251C4FC3A3A}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{EF26277D-01EE-4E5D-9288-18F4FBE4E093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF26277D-01EE-4E5D-9288-18F4FBE4E093}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF26277D-01EE-4E5D-9288-18F4FBE4E093}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF26277D-01EE-4E5D-9288-18F4FBE4E093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3089DC1E-87A6-46D1-A525-F8B07F530EA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3089DC1E-87A6-46D1-A525-F8B07F530EA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3089DC1E-87A6-46D1-A525-F8B07F530EA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3089DC1E-87A6-46D1-A525-F8B07F530EA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD4FBC7F-4573-4266-8F99-26EEC4C61B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD4FBC7F-4573-4266-8F99-26EEC4C61B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD4FBC7F-4573-4266-8F99-26EEC4C61B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD4FBC7F-4573-4266-8F99-26EEC4C61B6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

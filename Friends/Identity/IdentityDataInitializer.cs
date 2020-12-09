@@ -1,4 +1,4 @@
-﻿using Friends.Domain;
+﻿using Friends.Domain.Models;
 using Friends.Domain.Models.Auth;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi.Identity
+namespace Friends.API.Identity
 {
     public static class IdentityDataInitializer
     {

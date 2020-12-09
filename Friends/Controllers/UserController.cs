@@ -4,17 +4,17 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
-using Friends.Domain;
-using Friends.Dtos;
-using Friends.Exceptions;
-using Friends.Services;
+using Friends.Core.Dtos.UserDto;
+using Friends.Core.Exceptions;
+using Friends.Core.Services.Interfaces;
+using Friends.Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Friends.Controllers
+namespace Friends.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

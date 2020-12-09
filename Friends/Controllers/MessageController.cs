@@ -1,6 +1,4 @@
-﻿using Friends.Dtos;
-using Friends.Hubs;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -8,9 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
-using Friends.Services;
+using Friends.API.Hubs;
+using Friends.Core.Services.Interfaces;
+using Friends.Core.Dtos.MessageDto;
 
-namespace Friends.Controllers
+namespace Friends.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

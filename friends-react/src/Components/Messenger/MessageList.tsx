@@ -63,10 +63,15 @@ const MessageList : React.FC<{chatId:number}> = (currentChatIdd) =>{
    useEffect(() => {
     console.log("set messeges from context");
       setMessageList(chatContext.chatMessages);
+
       setHasMore(chatContext.chatMessages.length === numberOfMessagesPerPage);
+
       console.log("active chat from effect " + chatContext.activeChatId);
+
       setCurrentChatId(chatContext.activeChatId);
+
       setPageNumber(1);
+      
       if (connection) {
         connection.stop();
         

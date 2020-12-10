@@ -65,13 +65,36 @@ export const getChatMessages = async (chatId : number, pageNumber = 1) => {
                         url: `https://localhost:44329/chatmessages/${chatId}`,
                         headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`},
                         params: { page : pageNumber }
-                    })
+                    });
     return messages.data;
 }
 
 export const addMessage = async (newMessage : NewMessageModel) => {
     const message = await axios.post("https://localhost:44329/api/Message/messages", newMessage, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
     return message.data;
+}
+
+export const getNonFriends = async (userId: number, query: string, pageNumber: number, orderByFirstName: boolean = false, orderByLastName: boolean = false, 
+    orderByAge: boolean = false, orderAscending: boolean = true) => {
+        console.log("service | id " + userId + " query: " + query + " pageNumber: " + pageNumber);
+        const users = await axios({
+            method: 'GET',
+            url: 'https://localhost:44329/getNonFriends',
+            headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`},
+            params: { userId : userId, query : query, pageNumber: pageNumber, orderByFirstName: orderByFirstName, 
+                orderByLastName: orderByLastName, orderByAge: orderByAge, orderAscending: orderAscending }
+        });
+        console.log("in user service result lenght " + (users.data as IUserInfo[]).length);
+        return users.data;
+    }
+
+export const addFriend = async (userId: number, friendId: number) => {
+    await axios({
+        method: 'POST',
+        url: 'https://localhost:44329/api/User/addRelation',
+        headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`},
+        params: { userId : userId, friendId: friendId }
+    });
 }
 
 

@@ -2710,8 +2710,10 @@
         "dependencies": {
           "Friends.Domain": "1.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.0",
+          "Microsoft.EntityFrameworkCore": "5.0.0",
           "Microsoft.EntityFrameworkCore.Proxies": "5.0.0",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.0"
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.0",
+          "System.Configuration.ConfigurationManager": "5.0.0"
         },
         "compile": {
           "bin/placeholder/Friends.Infrastructure.dll": {}

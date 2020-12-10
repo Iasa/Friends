@@ -149,6 +149,14 @@ namespace Friends.Core.Services
             }
         }
 
+        public void AddRelation(long userId, long friendId)
+        {
+            _userRepository.AddRelation(userId, friendId);
+        }
 
+        public IEnumerable<UserDto> GetNonFriends(long userId, string query, int pageNumber, bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true)
+        {
+            return _userRepository.GetNonFriends(userId, query, pageNumber, orderByFirstName, orderByLastName, orderByAge, orderAscending);
+        }
     }
 }

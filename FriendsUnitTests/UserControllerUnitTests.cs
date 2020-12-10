@@ -1,8 +1,9 @@
 using AutoMapper;
 using Friends;
-using Friends.Controllers;
-using Friends.Domain;
-using Friends.Dtos;
+using Friends.API.Controllers;
+using Friends.Core.Dtos.UserDto;
+using Friends.Core.Services.Interfaces;
+using Friends.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -19,6 +20,7 @@ namespace FriendsUnitTests
     public class UserControllerUnitTests
     {
         private Mock<IUserServices> _mockUserRepository;
+        private Mock<IChatServices> _mockChatService;
         private Mock<IMapper> _mockMapper;  
         private UserController _userController;
         private List<User> _usersList;
@@ -28,7 +30,7 @@ namespace FriendsUnitTests
         {
             _mockUserRepository = new Mock<IUserServices>();
             _mockMapper = new Mock<IMapper>();
-            _userController = new UserController(_mockUserRepository.Object, _mockMapper.Object);
+            _userController = new UserController(_mockChatService.Object, _mockUserRepository.Object, _mockMapper.Object);
 
             _mockMapper.Setup(m => m.Map<UserDto>(It.IsAny<User>())).Returns((User src) => new UserDto()
             {

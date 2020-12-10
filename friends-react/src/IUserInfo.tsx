@@ -4,7 +4,7 @@ interface IUserInfo {
     id: number;
     firstName: string;
     lastName: string;
-    birthDate: string;
+    birthDate: Date;
     username: string;
     email: string;
     token: string;

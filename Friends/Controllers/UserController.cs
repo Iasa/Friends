@@ -30,20 +30,6 @@ namespace Friends.API.Controllers
             _chatServices = chatServices;
         }
 
-        [AllowAnonymous]
-        [HttpGet("CheckIfEmailExists/{email}")]
-        public bool CheckIfEmailExists(string email)
-        {
-            return _userServices.CheckIfEmailAlreadyExists(email);
-        }
-
-        [AllowAnonymous]
-        [HttpGet("CheckIfUsernameExists/{username}")]
-        public bool CheckIfUsernameExists(string username)
-        {
-            return _userServices.CheckIfUsernameAlreadyExists(username);
-        }
-
         //[Authorize(Roles = "user")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("GetAllUsers")]
@@ -75,6 +61,20 @@ namespace Friends.API.Controllers
 
             var result = _mapper.Map<UserDto>(user);
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, result);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("CheckIfEmailExists/{email}")]
+        public bool CheckIfEmailExists(string email)
+        {
+            return _userServices.CheckIfEmailAlreadyExists(email);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("CheckIfUsernameExists/{username}")]
+        public bool CheckIfUsernameExists(string username)
+        {
+            return _userServices.CheckIfUsernameAlreadyExists(username);
         }
 
         [HttpPut("{id}")]
@@ -111,7 +111,7 @@ namespace Friends.API.Controllers
             return Ok(result);
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("/chatmessages/{id}")]
         public IActionResult GetChatMessages(long id, int page)
         {
@@ -119,5 +119,23 @@ namespace Friends.API.Controllers
 
             return Ok(result);
         }
+
+        [AllowAnonymous]
+        [HttpGet("/getNonFriends")]
+        public IActionResult GetNonFriends(long userId, string query, int pageNumber,
+            bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true)
+        {
+            var result = _userServices.GetNonFriends(userId, query, pageNumber, orderByFirstName, orderByLastName, orderByAge, orderAscending);
+            return Ok(result);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("addRelation")]
+        public IActionResult AddRelation(long userId, long friendId)
+        {
+            _userServices.AddRelation(userId, friendId);
+            return Ok();
+        }
+
     }
 }

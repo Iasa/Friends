@@ -12,5 +12,6 @@ namespace Friends.Domain.Models
         public DateTime BirthDate { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<UserChat> UserChats { get; set; }
+        public virtual ICollection<Relation> Relations { get; set; }
     }
 }

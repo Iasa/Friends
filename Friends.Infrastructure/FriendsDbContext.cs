@@ -23,6 +23,7 @@ namespace Friends.Infrastructure
             modelBuilder.ApplyConfiguration(new ChatConfig());
             modelBuilder.ApplyConfiguration(new MessageConfig());
             modelBuilder.ApplyConfiguration(new UserChatConfig());
+            modelBuilder.ApplyConfiguration(new RelationConfig());
             ApplyIdentityMapConfiguration(modelBuilder);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -32,6 +33,7 @@ namespace Friends.Infrastructure
 
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Relation> Relations { get; set; }
 
         private void ApplyIdentityMapConfiguration(ModelBuilder modelBuilder)
         {

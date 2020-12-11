@@ -14,9 +14,5 @@ namespace Friends.Core.Repositories
         {
         }
 
-        public Message GetLastMessage(long senderId, long chatId)
-        {
-            return _context.Set<Message>().Where(m => (m.SenderId == senderId && m.ChatId == chatId)).OrderBy(m => m.SendingTime).LastOrDefault();
-        }
     }
 }

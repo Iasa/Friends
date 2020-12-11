@@ -22,6 +22,8 @@ import { ChatContext } from './Components/ChatContext';
 import Message from './Components/Messenger/Message';
 import AddFriends from './Components/AddFriends';
 import AddFriendsRoute from './AddFriendsRoute';
+import ProfilePage from './Components/ProfilePage';
+import ProfilePageRoute from './ProfilePageRoute';
 
 
 function App() {
@@ -55,6 +57,7 @@ function App() {
             <RegisterRoute path="/register" component={Register} /> 
             <LoginRoute path="/login" component={Login}/>  
             <AddFriendsRoute path="/addfriends" component={AddFriends}/>   
+            <ProfilePageRoute path="/profilePage" component={ProfilePage} />
             {/* <ChatContext.Provider value={{activeChatId:currentChat.current.activeChatId, chatMessages:currentChat.current.chatMessages, onSelectingAChat:onSelectingAChat}}> 
               
             </ChatContext.Provider> */}

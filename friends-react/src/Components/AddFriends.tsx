@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardMedia, Container, Grid, IconButton, Paper, TextField, Typography } from '@material-ui/core';
+import { Button, Card, CardContent, CardMedia, Container, Grid, IconButton, TextField, Typography } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
@@ -86,7 +86,7 @@ return (
     <Container component="main" style={{marginTop:50}}>
         
             <Grid container spacing={2}>
-                <Grid item xs={6} style={{}}>
+                <Grid item xs={6}>
                     <TextField 
                         placeholder = "search"
                         variant = "outlined"
@@ -154,7 +154,7 @@ return (
                                             {person.firstName} {person.lastName}
                                         </Typography>
                                         <Typography>
-                                            {person.birthDate}
+                                            {person.birthDate.toString().substring(0, person.birthDate.toString().indexOf('T'))}
                                         </Typography>
                                         <IconButton onClick={() => { addNewFriend(person.id); }}>
                                             <PersonAddRoundedIcon />

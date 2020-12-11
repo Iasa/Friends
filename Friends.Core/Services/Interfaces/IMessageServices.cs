@@ -10,7 +10,6 @@ namespace Friends.Core.Services.Interfaces
 {
     public interface IMessageServices
     {
-        void AddMessage(NewMessageDto newMessage);
-        MessageDto GetLastMessage(long senderId, long chatId);
+        MessageDto AddMessage(NewMessageDto newMessage);
     }
 }

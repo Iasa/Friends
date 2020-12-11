@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -120,7 +121,7 @@ namespace Friends.API.Controllers
             return Ok(result);
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("/getNonFriends")]
         public IActionResult GetNonFriends(long userId, string query, int pageNumber,
             bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true)
@@ -129,12 +130,33 @@ namespace Friends.API.Controllers
             return Ok(result);
         }
 
-        [AllowAnonymous]
-        [HttpPost("addRelation")]
+        [Authorize]
+        [HttpPost("addRelation")] // users/{id}/addRelation
         public IActionResult AddRelation(long userId, long friendId)
         {
             _userServices.AddRelation(userId, friendId);
             return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("addProfileImage")]
+        public IActionResult AddProfileImage(long userId, string imageTitle, [FromForm(Name = "image")] IFormFile imageFile)
+        {
+            using (var stream = new MemoryStream())
+            {
+                imageFile.CopyTo(stream);
+                _userServices.AddProfileImage(userId, imageTitle, stream.ToArray());
+            }
+
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("getImage/{userId}")]
+        public IActionResult GetProfileImage(long userId)
+        {
+            var image = _userServices.GetProfileImage(userId);
+            return File(image.ImageData, "image/png", image.ImageTitle);
         }
 
     }

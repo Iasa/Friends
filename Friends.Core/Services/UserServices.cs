@@ -158,5 +158,15 @@ namespace Friends.Core.Services
         {
             return _userRepository.GetNonFriends(userId, query, pageNumber, orderByFirstName, orderByLastName, orderByAge, orderAscending);
         }
+
+        public void AddProfileImage(long userId, string imageTitle, byte[] imageData)
+        {
+            _userRepository.AddProfileImage(userId, imageTitle, imageData);
+        }
+
+        public Image GetProfileImage(long userId)
+        {
+            return _userRepository.GetProfileImage(userId);
+        }
     }
 }

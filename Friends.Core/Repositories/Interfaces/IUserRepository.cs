@@ -12,6 +12,8 @@ namespace Friends.Core.Repositories.Interfaces
         User Find(long id);
         void CreateChat(long userId, long friendId);
         void AddRelation(long userId, long frindId);
+        void AddProfileImage(long userId, string imageTitle, byte[] imageData);
+        Image GetProfileImage(long userId);
         IEnumerable<UserDto> GetNonFriends(long userId, string query, int pageNumber,
             bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true);
     }

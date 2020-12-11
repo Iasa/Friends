@@ -10,6 +10,8 @@ namespace Friends.Domain.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
+        public long? ProfileImageId { get; set; }
+        public virtual Image ProfileImage { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<UserChat> UserChats { get; set; }
         public virtual ICollection<Relation> Relations { get; set; }

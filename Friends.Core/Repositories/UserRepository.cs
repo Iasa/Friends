@@ -25,19 +25,17 @@ namespace Friends.Core.Repositories
             };
 
             _context.Set<Chat>().Add(newChat);
-            _context.SaveChanges();
-
-            long chatId = _context.Set<Chat>().OrderBy(c => c.Id).Select(c=>c.Id).LastOrDefault();
+            Save();
 
             _context.Set<UserChat>().Add(new UserChat()
             {
-                ChatId = chatId,
+                ChatId = newChat.Id,
                 UserId = userId
             });
 
             _context.Set<UserChat>().Add(new UserChat()
             {
-                ChatId = chatId,
+                ChatId = newChat.Id,
                 UserId = friendId
             });
 
@@ -66,23 +64,6 @@ namespace Friends.Core.Repositories
         public IEnumerable<UserDto>  GetNonFriends(long userId, string query, int pageNumber,
             bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true)
         {
-            //var re = _context.Set<User>().Where(u => u.FirstName.Contains(query));
-
-            //var userFriends = _context.Set<UserChat>().Where(uc => uc.UserId == userId)
-            //    .Select(uc =>
-            //        _context.Set<UserChat>().Where(u=>(u.ChatId == uc.ChatId) && (u.UserId != userId)).Select(u=>u.UserId).ToList()
-            //    ).ToList();
-            //List<long> userFriendsIds = new List<long>();
-            //userFriends.ForEach(e => userFriendsIds = e.ToList());
-
-            //var nonFrieds = _context.Set<User>().Where(u => (u.Id != userId && !(userFriendsIds.Contains(u.Id))) && (!string.IsNullOrEmpty(query) ? (u.FirstName.Contains(query) || u.LastName.Contains(query)) : true))
-            //   .Select(u => new UserDto
-            //   {
-            //       Id = u.Id,
-            //       FirstName = u.FirstName,
-            //       LastName = u.LastName,
-            //       BirthDate = u.BirthDate,
-            //   });
 
             var userFriends = _context.Set<Relation>().Where(u => u.UserOneId == userId || u.UserTwoId == userId)
                 .Select(u => u.UserOneId == userId ? u.UserTwoId : u.UserOneId);
@@ -110,6 +91,38 @@ namespace Friends.Core.Repositories
             }
 
             return nonFriends.Page(pageNumber, _peoplePerPage).ToList();
+        }
+
+        public void AddProfileImage(long userId, string imageTitle, byte[] imageData)
+        {
+            var oldImage = _context.Set<Image>()
+                .FirstOrDefault(img => img.Id == (_context.Set<User>().FirstOrDefault(u => u.Id == userId).ProfileImageId));
+            
+            if( oldImage != null )
+            {
+                oldImage.ImageTitle = imageTitle;
+                oldImage.ImageData = imageData;
+                Save();
+            } else
+            {
+                var newImage = new Image()
+                {
+                    ImageTitle = imageTitle,
+                    ImageData = imageData
+                };
+
+                _context.Set<Image>().Add(newImage);
+                Save();
+
+                _context.Set<User>().FirstOrDefault(u => u.Id == userId).ProfileImageId = newImage.Id;
+                Save();
+            }
+        }
+
+        // trebuie sa returneze ImageDto - de facut maparea 
+        public Image GetProfileImage(long userId)
+        {
+            return _context.Set<Image>().FirstOrDefault(img => img.Id == (_context.Set<User>().FirstOrDefault(u => u.Id == userId).ProfileImageId));
         }
 
     }

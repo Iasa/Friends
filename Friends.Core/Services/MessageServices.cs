@@ -22,30 +22,17 @@ namespace Friends.Core.Services
             _userRepository = userRepository;
             _mapper = mapper;
         }
-        public void AddMessage(NewMessageDto newMessage)
+        public MessageDto AddMessage(NewMessageDto newMessage)
         {
             var message = _mapper.Map<Message>(newMessage);
             _messageRepository.Add(message);
             _messageRepository.Save();
+
+            var response = _mapper.Map<MessageDto>(message);
+            response.SenderName = _userRepository.Find(response.SenderId).FirstName + " " + _userRepository.Find(response.SenderId).LastName;
+
+            return response;
         }
 
-        public MessageDto GetLastMessage(long senderId, long chatId)
-        {
-            Message lastMessage = _messageRepository.GetLastMessage(senderId, chatId);
-
-            User sender = _userRepository.Find(senderId);
-
-            var message = new MessageDto
-            {
-                Id = lastMessage.Id,
-                SenderId = lastMessage.SenderId,
-                SenderName = sender.FirstName + " " + sender.LastName,
-                ChatId = lastMessage.ChatId,
-                SendingTime = lastMessage.SendingTime,
-                Content = lastMessage.Content
-            };
-
-            return message;
-        }
     }
 }

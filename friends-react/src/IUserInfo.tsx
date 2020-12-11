@@ -7,6 +7,7 @@ interface IUserInfo {
     birthDate: Date;
     username: string;
     email: string;
+    profileImageUrl: string;
     token: string;
 }
 

@@ -119,7 +119,11 @@ function Navbar() {
                                 open={open}
                                 onClose={handleClose}
                             >
-                                <MenuItem>Profile</MenuItem>
+                                <MenuItem>
+                                    <Link to="/profilePage" style={{ color: "inherit", textDecoration: 'none' }}>
+                                        Profile
+                                    </Link>
+                                </MenuItem>
                                 <MenuItem onClick={onLogOut}>
                                     Log out
                                 </MenuItem>

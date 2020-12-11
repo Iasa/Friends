@@ -8,6 +8,6 @@ namespace Friends.Core.Repositories.Interfaces
 {
     public interface IMessageRepository : IRepository<Message>
     {
-        Message GetLastMessage(long senderId, long chatId);
+        
     }
 }

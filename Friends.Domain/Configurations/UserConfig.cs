@@ -17,6 +17,7 @@ namespace Friends.Domain.Configurations
             builder.HasIndex(x => x.UserName).IsUnique();
             builder.Property(x => x.Email).HasMaxLength(50).IsRequired();
             builder.HasIndex(x => x.Email).IsUnique();
+            builder.HasOne(x => x.ProfileImage).WithOne(x => x.User).OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -28,18 +28,20 @@ namespace Friends.API.Controllers
             _userServices = userServices;
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost("messages")]
         public async Task<IActionResult> Create([FromBody] NewMessageDto newMessage)
         {
             // save the message to the DB
-            _messageServices.AddMessage(newMessage);
+           var message = _messageServices.AddMessage(newMessage);
 
-            var lastMessage = _messageServices.GetLastMessage(newMessage.SenderId, newMessage.ChatId);
+           // var lastMessage = _messageServices.GetLastMessage(newMessage.SenderId, newMessage.ChatId);
+
+
 
             // send message to the clients
-            await _messageHub.Clients.All.SendMessageToClients(lastMessage);
-            return Ok(lastMessage);
+            await _messageHub.Clients.All.SendMessageToClients(message);
+            return Ok(message);
         }
 
     }

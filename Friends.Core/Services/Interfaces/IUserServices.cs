@@ -1,5 +1,6 @@
 ﻿using Friends.Core.Dtos.UserDto;
 using Friends.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Friends.Core.Services.Interfaces
         User GetUserById(long id);
         User CreateUser(CreateUserDto newUser);
         void UpdateUser(long id, CreateUserDto updatedUser);
-        User UpdateUserDetails(long ig, UpdateUserDto updatedUser);
+        UserDto UpdateUserDetails(long userId, UpdateUserDto updatedUser, IFormFile profileImageFile);
         void RemoveUserById(long id);
         bool CheckIfEmailAlreadyExists(string email);
         bool CheckIfUsernameAlreadyExists(string username);

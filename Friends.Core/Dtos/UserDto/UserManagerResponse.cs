@@ -10,7 +10,7 @@ namespace Friends.Core.Dtos.UserDto
         public bool IsSucces { get; set; }
         public DateTime ExpireDate { get; set; }
         public string Token { get; set; }
-        public UserInfo User { get; set; }
+        public UserDto User { get; set; }
 
     }
 }

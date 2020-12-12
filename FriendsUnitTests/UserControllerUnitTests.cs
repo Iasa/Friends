@@ -160,7 +160,7 @@ namespace FriendsUnitTests
             UpdateUserDto user = new UpdateUserDto()
             {
                 Username = "filat",
-                Password = "filat123"
+                NewPassword = "filat123"
             };
 
             _mockUserRepository.Setup(m => m.UpdateUserDetails(It.IsAny<long>(), It.IsAny<UpdateUserDto>())).Returns(new User());

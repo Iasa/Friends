@@ -1,29 +1,25 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import UsersList from './Components/UsersList';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import Navbar from './Components/Navbar'
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
+  Switch
 } from "react-router-dom";
 import { UserContext } from './UserContext';
 import Messenger from './Components/Messenger/Messenger';
-import { getChatMessages, getCurrentUser } from './Services/UserServices';
+import { getCurrentUser } from './Services/UserServices';
 import IUserInfo from './IUserInfo';
-import  MessengerProtectedRoute from './Components/MessengerProtectedRoute';
+import MessengerProtectedRoute from './Components/MessengerProtectedRoute';
 import LoginRoute from './LoginRoute';
 import RegisterRoute from './RegisterRoute';
-import Messengerr from './Components/Experiment';
-import { ChatContext } from './Components/ChatContext';
-import Message from './Components/Messenger/Message';
 import AddFriends from './Components/AddFriends';
 import AddFriendsRoute from './AddFriendsRoute';
-import ProfilePage from './Components/ProfilePage';
+import EditProfile from './Components/EditProfile';
 import ProfilePageRoute from './ProfilePageRoute';
+import ProfilePage from './Components/ProfilePage';
+import EditProfileRoute from './EditProfileRoute';
 
 
 function App() {
@@ -57,7 +53,8 @@ function App() {
             <RegisterRoute path="/register" component={Register} /> 
             <LoginRoute path="/login" component={Login}/>  
             <AddFriendsRoute path="/addfriends" component={AddFriends}/>   
-            <ProfilePageRoute path="/profilePage" component={ProfilePage} />
+            <ProfilePageRoute path="/profilepage" component={ProfilePage} />
+            <EditProfileRoute path="/editprofile" component={EditProfile} />
             {/* <ChatContext.Provider value={{activeChatId:currentChat.current.activeChatId, chatMessages:currentChat.current.chatMessages, onSelectingAChat:onSelectingAChat}}> 
               
             </ChatContext.Provider> */}

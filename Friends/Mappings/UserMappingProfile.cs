@@ -15,11 +15,12 @@ namespace Friends.API.Mappings
     {
         public UserMappingProfile()
         {
-            CreateMap<User, UserDto>();
+            CreateMap<User, UserDto>().ForMember(u => u.ProfileImageUrl, x => x.MapFrom(src => ProfileImageUrl.GetProfileImageUrl(src.Id)));
             CreateMap<User, LoginDto>();
+            CreateMap<CreateUserDto, User>();
+
             CreateMap<NewMessageDto, Message>();
             CreateMap<Message, MessageDto>();
-            CreateMap<Image, ImageDto>().ForMember(img=>img.ImageUrl, x => x.MapFrom(u => ImageUrl.GetImageUrl(u.Id)));
         }
     }
 }

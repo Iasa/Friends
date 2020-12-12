@@ -18,7 +18,15 @@ namespace Friends.Core.Dtos.UserDto
 
         public string Username { get; set; }
 
-        public string Password { get; set; }
+        [DataType(DataType.Password)]
+        public string CurrentPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        public string NewPassword { get; set; }
+
+        [Compare("NewPassword", ErrorMessage = "Passwords are not the same")]
+        [DataType(DataType.Password)]
+        public string ConfirmedNewPassword { get; set; }
 
         [EmailAddress]
         public string Email { get; set; }

@@ -97,11 +97,11 @@ export const addFriend = async (userId: number, friendId: number) => {
     });
 }
 
-export const addProfileImage = async (userId: number, imageTitle: string, imageData: any) => {
+export const addProfileImage = async (userId: number, imageData: any) => {
     await axios.post('https://localhost:44329/api/User/addProfileImage', imageData, {
         headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`,
         "Content-type": "multipart/form-data" },
-        params: { userId : userId, imageTitle : imageTitle}
+        params: { userId : userId }
     });
 }
 

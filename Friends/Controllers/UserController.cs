@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using AutoMapper;
 using Friends.Core.Dtos.UserDto;
 using Friends.Core.Exceptions;
 using Friends.Core.Services.Interfaces;
 using Friends.Domain.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -86,13 +80,13 @@ namespace Friends.API.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [AllowAnonymous]
+        [HttpPatch("{userId}/update")]
         [ApiExceptionFilter]
-        public IActionResult UpdateUserDetails(long id, [FromBody] UpdateUserDto dto)
+        public IActionResult UpdateUserDetails(long userId, [FromBody] UpdateUserDto updatedUserDto, [FromForm(Name = "profileImage")] IFormFile profileImageFile)
         {
-            User user = _userServices.UpdateUserDetails(id, dto);
-            var result = _mapper.Map<UserDto>(user);
-            return Ok(result);
+            UserDto user = _userServices.UpdateUserDetails(userId, updatedUserDto, profileImageFile);
+            return Ok(user);
         }
 
         [HttpDelete("{id}")]
@@ -140,23 +134,30 @@ namespace Friends.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("addProfileImage")]
-        public IActionResult AddProfileImage(long userId, string imageTitle, [FromForm(Name = "image")] IFormFile imageFile)
+        public IActionResult AddProfileImage(long userId, [FromForm(Name = "profileImage")] IFormFile imageFile)
         {
             using (var stream = new MemoryStream())
             {
                 imageFile.CopyTo(stream);
-                _userServices.AddProfileImage(userId, imageTitle, stream.ToArray());
+                _userServices.AddProfileImage(userId, imageFile.FileName, stream.ToArray());
             }
 
             return Ok();
         }
 
         [AllowAnonymous]
-        [HttpGet("getImage/{userId}")]
+        [HttpGet("{userId}/image")]
         public IActionResult GetProfileImage(long userId)
         {
             var image = _userServices.GetProfileImage(userId);
-            return File(image.ImageData, "image/png", image.ImageTitle);
+            
+            if(image == null)
+            {
+                return NoContent();
+            }
+
+            return File(image?.ImageData, "image/png");
+
         }
 
     }

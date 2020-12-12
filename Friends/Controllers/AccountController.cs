@@ -1,5 +1,7 @@
-﻿using Friends.API.Identity;
+﻿using AutoMapper;
+using Friends.API.Identity;
 using Friends.Core.Dtos.UserDto;
+using Friends.Core.Services;
 using Friends.Domain.Models;
 using Friends.Domain.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
@@ -23,14 +25,16 @@ namespace Friends.API.Controllers
         private readonly RoleManager<Role> _roleManager;
         private readonly SignInManager<User> _signInManager;
         private readonly AuthOptions _authenticationOptions;
+        private readonly IMapper _mapper;
 
         public AccountController(UserManager<User> userManager, RoleManager<Role> roleManager,
-            SignInManager<User> signInManager, IOptions<AuthOptions> authOptions)
+            SignInManager<User> signInManager, IOptions<AuthOptions> authOptions, IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _authenticationOptions = authOptions.Value;
+            _mapper = mapper;
         }
 
         [AllowAnonymous]
@@ -52,15 +56,18 @@ namespace Friends.API.Controllers
                 var userUserName = await _userManager.FindByNameAsync(model.Username);
                 if (userEmail == null && userUserName == null)
                 {
-                    var user = new User
-                    {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Email = model.Email,
-                        UserName = model.Username,
-                        BirthDate = model.BirthDate,
-                    };
+
+                    var user = _mapper.Map<User>(model);
+                    //var user = new User
+                    //{
+                    //    FirstName = model.FirstName,
+                    //    LastName = model.LastName,
+                    //    Email = model.Email,
+                    //    UserName = model.Username,
+                    //    BirthDate = model.BirthDate,
+                    //};
                     var result = await _userManager.CreateAsync(user, model.Password);
+                    
                     if (result.Succeeded)
                     {
                         var resultRole = _roleManager.RoleExistsAsync("user").Result;
@@ -134,15 +141,8 @@ namespace Friends.API.Controllers
                 var encodedToken = tokenHandler.WriteToken(jwtSecurityToken);
 
                 var user = _userManager.FindByNameAsync(model.Username);
-                var userInfo = new UserInfo
-                {
-                    Id = user.Result.Id,
-                    FirstName = user.Result.FirstName,
-                    LastName = user.Result.LastName,
-                    BirthDate = user.Result.BirthDate,
-                    Email = user.Result.Email,
-                    Username = user.Result.UserName
-                };
+
+                UserDto userInfo = _mapper.Map<UserDto>(user.Result);
 
                 return new UserManagerResponse
                 {

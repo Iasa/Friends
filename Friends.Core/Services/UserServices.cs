@@ -1,10 +1,14 @@
-﻿using Friends.Core.Dtos.UserDto;
+﻿using AutoMapper;
+using Friends.Core.Dtos.UserDto;
 using Friends.Core.Exceptions;
 using Friends.Core.Repositories.Interfaces;
 using Friends.Core.Services.Interfaces;
 using Friends.Domain.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -13,9 +17,13 @@ namespace Friends.Core.Services
     public class UserServices : IUserServices
     {
         private readonly IUserRepository _userRepository;
-        public UserServices(IUserRepository userRepository)
+        private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
+        public UserServices(IUserRepository userRepository, UserManager<User> userManager, IMapper mapper)
         {
             _userRepository = userRepository;
+            _userManager = userManager;
+            _mapper = mapper;
         }
 
         public User CreateUser(CreateUserDto newUser)
@@ -76,12 +84,12 @@ namespace Friends.Core.Services
             _userRepository.Save();
         }
 
-        public User UpdateUserDetails(long id, UpdateUserDto updatedUser)
+        public UserDto UpdateUserDetails(long userId, UpdateUserDto updatedUser, IFormFile profileImageFile)
         {
-            if (!_userRepository.GetAll().Any(u => u.Id == id))
+            User user = _userRepository.Find(userId);
+            
+            if ( user == null)
                 throw new NotFoundException("User not found");
-
-            User user = _userRepository.Find(id);
 
             if (!string.IsNullOrWhiteSpace(updatedUser.FirstName))
                 user.FirstName = updatedUser.FirstName;
@@ -100,7 +108,7 @@ namespace Friends.Core.Services
                 
             if (!string.IsNullOrWhiteSpace(updatedUser.Email) && user.Email != updatedUser.Email)
             {
-                if (_userRepository.GetAll().Any(u=>u.Email == updatedUser.Email))
+                if (_userRepository.GetAll().Any(u => u.Email == updatedUser.Email))
                 {
                     throw new EntryAlreadyExistsException("This Email is already being used by another user");
                 }
@@ -112,7 +120,30 @@ namespace Friends.Core.Services
 
             _userRepository.Save();
 
-            return user;
+            // changePassword
+            if(updatedUser.CurrentPassword != null && updatedUser.NewPassword != null && updatedUser.ConfirmedNewPassword != null)
+            { // use IsNullOrwhiteSpace instead
+                var changePassword = _userManager.ChangePasswordAsync(user, updatedUser.CurrentPassword, updatedUser.NewPassword);
+                if (!changePassword.Result.Succeeded) 
+                {
+                    throw new Exception("Error while changing the password!");
+                }
+               
+            }
+
+            // change profile image
+            if(profileImageFile != null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    profileImageFile.CopyTo(stream);
+                    _userRepository.AddProfileImage(userId, profileImageFile.FileName, stream.ToArray());
+                }
+            }
+
+            var changedUserDto = _mapper.Map<UserDto>(user);
+           
+            return changedUserDto;
         }
 
         public void RemoveUserById(long id)
@@ -168,5 +199,6 @@ namespace Friends.Core.Services
         {
             return _userRepository.GetProfileImage(userId);
         }
+
     }
 }

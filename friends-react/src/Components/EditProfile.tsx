@@ -8,13 +8,13 @@ import { Link } from 'react-router-dom';
 import * as yup from "yup";
 import IUpdateUserModel from '../IUpdateUserModel';
 import IUserRegisterModel from '../IUserRegisterModel';
-import { addProfileImage, checkIfEmailExists, checkIfUsernameExists, getProfileImage } from '../Services/UserServices';
+import { addProfileImage, checkIfEmailExists, checkIfUsernameExists, getProfileImage, logInUser, updateUser } from '../Services/UserServices';
 import { UserContext } from '../UserContext';
 
 function EditProfile() {
     
     const [profileImageTempUrl, setprofileImageTempUrl] = useState('');
-    const [changePassword, setChangePassword] = useState(false);
+    const [changePasswordState, setChangePasswordState] = useState(false);
     const userContext = useContext(UserContext);
     const initialBirthDate = userContext.user.birthDate.toString().substring(0, userContext.user.birthDate.toString().indexOf('T'));
     const formData = new FormData();
@@ -47,13 +47,28 @@ function EditProfile() {
             value => (value as string) === userContext.user.username ? true :
                 checkIfUsernameExists(value as string).then(response => {return !response.data})
         ),
+        changePassword : yup.boolean(),
         // have to check if the password is right. maybe write a .test()
-        currentPassword: yup.string().required("Password is required"),
-        //just set the current password as not required, and if it has value than the new password must have a value
+        currentPassword: yup.string()
+            .when("changePassword", {
+                is: value => (value as boolean) === true,
+                then: yup.string().required("Current password is required")
+                    .test(
+                        'checkCurrentPassword',
+                        'Wrong password',
+                        value => logInUser({username: userContext.user.username, password: (value as string)})
+                                    .then(response => { return response.isSucces; })
+                    ),
+                otherwise: yup.string()
+            }),
         newPassword: yup.string()
-            .when("currentPassword", {
-                is: value => value && (value as string).length > 0,
-                then: yup.string().required("Provide a new password").min(3, "Password is too short").max(50, "Password is too long"),
+            .when("changePassword", {
+                is: value => (value as boolean) === true,
+                then: yup.string().required("Provide a new password")
+                .min(6, "Password is too short")
+                .max(50, "Password is too long")
+                .matches(/^(((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/, 
+                        "Password must contain at least 1 uppercase, 1 lowercase and 1 numeric character"),
                 otherwise: yup.string()
             }),
         confirmedPassword: yup.string().oneOf([yup.ref('newPassword')], 'Passwords must match'),
@@ -72,11 +87,13 @@ function EditProfile() {
     });
 
     const onChoosingToChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setChangePassword(event.target.checked);
+        setChangePasswordState(event.target.checked);
     }
 
     const onSubmit = (data : IUpdateUserModel) => {
-        console.log(data);
+        data.profileImage = data.profileImage[0];
+        //console.log(data.profileImage);
+        updateUser(userContext.user.id, data);
         
         
     //     registerUser(data).then(response => {
@@ -89,12 +106,14 @@ function EditProfile() {
         <Container maxWidth='sm'>
             <Grid container spacing={2} style={{marginTop:10}}>
                 <Grid item xs={12} style={{height:150}}>
-                    <img src={ userContext.user.profileImageUrl === '' ? profileImageTempUrl : userContext.user.profileImageUrl } alt="select an image" style={{maxHeight:150}}/>
+                    <img src={ userContext.user.profileImageUrl == '' ? profileImageTempUrl : userContext.user.profileImageUrl } alt="select an image" style={{maxHeight:150}}/>
                 </Grid>
                 <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid item xs={12}>
                     <Input 
-                        type="file" 
+                        type="file"
+                        name="profileImage" 
+                        inputRef = { register }
                         inputProps={{ accept: 'image/*' }}
                         disableUnderline={true}
                         onChange={onSelectingProfileImage}
@@ -160,9 +179,9 @@ function EditProfile() {
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={changePassword}
+                                    checked={changePasswordState}
                                     onChange={onChoosingToChangePassword}
-                                    name="changePasswordSwitch"
+                                    name="changePassword"
                                     color='secondary'
                                     inputRef = { register }
                                 //inputProps={{ 'aria-label': 'primary checkbox' }}
@@ -172,7 +191,7 @@ function EditProfile() {
                         />
                         <Grid item xs={12}>
                             <TextField 
-                                disabled={!changePassword}
+                                disabled={!changePasswordState}
                                 name = "currentPassword"
                                 variant = "outlined"
                                 type = "password"
@@ -185,7 +204,7 @@ function EditProfile() {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField 
-                                disabled={!changePassword}
+                                disabled={!changePasswordState}
                                 name = "newPassword"
                                 variant = "outlined"
                                 type = "password"
@@ -198,7 +217,7 @@ function EditProfile() {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField 
-                                disabled = {!changePassword}
+                                disabled = {!changePasswordState}
                                 name = "confirmedPassword"
                                 variant = "outlined"
                                 type = "password"

@@ -39,21 +39,23 @@ function Register(props : any) {
     const classes = useStyles();
 
     const validationSchema = yup.object().shape({
-        firstName: yup.string().required("First Name is required").min(3, "First Name is too short").max(50, "Last Name is too long"),
-        lastName: yup.string().required("Last Name is required").min(3, "Last Name is too short").max(50, "Last Name is too long"),
+        firstName: yup.string().required("First Name is required").max(50, "Last Name is too long"),
+        lastName: yup.string().required("Last Name is required").max(50, "Last Name is too long"),
         email: yup.string().email("Enter a valid email").required("Email is required")
         .test(
             'unique-email',
             'This email is already taken, please specify another one',
             value => checkIfEmailExists(value as string).then(response => {return !response.data})
         ),
-        username: yup.string().required("Username is required").min(3, "Username is too short").max(50, "Username is too long")
+        username: yup.string().required("Username is required").min(5, "Username is too short").max(50, "Username is too long")
         .test(
             'unique-username',
             'This username is already taken, please specify another one',
             value => checkIfUsernameExists(value as string).then(response => {return !response.data})
         ),
-        password: yup.string().required("Password is required").min(3, "Password is too short").max(50, "Password is too long"),
+        password: yup.string().required("Password is required").min(6, "Password is too short").max(50, "Password is too long")
+        .matches(/^(((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/, 
+        "Password must contain at least 1 uppercase, 1 lowercase and 1 numeric character"),
         confirmedPassword: yup.string().oneOf([yup.ref('password')], 'Passwords must match'),
         birthDate: yup.string().required("Select your birth date")
     });

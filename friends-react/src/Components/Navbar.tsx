@@ -120,7 +120,7 @@ function Navbar() {
                                 onClose={handleClose}
                             >
                                 <MenuItem>
-                                    <Link to="/profilePage" style={{ color: "inherit", textDecoration: 'none' }}>
+                                    <Link to="/profilePage"  onClick={handleClose} style={{ color: "inherit", textDecoration: 'none' }}>
                                         Profile
                                     </Link>
                                 </MenuItem>

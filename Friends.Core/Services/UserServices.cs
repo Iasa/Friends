@@ -10,7 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Friends.Core.Services
 {
@@ -92,18 +94,45 @@ namespace Friends.Core.Services
                 throw new NotFoundException("User not found");
 
             if (!string.IsNullOrWhiteSpace(updatedUser.FirstName))
-                user.FirstName = updatedUser.FirstName;
+            {
+                if( updatedUser.FirstName.Length <= 50 )
+                {
+                    user.FirstName = updatedUser.FirstName;
+                }
+                else
+                {
+                    throw new Exception("First name must shorter than 50 characters");
+                }
+            }
+
 
             if (!string.IsNullOrWhiteSpace(updatedUser.LastName))
-                user.LastName = updatedUser.LastName;
+            {
+                if (updatedUser.LastName.Length <= 50)
+                {
+                    user.LastName = updatedUser.LastName;
+                }
+                else
+                {
+                    throw new Exception("Last name must shorter than 50 characters");
+                }
+            }
 
             if (!string.IsNullOrWhiteSpace(updatedUser.Username) && user.UserName != updatedUser.Username)
             {
                 if (_userRepository.GetAll().Any(u => u.UserName == updatedUser.Username))
                 {
                     throw new EntryAlreadyExistsException("This Username is already being used by another user");
-                }    
-                user.UserName = updatedUser.Username;
+                }
+
+                if (updatedUser.Username.Length <= 50 && updatedUser.Username.Length >= 5)
+                {
+                    user.UserName = updatedUser.Username;
+                }
+                else
+                {
+                    throw new Exception("Username must me between 5 and 50 characters");
+                }
             }
                 
             if (!string.IsNullOrWhiteSpace(updatedUser.Email) && user.Email != updatedUser.Email)
@@ -112,7 +141,15 @@ namespace Friends.Core.Services
                 {
                     throw new EntryAlreadyExistsException("This Email is already being used by another user");
                 }
-                user.Email = updatedUser.Email;
+                
+                if( IsValidEmail(updatedUser.Email) )
+                {
+                    user.Email = updatedUser.Email;
+                }
+                else
+                {
+                    throw new Exception("Email is not valid");
+                }
             }
 
             if (updatedUser.BirthDate.HasValue)
@@ -198,6 +235,19 @@ namespace Friends.Core.Services
         public Image GetProfileImage(long userId)
         {
             return _userRepository.GetProfileImage(userId);
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(email);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
 
     }

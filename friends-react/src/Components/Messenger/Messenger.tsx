@@ -61,7 +61,7 @@ function Messenger() {
 
         <Grid item xs={8}>
         <Paper style={{height: '75vh', overflow: 'auto'}}>
-          <Paper id="messageListPapar" style={{ height: '67.2vh', overflow: 'auto', scrollBehavior:'revert'}}>
+          <Paper id="messageListPapar" style={{ height: '67.5vh', overflow: 'auto', scrollBehavior:'revert'}}>
             <AppBar style={{ position: "sticky", backgroundColor: "steelblue"}}>
               <Toolbar>
                 <Typography variant="h6" noWrap>

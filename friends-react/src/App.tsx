@@ -32,16 +32,6 @@ function App() {
     setUser({} as IUserInfo);
   }
 
-  const [chat, setChat] = useState(0);
-  // const currentChat = useRef({activeChatId:0, chatMessages: [] as Message[]});
-
-  // const onSelectingAChat = async (chatId:number) => {
-  //   currentChat.current.activeChatId = chatId;
-  //   const messages = await getChatMessages(chatId);
-  //   currentChat.current.chatMessages = messages as Message[];
-  //   setChat(chat + 1);
-  // }
-
   return (
     <div className="App">
      {/* <Messengerr /> */}
@@ -55,9 +45,6 @@ function App() {
             <AddFriendsRoute path="/addfriends" component={AddFriends}/>   
             <ProfilePageRoute path="/profilepage" component={ProfilePage} />
             <EditProfileRoute path="/editprofile" component={EditProfile} />
-            {/* <ChatContext.Provider value={{activeChatId:currentChat.current.activeChatId, chatMessages:currentChat.current.chatMessages, onSelectingAChat:onSelectingAChat}}> 
-              
-            </ChatContext.Provider> */}
             <MessengerProtectedRoute path="/messenger" component={Messenger} />
           </Switch> 
         </Router>

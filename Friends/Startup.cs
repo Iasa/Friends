@@ -48,7 +48,7 @@ namespace Friends.API
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
-                options.Password.RequireDigit = false;
+                options.Password.RequireDigit = true;
                 options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<FriendsDbContext>();

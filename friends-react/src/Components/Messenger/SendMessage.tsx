@@ -1,8 +1,6 @@
 import { IconButton, TextField } from "@material-ui/core";
 import React, { useContext, useState } from "react";
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
-import Message from "./Message";
-import axios from 'axios';
 import { UserContext } from "../../UserContext";
 import { ChatContext } from "../ChatContext";
 import { addMessage } from "../../Services/UserServices";
@@ -35,22 +33,20 @@ function SendMessage() {
 
     return (
         <div>
-            <form > 
-                <TextField
-                    placeholder = "Write a message "
-                    variant = "outlined"
-                    type = "text"
-                    fullWidth
-                    InputProps={{
-                        endAdornment: <IconButton onClick={onSubmit} color="primary"> <SendRoundedIcon /> </IconButton>
-                    }}
-                    size="medium"
-                    onChange={messageChange}
-                    value={messageContent}
-                >
+            <TextField
+                placeholder = "Write a message "
+                variant = "outlined"
+                type = "text"
+                fullWidth
+                InputProps={{
+                    endAdornment: <IconButton onClick={onSubmit} color="primary"> <SendRoundedIcon /> </IconButton>
+                }}
+                size="medium"
+                onChange={messageChange}
+                value={messageContent}
+            >
 
-                </TextField>
-            </form>
+            </TextField>
         </div>
     );
 }

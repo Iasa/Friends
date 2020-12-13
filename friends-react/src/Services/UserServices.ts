@@ -6,6 +6,7 @@ import IUserInfo from '../IUserInfo';
 import { UserContext } from '../UserContext';
 import Message from '../Components/Messenger/Message';
 import NewMessageModel from '../NewMessageModel';
+import IUpdateUserModel from '../IUpdateUserModel';
 
 export const getUserById = async (id:number) => {
     const response = await fetch(`https://localhost:44329/api/User/${id}`);
@@ -40,6 +41,12 @@ export const logInUser = async (logInModel : UserLogInModel) => {
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token', result.data.token);
     }
+    return result.data;
+}
+
+export const checkPassword = async (username: string, password: string) => {
+    console.log("username and password " + username + " " + password);
+    const result = await axios.post(`https://localhost:44329/api/Account/checkPassword?username=${username}&password=${password}`);
     return result.data;
 }
 
@@ -110,6 +117,12 @@ export const getProfileImage = async (userId: number) => {
             { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} } );
 
     return image.data;
+}
+
+export const updateUser = async (userId: number, user: IUpdateUserModel) => {
+    const updatedUser = await axios.patch(`https://localhost:44329/api/User/${userId}/update`, user);
+    console.log(updatedUser.data);
+    //return updatedUser.data;
 }
 
 

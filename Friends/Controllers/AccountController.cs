@@ -52,20 +52,12 @@ namespace Friends.API.Controllers
                         Message = "Passwords are not the same"
                     };
                 }
-                var userEmail = await _userManager.FindByEmailAsync(model.Email);
-                var userUserName = await _userManager.FindByNameAsync(model.Username);
-                if (userEmail == null && userUserName == null)
+                var userByEmail = await _userManager.FindByEmailAsync(model.Email);
+                var userByUserName = await _userManager.FindByNameAsync(model.Username);
+                if (userByEmail == null && userByUserName == null)
                 {
-
                     var user = _mapper.Map<User>(model);
-                    //var user = new User
-                    //{
-                    //    FirstName = model.FirstName,
-                    //    LastName = model.LastName,
-                    //    Email = model.Email,
-                    //    UserName = model.Username,
-                    //    BirthDate = model.BirthDate,
-                    //};
+
                     var result = await _userManager.CreateAsync(user, model.Password);
                     
                     if (result.Succeeded)
@@ -124,7 +116,7 @@ namespace Friends.API.Controllers
         public async Task<UserManagerResponse> Login([FromBody] LoginDto model)
         {
             var checkingPasswordResult = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
-
+            
             if (checkingPasswordResult.Succeeded)
             {
                 var signinCredentials = new SigningCredentials(_authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
@@ -159,6 +151,20 @@ namespace Friends.API.Controllers
                 IsSucces = false,
                 Message = "Incorect password"
             };
+        }
+
+        [AllowAnonymous]
+        [HttpPost("checkPassword")]
+        public async Task<bool> CheckPassword(string username, string password)
+        {
+            if(!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                var user = await _userManager.FindByNameAsync(username);
+                var isCorrectPassword = await _userManager.CheckPasswordAsync(user, password);
+                return isCorrectPassword;
+            }
+
+            return false;
         }
 
         [HttpPost]

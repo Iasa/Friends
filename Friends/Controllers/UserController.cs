@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using AutoMapper;
 using Friends.Core.Dtos.UserDto;
@@ -83,10 +84,19 @@ namespace Friends.API.Controllers
         [AllowAnonymous]
         [HttpPatch("{userId}/update")]
         [ApiExceptionFilter]
-        public IActionResult UpdateUserDetails(long userId, [FromBody] UpdateUserDto updatedUserDto, [FromForm(Name = "profileImage")] IFormFile profileImageFile)
+        public IActionResult UpdateUserDetails(long userId, [FromBody] UpdateUserDto updatedUserDto)
         {
-            UserDto user = _userServices.UpdateUserDetails(userId, updatedUserDto, profileImageFile);
-            return Ok(user);
+
+            try
+            {
+                UserDto user = _userServices.UpdateUserDetails(userId, updatedUserDto, updatedUserDto.profileImage);
+                return Ok(user);
+            }
+            catch(Exception e)
+            {
+                return Ok(e.Message);
+            }
+
         }
 
         [HttpDelete("{id}")]

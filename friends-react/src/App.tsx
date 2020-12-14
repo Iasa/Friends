@@ -20,6 +20,7 @@ import EditProfile from './Components/EditProfile';
 import ProfilePageRoute from './ProfilePageRoute';
 import ProfilePage from './Components/ProfilePage';
 import EditProfileRoute from './EditProfileRoute';
+import IUpdateUserModel from './IUpdateUserModel';
 
 
 function App() {
@@ -31,11 +32,14 @@ function App() {
   const logOut = () => {
     setUser({} as IUserInfo);
   }
+  const updateUser = (updatedUser : IUserInfo) => {
+    setUser(updatedUser);
+  }
 
   return (
     <div className="App">
      {/* <Messengerr /> */}
-    <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut}}>
+    <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut, updateUser:updateUser}}>
       
         <Router>
           <Navbar />

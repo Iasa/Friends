@@ -45,7 +45,8 @@ namespace Friends.Core.Repositories.Interfaces
                     ChatId = uc.ChatId,
                     Name = uc.Chat.IsGroup ? uc.Chat.Name : 
                         _context.Set<UserChat>().FirstOrDefault(x => (x.ChatId == uc.ChatId) && (x.UserId != userId)).User.FirstName + " " +
-                        _context.Set<UserChat>().FirstOrDefault(x => (x.ChatId == uc.ChatId) && (x.UserId != userId)).User.LastName
+                        _context.Set<UserChat>().FirstOrDefault(x => (x.ChatId == uc.ChatId) && (x.UserId != userId)).User.LastName,
+                    IsGroup = uc.Chat.IsGroup
                 }).ToList();
 
 

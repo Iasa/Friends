@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Card, CardContent, CardMedia, Container, Divider, Grid, Input, TextField, Typography } from '@material-ui/core';
+import { Button, Card, CardContent, CardMedia, Container, Divider, Grid, Input, Paper, TextField, Typography } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import React, { useState, useContext } from 'react';
@@ -7,14 +7,18 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import * as yup from "yup";
 import IUpdateUserModel from '../IUpdateUserModel';
+import IUserInfo from '../IUserInfo';
 import IUserRegisterModel from '../IUserRegisterModel';
-import { addProfileImage, checkIfEmailExists, checkIfUsernameExists, getProfileImage, logInUser, updateUser } from '../Services/UserServices';
+import { addProfileImage, checkIfEmailExists, checkIfUsernameExists, getProfileImage, logInUser, removeProfileImage, updateUser } from '../Services/UserServices';
 import { UserContext } from '../UserContext';
 
 function EditProfile() {
     
-    const [profileImageTempUrl, setprofileImageTempUrl] = useState('');
+    
     const [changePasswordState, setChangePasswordState] = useState(false);
+    const [hasProfileImage, setHasProfileImage] = useState(false);
+    const [profileImageChanged, setProfileImageChanged] = useState(false);
+    const [profileImageTempUrl, setProfileImageTempUrl] = useState('');
     const userContext = useContext(UserContext);
     const initialBirthDate = userContext.user.birthDate.toString().substring(0, userContext.user.birthDate.toString().indexOf('T'));
     const formData = new FormData();
@@ -22,13 +26,33 @@ function EditProfile() {
 
     const onSelectingProfileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         if(event && event.target.files && event.target.files.length > 0) {
-            setprofileImageTempUrl(URL.createObjectURL(event.target.files[0]));
+            setHasProfileImage(true);
+            setProfileImageChanged(true);
+            setProfileImageTempUrl(URL.createObjectURL(event.target.files[0]));
             formData.append('profileImage', event.target.files[0]);
-            if(!formData.has('profileImage')) console.log("null formData")
-            console.log(formData.get('profileImage'))
-            // addProfileImage(userContext.user.id, formData);
+            addProfileImage(userContext.user.id, formData);
         }
     }
+
+    const onChoosingToChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setChangePasswordState(event.target.checked);
+    }
+
+    const removeProfilePicture = () => {
+        setProfileImageChanged(false);
+        setHasProfileImage(false);
+        removeProfileImage(userContext.user.id);
+    }
+
+    const onSubmit = (data : IUpdateUserModel) => {
+        console.log(data);
+        console.log("form data in on submit: " + formData.get('profileImage'));
+       var updatedUser = updateUser(userContext.user.id, data);
+       updatedUser.then(response=> {
+           console.log("from editprofile : " + (response as IUserInfo).firstName);
+           userContext.updateUser((response as IUserInfo));
+       })
+    };
 
     const validationSchema = yup.object().shape({
         firstName: yup.string().required("First Name is required").min(3, "First Name is too short").max(50, "Last Name is too long"),
@@ -48,7 +72,6 @@ function EditProfile() {
                 checkIfUsernameExists(value as string).then(response => {return !response.data})
         ),
         changePassword : yup.boolean(),
-        // have to check if the password is right. maybe write a .test()
         currentPassword: yup.string()
             .when("changePassword", {
                 is: value => (value as boolean) === true,
@@ -71,7 +94,7 @@ function EditProfile() {
                         "Password must contain at least 1 uppercase, 1 lowercase and 1 numeric character"),
                 otherwise: yup.string()
             }),
-        confirmedPassword: yup.string().oneOf([yup.ref('newPassword')], 'Passwords must match'),
+        confirmedNewPassword: yup.string().oneOf([yup.ref('newPassword')], 'Passwords must match'),
         birthDate: yup.string().required("Select your birth date")
     });
 
@@ -85,43 +108,67 @@ function EditProfile() {
             birthDate : initialBirthDate
         }
     });
-
-    const onChoosingToChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setChangePasswordState(event.target.checked);
-    }
-
-    const onSubmit = (data : IUpdateUserModel) => {
-        data.profileImage = data.profileImage[0];
-        //console.log(data.profileImage);
-        updateUser(userContext.user.id, data);
-        
-        
-    //     registerUser(data).then(response => {
-    //         if(!response.isSucces) alert(response.message);
-    //    });
-   };
     
 
     return (
+        
         <Container maxWidth='sm'>
-            <Grid container spacing={2} style={{marginTop:10}}>
-                <Grid item xs={12} style={{height:150}}>
-                    <img src={ userContext.user.profileImageUrl == '' ? profileImageTempUrl : userContext.user.profileImageUrl } alt="select an image" style={{maxHeight:150}}/>
+            <Grid container spacing={5} style={{marginTop:5}}>
+            
+                <Grid item xs={12} style={{height:'25vh', marginBottom: 20}}>
+                    <Container style={{ width:'30vh'}}>
+                        <div style={{height:'25vh', width:'25vh', borderRadius: '50%', overflow:'hidden', backgroundColor:'rgb(96 96 96 / 18%)'}}>
+                            <img 
+                            onError = {() => { setHasProfileImage(false) }}
+                            onLoad = {() => { setHasProfileImage(true) } }
+                            src = { profileImageChanged ? profileImageTempUrl : `${userContext.user.profileImageUrl}?${Date.now()}` } 
+                            style={{height:'25vh', marginLeft:'-5%'}} 
+                            hidden = {!hasProfileImage}/>
+                            <Typography
+                                hidden = {hasProfileImage}
+                                style={{fontSize:'16vh', color: 'white'}}
+                            >
+                                {userContext.user.firstName[0].toUpperCase()}{userContext.user.lastName[0].toUpperCase()} 
+                            </Typography>
+                        </div>
+                    </Container>
                 </Grid>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                <Grid item xs={12}>
-                    <Input 
+                
+                <Grid item xs={6}>
+                    <Button 
+                        variant="contained" 
+                        component="label" 
+                        fullWidth
+                        style= {{backgroundColor: '#59acdd', color: 'white'}}
+                    >
+                        New profile image
+                        <input 
                         type="file"
-                        name="profileImage" 
-                        inputRef = { register }
-                        inputProps={{ accept: 'image/*' }}
-                        disableUnderline={true}
+                        accept="image/png, image/jpeg"
                         onChange={onSelectingProfileImage}
-                    />
+                        hidden />
+                    </Button>
+                </Grid>
+                <Grid item xs={6} style={{ marginBottom: 20}}>
+                    <Button 
+                        variant="contained" 
+                        fullWidth
+                        disabled = { !hasProfileImage }
+                        onClick = {removeProfilePicture}
+                        style= {{backgroundColor: '#ff6c6c', color: 'white'}}
+                    >
+                        Remove profile image
+                    </Button>
                 </Grid>
 
-                
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
+                        <Grid item xs={12} style={{marginBottom:20}}>
+                            <Typography variant="h5" style={{fontFamily:"Corbel"}}>
+                                Edit personal information
+                            </Typography>
+                            <Divider/>
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField 
                                 name = "firstName"
@@ -218,7 +265,7 @@ function EditProfile() {
                         <Grid item xs={6}>
                             <TextField 
                                 disabled = {!changePasswordState}
-                                name = "confirmedPassword"
+                                name = "confirmedNewPassword"
                                 variant = "outlined"
                                 type = "password"
                                 fullWidth
@@ -254,9 +301,10 @@ function EditProfile() {
 
                     </Grid>
                 </form>
-                                
+                            
             </Grid>
         </Container>
+       
     );
 }
 

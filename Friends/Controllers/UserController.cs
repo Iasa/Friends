@@ -89,7 +89,7 @@ namespace Friends.API.Controllers
 
             try
             {
-                UserDto user = _userServices.UpdateUserDetails(userId, updatedUserDto, updatedUserDto.profileImage);
+                UserDto user = _userServices.UpdateUserDetails(userId, updatedUserDto);
                 return Ok(user);
             }
             catch(Exception e)
@@ -107,11 +107,11 @@ namespace Friends.API.Controllers
             return NoContent();
         }
 
-        [Authorize]
-        [HttpGet("/chats/{id}")]
-        public IActionResult GetUserChats(long id)
+        [AllowAnonymous]
+        [HttpGet("/chats/{userId}")]
+        public IActionResult GetUserChats(long userId)
         {
-            var result = _chatServices.GetUserChats(id);
+            var result = _chatServices.GetUserChats(userId);
 
             return Ok(result);
         }
@@ -142,17 +142,23 @@ namespace Friends.API.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost("addProfileImage")]
         public IActionResult AddProfileImage(long userId, [FromForm(Name = "profileImage")] IFormFile imageFile)
         {
-            using (var stream = new MemoryStream())
+            if( imageFile != null )
             {
-                imageFile.CopyTo(stream);
-                _userServices.AddProfileImage(userId, imageFile.FileName, stream.ToArray());
+                using (var stream = new MemoryStream())
+                {
+                    imageFile.CopyTo(stream);
+                    _userServices.AddProfileImage(userId, imageFile.FileName, stream.ToArray());
+                }
+
+                return Ok();
             }
 
-            return Ok();
+            return BadRequest();
+            
         }
 
         [AllowAnonymous]
@@ -168,6 +174,14 @@ namespace Friends.API.Controllers
 
             return File(image?.ImageData, "image/png");
 
+        }
+
+        [Authorize]
+        [HttpDelete("{userId}/removeProfileImage")]
+        public IActionResult RemoveProfilePicture(long userId)
+        {
+            _userServices.RemoveProfileImage(userId);
+            return Ok();
         }
 
     }

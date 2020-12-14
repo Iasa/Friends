@@ -85,8 +85,8 @@ function AddFriends() {
 return (
     <Container component="main" style={{marginTop:50}}>
         
-            <Grid container spacing={2}>
-                <Grid item xs={6}>
+            <Grid container spacing={2} style={{marginBottom:20}}>
+                <Grid item xs={5}>
                     <TextField 
                         placeholder = "search"
                         variant = "outlined"
@@ -96,7 +96,12 @@ return (
                         onChange={queryChange}
                     />
                 </Grid>
-                <Grid item xs={2} style={{}}>
+                <Grid item xs={1} style={{}}>
+                    <Typography variant="h6">
+                        Sort by : 
+                    </Typography>
+                </Grid>
+                <Grid item xs={1} style={{}}>
                     <Button
                         variant="contained"
                         color="primary"
@@ -110,7 +115,7 @@ return (
                         Age
                     </Button>
                 </Grid>
-                <Grid item xs={2} style={{}}>
+                <Grid item xs={1} style={{}}>
                     <Button
                         variant="contained"
                         color="primary"
@@ -140,48 +145,55 @@ return (
                 </Grid>
             </Grid>
         
-            <Grid container spacing={2}>
+            <Grid container spacing={2} >
                 {people.map(person => {
                     return (
                         <Grid item xs={3} key={person.id}>
-                            
-                                <Card elevation={1}>
-                                    <CardMedia 
-                                        image="https://cdn.pixabay.com/photo/2017/06/13/12/53/profile-2398782_1280.png"
-                                    />
-                                    <CardContent>
-                                        <Typography>
-                                            {person.firstName} {person.lastName}
-                                        </Typography>
-                                        <Typography>
-                                            {person.birthDate.toString().substring(0, person.birthDate.toString().indexOf('T'))}
-                                        </Typography>
-                                        <IconButton onClick={() => { addNewFriend(person.id); }}>
-                                            <PersonAddRoundedIcon />
-                                        </IconButton>
-                                    </CardContent>
-                                </Card>
+                            <Card elevation={1}>
+                                <CardMedia 
+                                    style={{height:0, paddingTop: '56.25%'}}
+                                    image={person.profileImageUrl}
+                                />
+                                
+                                <CardContent>
+                                    <Typography>
+                                        {person.firstName} {person.lastName}
+                                    </Typography>
+                                    <Typography>
+                                        {person.birthDate.toString().substring(0, person.birthDate.toString().indexOf('T'))}
+                                    </Typography>
+                                    <IconButton onClick={() => { addNewFriend(person.id); }}>
+                                        <PersonAddRoundedIcon />
+                                    </IconButton>
+                                </CardContent>
+                            </Card>
                         </Grid>)
                 })}  
 
-                <Grid item xs={12}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        disabled = {pageNumber === 1 ? true : false}
-                        onClick = {prevPage}
-                    >
-                        Prev
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        disabled = {!hasMore}
-                        onClick = {nextPage}
-                    >
-                        Next
-                    </Button>
-                </Grid>   
+                <Grid container spacing={2} style={{marginTop:10}}>
+                    <Grid item xs={6}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            disabled = {pageNumber === 1 ? true : false}
+                            onClick = {prevPage}
+                            fullWidth
+                        >
+                            Prev
+                        </Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            disabled = {!hasMore}
+                            onClick = {nextPage}
+                            fullWidth
+                        >
+                            Next
+                        </Button>
+                    </Grid> 
+                </Grid>  
             </Grid>
 
     </Container>

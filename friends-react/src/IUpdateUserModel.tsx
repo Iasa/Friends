@@ -9,7 +9,6 @@ interface IUpdateUserModel {
     newPassword : string;
     confirmedNewPassword: string;
     email: string;
-    profileImage : any;
 }
 
 export default IUpdateUserModel;

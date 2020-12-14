@@ -27,8 +27,6 @@ namespace Friends.Core.Dtos.UserDto
         [DataType(DataType.Password)]
         public string ConfirmedNewPassword { get; set; }
 
-        public IFormFile profileImage { get; set; }
-
         public string Email { get; set; }
     }
 }

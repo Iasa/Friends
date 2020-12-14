@@ -13,13 +13,14 @@ namespace Friends.Core.Services.Interfaces
         User GetUserById(long id);
         User CreateUser(CreateUserDto newUser);
         void UpdateUser(long id, CreateUserDto updatedUser);
-        UserDto UpdateUserDetails(long userId, UpdateUserDto updatedUser, IFormFile profileImageFile);
+        UserDto UpdateUserDetails(long userId, UpdateUserDto updatedUser);
         void RemoveUserById(long id);
         bool CheckIfEmailAlreadyExists(string email);
         bool CheckIfUsernameAlreadyExists(string username);
         void AddRelation(long userId, long friendId);
         void AddProfileImage(long userId, string imageTitle, byte[] imageData);
         Image GetProfileImage(long userId);
+        void RemoveProfileImage(long userId);
         IEnumerable<UserDto> GetNonFriends(long userId, string query, int pageNumber,
             bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true);
     }

@@ -10,6 +10,7 @@ import MessageList from "./MessageList";
 import SendMessage from "./SendMessage";
 import { animateScroll } from "react-scroll";
 import { scrollToBottom } from "react-scroll/modules/mixins/animate-scroll";
+import CreateGroup from "./CreateGroup";
 
 
 function Messenger() {
@@ -78,7 +79,7 @@ function Messenger() {
             </List>
           </Paper>
           <ChatContext.Provider value={{activeChatId:currentChat.activeChatId, chatMessages:currentChat.chatMessages, onSelectingAChat:onSelectingAChat}}>
-            <SendMessage />
+            {currentChat.activeChatId != 0 ? <SendMessage /> : ""}
           </ChatContext.Provider>
         </Paper>
         </Grid>

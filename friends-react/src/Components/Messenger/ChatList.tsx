@@ -4,13 +4,12 @@ import { getChatList } from "../../Services/UserServices";
 import { UserContext } from "../../UserContext";
 import ChatItem from "./ChatItem";
 import ChatModel from "./ChatModel";
+import CreateGroup from "./CreateGroup";
 
 function ChatList() {
 
-    const [chats, setChats] = useState([{} as ChatModel]);
-    const userContext = useContext(UserContext);
-
-    
+    const [chats, setChats] = useState([] as ChatModel[]);
+    const userContext = useContext(UserContext); 
 
     useEffect(() => {
         fetchChats();
@@ -21,11 +20,21 @@ function ChatList() {
         setChats(chatList);
     }
 
+    const userHasMoreThanTwoFriends = ():boolean => {
+        let friendsCount = 0;
+        for(let chat of chats) {
+            if(!chat.isGroup) friendsCount +=1;
+        }
+        
+        return friendsCount >= 2 ? true : false;
+    }
+
     return(
         <List>
+           { userHasMoreThanTwoFriends() ? <CreateGroup chatList={chats}/> : "" }
             { chats.map(chat => 
                 { 
-                    const model = { chatId: chat.chatId, name: chat.name  }; 
+                    const model = { chatId: chat.chatId, name: chat.name, isGroup: chat.isGroup}; 
                     return ( <ChatItem {...model}/> ) 
                 }
             )}

@@ -86,7 +86,7 @@ namespace Friends.Core.Services
             _userRepository.Save();
         }
 
-        public UserDto UpdateUserDetails(long userId, UpdateUserDto updatedUser, IFormFile profileImageFile)
+        public UserDto UpdateUserDetails(long userId, UpdateUserDto updatedUser)
         {
             User user = _userRepository.Find(userId);
             
@@ -157,25 +157,15 @@ namespace Friends.Core.Services
 
             _userRepository.Save();
 
-            // changePassword
-            if(updatedUser.CurrentPassword != null && updatedUser.NewPassword != null && updatedUser.ConfirmedNewPassword != null)
-            { // use IsNullOrwhiteSpace instead
+           
+            if(!string.IsNullOrWhiteSpace(updatedUser.CurrentPassword) && !string.IsNullOrWhiteSpace(updatedUser.NewPassword) && !string.IsNullOrWhiteSpace(updatedUser.ConfirmedNewPassword))
+            { 
                 var changePassword = _userManager.ChangePasswordAsync(user, updatedUser.CurrentPassword, updatedUser.NewPassword);
                 if (!changePassword.Result.Succeeded) 
                 {
                     throw new Exception("Error while changing the password!");
                 }
                
-            }
-
-            // change profile image
-            if(profileImageFile != null)
-            {
-                using (var stream = new MemoryStream())
-                {
-                    profileImageFile.CopyTo(stream);
-                    _userRepository.AddProfileImage(userId, profileImageFile.FileName, stream.ToArray());
-                }
             }
 
             var changedUserDto = _mapper.Map<UserDto>(user);
@@ -235,6 +225,14 @@ namespace Friends.Core.Services
         public Image GetProfileImage(long userId)
         {
             return _userRepository.GetProfileImage(userId);
+        }
+
+        public void RemoveProfileImage(long userId)
+        {
+            if (_userRepository.Find(userId) != null && _userRepository.GetProfileImage(userId) != null)
+            {
+                _userRepository.RemoveProfileImage(userId);
+            }
         }
 
         private bool IsValidEmail(string email)

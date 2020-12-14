@@ -17,7 +17,7 @@ function ChatItem(props : ChatModel) {
     return(
         <ListItem button key={props.chatId} onClick={() => { chatContext.onSelectingAChat(props.chatId, props.name);}} style={{backgroundColor:backgroundColor, color: textColor}}>
             <ListItemIcon> <AccountCircle /> </ListItemIcon>
-            <ListItemText primary={props.name}/>
+            <ListItemText primary={props.name} />
         </ListItem>
     );
 }

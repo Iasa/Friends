@@ -9,5 +9,6 @@ namespace Friends.Core.Dtos.ChatDto
     {
         public long ChatId { get; set; }
         public string Name { get; set; }
+        public bool IsGroup { get; set; }
     }
 }

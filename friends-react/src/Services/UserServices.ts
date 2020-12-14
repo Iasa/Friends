@@ -113,16 +113,19 @@ export const addProfileImage = async (userId: number, imageData: any) => {
 }
 
 export const getProfileImage = async (userId: number) => {
-    const image = await axios.get(`https://localhost:44329/api/User/getImage/${userId}`, 
-            { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} } );
-
+    const image = await axios.get(`https://localhost:44329/api/User/${userId}/image`);
     return image.data;
 }
 
 export const updateUser = async (userId: number, user: IUpdateUserModel) => {
     const updatedUser = await axios.patch(`https://localhost:44329/api/User/${userId}/update`, user);
     console.log(updatedUser.data);
-    //return updatedUser.data;
+    return updatedUser.data;
 }
 
+export const removeProfileImage = async (userId : number) => {
+    await axios.delete(`https://localhost:44329/api/User/${userId}/removeProfileImage`, {
+        headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}` }
+    });
+}
 

@@ -68,14 +68,15 @@ namespace Friends.Core.Repositories
             var userFriends = _context.Set<Relation>().Where(u => u.UserOneId == userId || u.UserTwoId == userId)
                 .Select(u => u.UserOneId == userId ? u.UserTwoId : u.UserOneId);
 
-            var nonFriends = _context.Set<User>().Where(u => !userFriends.Contains(u.Id) 
+            var nonFriends = _context.Set<User>().Where(u => !userFriends.Contains(u.Id)
                         && u.Id != userId && (!string.IsNullOrEmpty(query) ? (u.FirstName.Contains(query) || u.LastName.Contains(query)) : true))
                 .Select(u => new UserDto
                 {
                     Id = u.Id,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
-                    BirthDate = u.BirthDate
+                    BirthDate = u.BirthDate,
+                    ProfileImageUrl = ProfileImageUrl.GetProfileImageUrl(u.Id)
                 });
 
             if(orderAscending)
@@ -123,6 +124,14 @@ namespace Friends.Core.Repositories
         public Image GetProfileImage(long userId)
         {
             return _context.Set<Image>().FirstOrDefault(img => img.Id == (_context.Set<User>().FirstOrDefault(u => u.Id == userId).ProfileImageId));
+        }
+
+        public void RemoveProfileImage(long userId)
+        {
+            var imageIdToRemove = _context.Set<User>().FirstOrDefault(u => u.Id == userId).ProfileImageId;
+            var imageToRemove = _context.Set<Image>().FirstOrDefault(img => img.Id == imageIdToRemove);
+            _context.Set<Image>().Remove(imageToRemove);
+            Save();
         }
 
     }

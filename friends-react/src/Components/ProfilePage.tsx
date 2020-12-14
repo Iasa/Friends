@@ -10,19 +10,27 @@ import { UserContext } from '../UserContext';
 
 function ProfilePage() {
     
+    const [hasProfileImage, setHasProfileImage] = useState(false);
     const userContext = useContext(UserContext);
     const birthDate = userContext.user.birthDate.toString().substring(0, userContext.user.birthDate.toString().indexOf('T'));
-
-
-    
-    
 
     return (
         <Container maxWidth='sm'>
             <Grid container spacing={2} style={{marginTop:10}}>
                 <Grid item xs={4} >
-                    <div style={{width: 150, height: 150, overflow: 'hidden', borderRadius: '50%'}}>
-                        <img src={userContext.user.profileImageUrl} alt="" style={{width:200, marginLeft:'-10%'}}/>
+                    <div style={{height:'25vh', width:'25vh', borderRadius: '50%', overflow:'hidden', backgroundColor:'rgb(96 96 96 / 18%)'}}>
+                        <img 
+                        onLoad = {() => { setHasProfileImage(true) } }
+                        src = { `${userContext.user.profileImageUrl}?${Date.now()}` } 
+                        alt="select an image" 
+                        style={{height:'25vh', marginLeft:'-5%'}} 
+                        hidden = {!hasProfileImage}/>
+                        <Typography
+                            hidden = {hasProfileImage}
+                            style={{fontSize:'16vh', color: 'white'}}
+                        >
+                            {userContext.user.firstName[0].toUpperCase()}{userContext.user.lastName[0].toUpperCase()} 
+                        </Typography>
                     </div>
                 </Grid>
                 <Grid item xs={5} >

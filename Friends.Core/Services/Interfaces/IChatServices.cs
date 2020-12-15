@@ -11,5 +11,6 @@ namespace Friends.Core.Services.Interfaces
     {
         IEnumerable<ChatDto> GetUserChats(long userId);
         IEnumerable<MessageDto> GetChatMessages(long chatId, int pageNumber);
+        Task<ChatDto> CreateGroup(string groupName, long[] usersId);
     }
 }

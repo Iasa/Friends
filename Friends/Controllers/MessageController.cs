@@ -33,11 +33,7 @@ namespace Friends.API.Controllers
         public async Task<IActionResult> Create([FromBody] NewMessageDto newMessage)
         {
             // save the message to the DB
-           var message = _messageServices.AddMessage(newMessage);
-
-           // var lastMessage = _messageServices.GetLastMessage(newMessage.SenderId, newMessage.ChatId);
-
-
+            var message = _messageServices.AddMessage(newMessage);
 
             // send message to the clients
             await _messageHub.Clients.All.SendMessageToClients(message);

@@ -184,5 +184,13 @@ namespace Friends.API.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [HttpGet("{userId}/friends")]
+        public IActionResult GetFriends(long userId)
+        {
+            var friends = _userServices.GetFriends(userId);
+            return Ok(friends);
+        }
+
     }
 }

@@ -129,3 +129,22 @@ export const removeProfileImage = async (userId : number) => {
     });
 }
 
+export const createGroup = async (groupName: string, usersId: number[]) => {
+    console.log("parameters : " + groupName + " " + usersId);
+    
+    const newGroup = await axios.post(`https://localhost:44329/api/Chat/createGroup/${groupName}`, usersId, {
+        headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}` ,
+        "Content-Type": "application/json" }
+    });
+    
+    return newGroup.data;
+}
+
+export const getFriends = async (userId : number) => {
+    const friends = await axios.get(`https://localhost:44329/api/User/${userId}/friends`, {
+        headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}` }
+    });
+
+   return friends.data;
+}
+

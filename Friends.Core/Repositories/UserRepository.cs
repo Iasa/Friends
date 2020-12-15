@@ -1,8 +1,10 @@
-﻿using Friends.Core.Dtos.UserDto;
+﻿using AutoMapper;
+using Friends.Core.Dtos.UserDto;
 using Friends.Core.Repositories.Interfaces;
 using Friends.Core.Services;
 using Friends.Domain.Models;
 using Friends.Infrastructure;
+using Friends.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,33 +15,13 @@ namespace Friends.Core.Repositories
     public class UserRepository : Repository<User>, IUserRepository
     {
         private readonly int _peoplePerPage = 12;
-        public UserRepository(FriendsDbContext context) : base(context)
+        private readonly IChatRepository _chatRepository;
+        private readonly IMapper _mapper;
+
+        public UserRepository(FriendsDbContext context, IChatRepository chatRepository, IMapper mapper) : base(context)
         {
-        }
-
-        public void CreateChat(long userId, long friendId)
-        {
-            Chat newChat = new Chat()
-            {
-                IsGroup = false
-            };
-
-            _context.Set<Chat>().Add(newChat);
-            Save();
-
-            _context.Set<UserChat>().Add(new UserChat()
-            {
-                ChatId = newChat.Id,
-                UserId = userId
-            });
-
-            _context.Set<UserChat>().Add(new UserChat()
-            {
-                ChatId = newChat.Id,
-                UserId = friendId
-            });
-
-            Save();
+            _chatRepository = chatRepository;
+            _mapper = mapper;
         }
 
         public void AddRelation(long userId, long friendId)
@@ -53,7 +35,7 @@ namespace Friends.Core.Repositories
             _context.Set<Relation>().Add(newRelation);
             Save();
 
-            CreateChat(userId, friendId);
+            _chatRepository.CreateChat(userId, friendId);
         }
 
         public User Find(long id)
@@ -61,7 +43,7 @@ namespace Friends.Core.Repositories
             return _context.Set<User>().FirstOrDefault(u => u.Id == id);
         }
 
-        public IEnumerable<UserDto>  GetNonFriends(long userId, string query, int pageNumber,
+        public IEnumerable<UserDto> GetNonFriends(long userId, string query, int pageNumber,
             bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true)
         {
 
@@ -92,6 +74,17 @@ namespace Friends.Core.Repositories
             }
 
             return nonFriends.Page(pageNumber, _peoplePerPage).ToList();
+        }
+
+        public IEnumerable<UserDto> GetFriends(long userId)
+        {
+            var userFriends = _context.Set<Relation>()
+                                .Where(r => r.UserOneId == userId || r.UserTwoId == userId)
+                                .Select(r => r.UserOneId == userId ? r.UserTwo : r.UserOne)
+                                .Select(u => _mapper.Map<UserDto>(u))
+                                .ToList();
+
+            return userFriends;
         }
 
         public void AddProfileImage(long userId, string imageTitle, byte[] imageData)

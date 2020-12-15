@@ -248,5 +248,10 @@ namespace Friends.Core.Services
             }
         }
 
+        public IEnumerable<UserDto> GetFriends(long userId)
+        {
+            return _userRepository.GetFriends(userId);
+        }
+
     }
 }

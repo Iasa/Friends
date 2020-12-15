@@ -17,6 +17,11 @@ namespace Friends.Core.Services
             _chatRepository = chatRepository;
         }
 
+        public async Task<ChatDto> CreateGroup(string groupName, long[] usersId)
+        {
+            return await _chatRepository.CreateGroup(groupName, usersId);
+        }
+
         public IEnumerable<MessageDto> GetChatMessages(long chatId, int pageNumber)
         {
             return _chatRepository.GetChatMessages(chatId, pageNumber);

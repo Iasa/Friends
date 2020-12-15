@@ -14,5 +14,7 @@ namespace Friends.Repositories
     {
         IEnumerable<ChatDto> GetUserChats(long userId);
         IEnumerable<MessageDto> GetChatMessages(long chatId, int pageNumber);
+        void CreateChat(long userOneId, long userTwoId);
+        Task<ChatDto> CreateGroup(string groupName, long[] usersId);
     }
 }

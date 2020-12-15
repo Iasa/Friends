@@ -19,11 +19,6 @@ namespace Friends.Core.Repositories
             _context.Set<TEntity>().Add(entity);
         }
 
-        //public TEntity Find(long id)
-        //{
-        //    return _context.Set<TEntity>().FirstOrDefault(u => u.Id == id);
-        //}
-
         public IQueryable<TEntity> GetAll()
         {
             return _context.Set<TEntity>();

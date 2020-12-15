@@ -48,8 +48,62 @@ namespace Friends.Core.Repositories.Interfaces
                         _context.Set<UserChat>().FirstOrDefault(x => (x.ChatId == uc.ChatId) && (x.UserId != userId)).User.LastName,
                     IsGroup = uc.Chat.IsGroup
                 }).ToList();
+        }
 
+        public void CreateChat(long userOneId, long userTwoId)
+        {
 
+            Chat newChat = new Chat() { IsGroup = false };
+
+            _context.Set<Chat>().Add(newChat);
+            Save();
+
+            _context.Set<UserChat>().Add(new UserChat()
+            {
+                ChatId = newChat.Id,
+                UserId = userOneId
+            });
+
+            _context.Set<UserChat>().Add(new UserChat()
+            {
+                ChatId = newChat.Id,
+                UserId = userTwoId
+            });
+
+            Save();
+        }
+
+        public async Task<ChatDto> CreateGroup(string groupName, long[] usersId)
+        {
+
+            Chat newChat = new Chat()
+            {
+                IsGroup = true,
+                Name = groupName
+            };
+
+            await _context.Set<Chat>().AddAsync(newChat);
+            //Save();
+            await _context.SaveChangesAsync();
+
+            foreach (long userId in usersId)
+            {
+                await _context.Set<UserChat>().AddAsync(new UserChat()
+                {
+                    ChatId = newChat.Id,
+                    UserId = userId
+                });
+            }
+
+            //Save();
+            await _context.SaveChangesAsync();
+
+            return new ChatDto()
+            {
+                ChatId = newChat.Id,
+                Name = groupName,
+                IsGroup = true
+            };
         }
     }
 }

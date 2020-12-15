@@ -23,5 +23,6 @@ namespace Friends.Core.Services.Interfaces
         void RemoveProfileImage(long userId);
         IEnumerable<UserDto> GetNonFriends(long userId, string query, int pageNumber,
             bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true);
+        IEnumerable<UserDto> GetFriends(long userId);
     }
 }

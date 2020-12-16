@@ -11,9 +11,9 @@ using Friends.Core.Services;
 
 namespace Friends.API.Mappings
 {
-    public class UserMappingProfile : Profile
+    public class MappingProfile : Profile
     {
-        public UserMappingProfile()
+        public MappingProfile()
         {
             CreateMap<User, UserDto>().ForMember(u => u.ProfileImageUrl, x => x.MapFrom(src => ProfileImageUrl.GetProfileImageUrl(src.Id)));
             CreateMap<User, LoginDto>();

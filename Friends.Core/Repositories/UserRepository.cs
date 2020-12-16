@@ -112,7 +112,6 @@ namespace Friends.Core.Repositories
             }
         }
 
-        // trebuie sa returneze ImageDto - de facut maparea 
         public Image GetProfileImage(long userId)
         {
             return _context.Set<Image>().FirstOrDefault(img => img.Id == (_context.Set<User>().FirstOrDefault(u => u.Id == userId).ProfileImageId));

@@ -19,73 +19,24 @@ namespace FriendsUnitTests
     public class UserControllerIntegrationTests
     {
         private readonly HttpClient _client;
-        //private Mock<IUserRepository> _mockUserRepository;
-        //private Mock<IMapper> _mockMapper;
-        //private UserController _userController;
 
         public UserControllerIntegrationTests()
         {
-            //var server = new TestServer(new WebHostBuilder()
-            //    .UseEnvironment("Development")
-            //    .UseStartup<Startup>());
-            //_client = server.CreateClient();
-
             var appFactory = new WebApplicationFactory<Startup>();
             _client = appFactory.CreateClient();
         }
 
-        [TestInitialize]
-        public void Initializer()
-        {
-            //_mockUserRepository = new Mock<IUserRepository>();
-            //_mockMapper = new Mock<IMapper>();
-            //_userController = new UserController(_mockUserRepository.Object, _mockMapper.Object);
-        }
-
         [TestMethod]
-        public async Task ShouldAccess_GetAllUsers()
+        [DataRow(25)]
+        [DataRow(10020)]
+        public async Task GetProfileImageTest(long userId)
         {
-            var request = "/api/User/GetAllUsers";
+            var request = $"/api/User/{userId}/image";
+            
             var response = await _client.GetAsync(request);
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            var users = JsonConvert.DeserializeObject<List<UserDto>>(json);
-            Assert.IsTrue(users.Count == 6);
+            
+            Assert.IsTrue(response.IsSuccessStatusCode);
         }
 
-
-        [TestMethod]
-        public async Task ShouldAccess_CreateUser()
-        {
-            var request = new
-            {
-                Url = "api/User/CreateUser",
-                Body = new
-                {
-                    FirstName = "John",
-                    LastName = "Travolta",
-                    BirthDate = new DateTime(1934, 11, 14),
-                    Email = "aaa@mail.com",
-                    Username = "aaa",
-                    Password = "travolta123"
-                }
-            };
-
-            var postResponse = await _client.PostAsync(request.Url, ContentHelper.GetStringContent(request.Body));
-            postResponse.EnsureSuccessStatusCode();
-        }
-
-        //[TestMethod]
-        //public async Task ShouldAccess_GetAllUsers()
-        //{
-        //    var request = "/api/GetAllUsers";
-        //    var response = await _client.GetAsync(request);
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var json = await response.Content.ReadAsStringAsync();
-        //        var users = JsonConvert.DeserializeObject<UserDto>(json);
-        //        Assert.IsTrue(users.co)
-        //    }
-        //}
     }
 }

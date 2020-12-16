@@ -112,7 +112,7 @@ const CreateGroup = () => {
               Cancel
             </Button>
             <Button onClick={onCreatingGroup} color="primary">
-              Subscribe
+              Create
             </Button>
           </DialogActions>
         </Dialog>

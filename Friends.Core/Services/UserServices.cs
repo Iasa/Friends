@@ -54,37 +54,12 @@ namespace Friends.Core.Services
             return user;
         }
 
-        public IEnumerable<User> GetUsers()
-        {
-            return _userRepository.GetAll().ToList();
-        }
 
         public User GetUserById(long id)
         {
             return _userRepository.Find(id);
         }
 
-        public void UpdateUser(long id, CreateUserDto updatedUser)
-        {
-            User user = _userRepository.Find(id);
-
-            if (user == null)
-                throw new NotFoundException("User not found!");
-
-            if (updatedUser.Email != user.Email && _userRepository.GetAll().Any(u => u.Email == updatedUser.Email))
-                throw new EntryAlreadyExistsException("This Email is already being used by another user");
-
-            if (updatedUser.Username != user.UserName && _userRepository.GetAll().Any(u => u.UserName == updatedUser.Username))
-                throw new EntryAlreadyExistsException("This Username is already being used by another user");
-
-            user.FirstName = updatedUser.FirstName;
-            user.LastName = updatedUser.LastName;
-            user.BirthDate = updatedUser.BirthDate;
-            user.UserName = updatedUser.Username;
-            user.Email = updatedUser.Email;
-
-            _userRepository.Save();
-        }
 
         public UserDto UpdateUserDetails(long userId, UpdateUserDto updatedUser)
         {

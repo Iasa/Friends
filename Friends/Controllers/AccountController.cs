@@ -67,32 +67,15 @@ namespace Friends.API.Controllers
                         {
                             var role = new Role("user");
                             var roleResult = _roleManager.CreateAsync(role).Result;
-                            //if (!roleResult.Succeeded)
-                            //{
-                            //    return new UserManagerResponse
-                            //    {
-                            //        Message = "Such User Already Exist"
-                            //    };
-                            //}
                         }
                         await _userManager.AddToRoleAsync(user, "user");
-                        await _signInManager.SignInAsync(user, false);
+                       
                         return new UserManagerResponse
                         {
                             IsSucces = true
                         };
                     }
-                    //else
-                    //{
-                    //    foreach (var error in result.Errors)
-                    //    {
-                    //        ModelState.AddModelError(string.Empty, error.Description);
-                    //        return new UserManagerResponse
-                    //        {
-                    //            Message = "Such User Already Exist"
-                    //        };
-                    //    }
-                    //}
+
                 }
 
                 return new UserManagerResponse
@@ -165,14 +148,6 @@ namespace Friends.API.Controllers
             }
 
             return false;
-        }
-
-        [HttpPost]
-        [Route("logout")]
-        public async Task<IActionResult> LogOut()
-        {
-            await _signInManager.SignOutAsync();
-            return Ok();
         }
 
 

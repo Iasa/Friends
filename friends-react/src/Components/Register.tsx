@@ -12,7 +12,7 @@ import { UserContext } from '../UserContext';
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        marginTop: theme.spacing(4),
+        marginTop: theme.spacing(2),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -80,7 +80,7 @@ function Register(props : any) {
     };
 
     return (
-        <Container component="main" maxWidth="xs" style={{backgroundColor:'#ffffffe8', border:'2px solid #e6e6e6'}}>
+        <Container component="main" maxWidth="xs" style={{backgroundColor:'#ffffffe8', border:'2px solid #e6e6e6', marginTop:20}}>
             <div className={classes.container}>
                 <Typography className={classes.registerText} component="h1" variant="h5">
                     Register

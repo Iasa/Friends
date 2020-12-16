@@ -43,24 +43,20 @@ const MessageList : React.FC<{chatId:number}> = (currentChatId) =>{
         connection.on("SendMessageToClients", message => {
           if(isTheSameChat((message as Message))) {
             setMessageList(messageList => [...messageList, message]);
+          } else {
+            chatContext.addUnreadChats((message as Message).chatId);
           }
         });
       }
     }, [connection]);
 
     function isTheSameChat(m:Message):boolean {
-      console.log("isTheSameChat: messageCHat currentCHat " + m.chatId + " " + currentChatId.chatId);
       return m.chatId === currentChatId.chatId;
     }
 
    useEffect(() => {
-    console.log("set messeges from context");
       setMessageList(chatContext.chatMessages);
-
       setHasMore(chatContext.chatMessages.length === numberOfMessagesPerPage);
-
-      console.log("active chat from effect " + chatContext.activeChatId);
-
       setPageNumber(1);
       
       if (connection) {

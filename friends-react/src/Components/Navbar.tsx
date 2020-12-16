@@ -62,9 +62,11 @@ function Navbar() {
             <Toolbar className={classes.toolbar}>
                 <Grid container spacing={8} justify="space-between" >
                     <Grid item xs={3}>
-                        <Typography className={classes.logo}>
-                            Friends 
-                        </Typography>
+                        <Link to="/messenger" style={{textDecoration:'none'}}> 
+                            <Typography className={classes.logo}>
+                                Friends 
+                            </Typography>
+                        </Link>
                     </Grid>
                     { localStorage.getItem('token') &&
                         <Grid item xs={3}>

@@ -27,17 +27,7 @@ namespace Friends.API.Controllers
             _chatServices = chatServices;
         }
 
-        //[Authorize(Roles = "user")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet("GetAllUsers")]
-        public IActionResult GetAllUsers()
-        {
-            var users = _userServices.GetUsers();
-            var result = users.Select(u => _mapper.Map<UserDto>(u));
-
-            return Ok(result);
-        }
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetUserById(long id)
         {
@@ -50,44 +40,25 @@ namespace Friends.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("CreateUser")]
-        [ApiExceptionFilter]
-        public IActionResult CreateUser([FromBody] CreateUserDto dto)
-        {
-            var user = _userServices.CreateUser(dto);
-
-            var result = _mapper.Map<UserDto>(user);
-            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, result);
-        }
-
         [AllowAnonymous]
-        [HttpGet("CheckIfEmailExists/{email}")]
+        [HttpGet("checkIfEmailExists/{email}")]
         public bool CheckIfEmailExists(string email)
         {
             return _userServices.CheckIfEmailAlreadyExists(email);
         }
 
         [AllowAnonymous]
-        [HttpGet("CheckIfUsernameExists/{username}")]
+        [HttpGet("checkIfUsernameExists/{username}")]
         public bool CheckIfUsernameExists(string username)
         {
             return _userServices.CheckIfUsernameAlreadyExists(username);
         }
 
-        [HttpPut("{id}")]
-        [ApiExceptionFilter]
-        public IActionResult UpdateUser(long id, [FromBody] CreateUserDto dto)
-        {
-            _userServices.UpdateUser(id, dto);
-            return NoContent();
-        }
-
-        [AllowAnonymous]
+        [Authorize]
         [HttpPatch("{userId}/update")]
         [ApiExceptionFilter]
         public IActionResult UpdateUserDetails(long userId, [FromBody] UpdateUserDto updatedUserDto)
         {
-
             try
             {
                 UserDto user = _userServices.UpdateUserDetails(userId, updatedUserDto);
@@ -95,15 +66,16 @@ namespace Friends.API.Controllers
             }
             catch(Exception e)
             {
-                return Ok(e.Message);
+                return BadRequest(e.Message);
             }
 
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult RemoveUser(long id)
+        [Authorize]
+        [HttpDelete("{userId}/remove")]
+        public IActionResult RemoveUser(long userId)
         {
-            _userServices.RemoveUserById(id);
+            _userServices.RemoveUserById(userId);
 
             return NoContent();
         }
@@ -128,7 +100,7 @@ namespace Friends.API.Controllers
         }
 
         [Authorize]
-        [HttpPost("addRelation")] // users/{id}/addRelation
+        [HttpPost("addRelation")]
         public IActionResult AddRelation(long userId, long friendId)
         {
             _userServices.AddRelation(userId, friendId);
@@ -166,7 +138,6 @@ namespace Friends.API.Controllers
             }
 
             return File(image?.ImageData, "image/png");
-
         }
 
         [Authorize]

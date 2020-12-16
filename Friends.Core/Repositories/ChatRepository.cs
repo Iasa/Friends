@@ -82,7 +82,6 @@ namespace Friends.Core.Repositories.Interfaces
             };
 
             await _context.Set<Chat>().AddAsync(newChat);
-            //Save();
             await _context.SaveChangesAsync();
 
             foreach (long userId in usersId)
@@ -94,7 +93,6 @@ namespace Friends.Core.Repositories.Interfaces
                 });
             }
 
-            //Save();
             await _context.SaveChangesAsync();
 
             return new ChatDto()

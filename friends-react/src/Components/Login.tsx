@@ -79,7 +79,7 @@ function Login(props : any) {
     }
 
     return (
-        <Container component="main" maxWidth="xs" style={{backgroundColor:'#ffffffe8', border:'2px solid #e6e6e6', height:'80vh'}}>
+        <Container component="main" maxWidth="xs" style={{backgroundColor:'#ffffffe8', border:'2px solid #e6e6e6', height:'80vh', marginTop:20}}>
             
             <div className={classes.container}>
                 <Typography component="h1" variant="h5">

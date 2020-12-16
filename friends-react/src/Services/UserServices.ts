@@ -5,30 +5,17 @@ import IUserInfo from '../Interfaces/IUserInfo';
 import INewMessageModel from '../Interfaces/INewMessageModel';
 import IUpdateUserModel from '../Interfaces/IUpdateUserModel';
 
-
-export const getUserById = async (id:number) => {
-    const response = await fetch(`https://localhost:44329/api/User/${id}`);
-    const userJson = response.ok ? await response.json() : { };
-    return userJson;
-}
-
-export const getAllUsers = async () => {
-    const response = await fetch("https://localhost:44329/api/User/GetAllUsers");
-    const usersJson = response.ok ? await response.json() : { };
-    return usersJson;
-}
-
 export const registerUser = async (user : UserRegisterModel) => {
     return (await axios.post("https://localhost:44329/api/Account/register", user)).data;
 }
 
 export const checkIfEmailExists = async (email : string) => {
-    if(email != '') return await axios.get(`https://localhost:44329/api/User/CheckIfEmailExists/${email}`);
+    if(email != '') return await axios.get(`https://localhost:44329/api/User/checkIfEmailExists/${email}`);
     else return { data : false }
 }
 
 export const checkIfUsernameExists = async (username : string) => {
-    if(username != '') return await axios.get(`https://localhost:44329/api/User/CheckIfUsernameExists/${username}`);
+    if(username != '') return await axios.get(`https://localhost:44329/api/User/checkIfUsernameExists/${username}`);
     else return { data : false }
 }
 
@@ -43,7 +30,6 @@ export const logInUser = async (logInModel : UserLogInModel) => {
 }
 
 export const checkPassword = async (username: string, password: string) => {
-    console.log("username and password " + username + " " + password);
     const result = await axios.post(`https://localhost:44329/api/Account/checkPassword?username=${username}&password=${password}`);
     return result.data;
 }
@@ -76,7 +62,6 @@ export const addMessage = async (newMessage : INewMessageModel) => {
 
 export const getNonFriends = async (userId: number, query: string, pageNumber: number, pageSize: number, orderByFirstName: boolean = false, orderByLastName: boolean = false, 
     orderByAge: boolean = false, orderAscending: boolean = true) => {
-        console.log("service | id " + userId + " query: " + query + " pageNumber: " + pageNumber);
         const users = await axios({
             method: 'GET',
             url: 'https://localhost:44329/getNonFriends',
@@ -84,7 +69,6 @@ export const getNonFriends = async (userId: number, query: string, pageNumber: n
             params: { userId : userId, query : query, pageNumber: pageNumber, pageSize: pageSize, orderByFirstName: orderByFirstName, 
                 orderByLastName: orderByLastName, orderByAge: orderByAge, orderAscending: orderAscending }
         });
-        console.log("in user service result lenght " + (users.data as IUserInfo[]).length);
         return users.data;
     }
 
@@ -111,8 +95,9 @@ export const getProfileImage = async (userId: number) => {
 }
 
 export const updateUser = async (userId: number, user: IUpdateUserModel) => {
-    const updatedUser = await axios.patch(`https://localhost:44329/api/User/${userId}/update`, user);
-    console.log(updatedUser.data);
+    const updatedUser = await axios.patch(`https://localhost:44329/api/User/${userId}/update`, user, {
+        headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}` }
+    });
     return updatedUser.data;
 }
 
@@ -123,8 +108,6 @@ export const removeProfileImage = async (userId : number) => {
 }
 
 export const createGroup = async (groupName: string, usersId: number[]) => {
-    console.log("parameters : " + groupName + " " + usersId);
-    
     const newGroup = await axios.post(`https://localhost:44329/api/Chat/createGroup/${groupName}`, usersId, {
         headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}` ,
         "Content-Type": "application/json" }

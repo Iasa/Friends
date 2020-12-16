@@ -6,11 +6,16 @@ import { UserContext } from "../../UserContext";
 import ChatItem from "./ChatItem";
 import IChatModel from "../../Interfaces/IChatModel";
 import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded';
+import { ChatContext } from "../ChatContext";
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import Message from "./Message";
 
 function ChatList() {
 
     const [chats, setChats] = useState([] as IChatModel[]);
     const userContext = useContext(UserContext); 
+    const chatContext = useContext(ChatContext);
+    const [connection, setConnection] = useState<HubConnection>();
     const [open, setOpen] = useState(false);
     const [selectedFriends, setSelectedFriends] = useState([userContext.user.id]);
     const [friends, setFriends] = useState([] as IUserInfo[]);
@@ -82,6 +87,39 @@ function ChatList() {
         return friendsCount >= 2 ? true : false;
     }
 
+
+//////////////////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+useEffect(() => {
+
+  const newConnection = new HubConnectionBuilder()
+      .withUrl('https://localhost:44329/api/Message/messages')
+      .withAutomaticReconnect()
+      .build();
+  setConnection(newConnection);
+}, [chatContext.activeChatId]);
+
+useEffect(() => {
+  
+  if (connection) {
+    connection.start();
+    connection.on("SendMessageToClients", message => {
+      //chats.find(c=>c.chatId === (message as Message).chatId);
+      console.log("chat message in chat list " + message);
+      // if(isTheSameChat((message as Message))) {
+      //   setMessageList(messageList => [...messageList, message]);
+      // }
+    });
+  }
+}, [connection]);
+
+
+
+
+/////////////////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
     return( 
     <> 
     {chats.length === 0 ? <p>No friends yet</p> : ""}
@@ -91,7 +129,7 @@ function ChatList() {
                 variant="contained" 
                 onClick={handleClickOpen}
                 startIcon={<GroupAddRoundedIcon />}
-                style ={{position:'static', color:'steelblue'}}
+                style ={{position:'static', color:'steelblue', marginTop:20}}
             >
                 Create group
             </Button>

@@ -78,7 +78,7 @@ function AddFriends() {
     }
    
 return (
-    <Container component="main" style={{marginTop:50, backgroundColor:'#ffffffe8', borderRadius:5}}>
+    <Container component="main" style={{marginTop:50, backgroundColor:'rgb(247 247 247)', borderRadius:5}}>
         
             <Grid container spacing={2} style={{marginBottom:20, paddingTop: 20}}>
                 <Grid item xs={5}>
@@ -165,7 +165,7 @@ return (
                         </Grid>)
                 })}  
 
-                <Grid container spacing={2} style={{marginTop:10}}>
+                <Grid container spacing={2} style={{marginTop:10, marginBottom:10}}>
                     <Grid item xs={6}>
                         <Button
                             variant="contained"

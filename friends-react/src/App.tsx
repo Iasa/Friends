@@ -36,8 +36,7 @@ function App() {
   }
 
   return (
-    <div className="App" style={{background:`url(${backgroundImage})`, backgroundPosition: 'center',
-    backgroundSize: '15%'}}>
+    <div className="App" style={{background:`url(${backgroundImage})`, backgroundPosition: 'center', backgroundAttachment:'fixed',  backgroundSize: '15%', height:'100vh'}}>
     <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut, updateUser:updateUser}}>
       
         <Router>

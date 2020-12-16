@@ -62,7 +62,7 @@ namespace Friends.API
 
             var mapperConfig = new MapperConfiguration(m =>
             {
-                m.AddProfile(new UserMappingProfile());
+                m.AddProfile(new MappingProfile());
             });
 
             services.AddSingleton(mapperConfig.CreateMapper());

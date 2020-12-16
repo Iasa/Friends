@@ -15,15 +15,15 @@ function ProfilePage() {
     const birthDate = userContext.user.birthDate.toString().substring(0, userContext.user.birthDate.toString().indexOf('T'));
 
     return (
-        <Container maxWidth='sm' style={{backgroundColor:'#ffffffe8', border:'2px solid #e6e6e6', height:'80vh'}}>
+        <Container maxWidth='sm' style={{backgroundColor:'rgb(247 247 247)', border:'2px solid #e6e6e6', marginTop:20}}>
             <Grid container spacing={2} style={{marginTop:10, padding:20}}>
-                <Grid item xs={4} >
-                    <div style={{height:'25vh', width:'25vh', borderRadius: '50%', overflow:'hidden', backgroundColor:'rgb(96 96 96 / 18%)'}}>
+                <Grid item xs={6}>
+                    <div style={{height:230, width:230, borderRadius: '50%', overflow:'hidden', backgroundColor:'rgb(96 96 96 / 18%)'}}>
                         <img 
                         onLoad = {() => { setHasProfileImage(true) } }
                         src = { `${userContext.user.profileImageUrl}?${Date.now()}` } 
                         alt="select an image" 
-                        style={{height:'25vh', marginLeft:'-5%'}} 
+                        style={{height:230, marginLeft:'-5%'}} 
                         hidden = {!hasProfileImage}/>
                         <Typography
                             hidden = {hasProfileImage}
@@ -33,14 +33,15 @@ function ProfilePage() {
                         </Typography>
                     </div>
                 </Grid>
-                <Grid item xs={5} >
+                <Grid item xs={5} style={{textAlign:"left"}}>
                     <Typography variant="h5">
                         {userContext.user.firstName} {userContext.user.lastName}
                     </Typography>
-                    <Typography variant="body2">
+                    <br></br>
+                    <Typography variant="body2" style={{fontStyle:'italic'}}>
                         {birthDate} 
                     </Typography>
-                    <Typography variant="body2">
+                    <Typography variant="body2" style={{fontStyle:'italic'}}>
                         {userContext.user.email} 
                     </Typography>
                 </Grid>

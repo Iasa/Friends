@@ -44,12 +44,10 @@ function EditProfile() {
     }
 
     const onSubmit = (data : IUpdateUserModel) => {
-        console.log(data);
-        console.log("form data in on submit: " + formData.get('profileImage'));
        var updatedUser = updateUser(userContext.user.id, data);
        updatedUser.then(response=> {
-           console.log("from editprofile : " + (response as IUserInfo).firstName);
            userContext.updateUser((response as IUserInfo));
+           alert("Saved!");
        })
     };
 
@@ -111,7 +109,7 @@ function EditProfile() {
 
     return (
         
-        <Container maxWidth='sm' style={{backgroundColor:'#ffffffe8', border:'2px solid #e6e6e6'}}>
+        <Container maxWidth='sm' style={{backgroundColor:'rgb(247 247 247)', border:'2px solid #e6e6e6'}}>
             <Grid container spacing={5} style={{marginTop:5, padding: 20}}>
             
                 <Grid item xs={12} style={{height:'25vh', marginBottom: 20}}>
@@ -285,7 +283,7 @@ function EditProfile() {
                             </Button>
 
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={6} style={{marginBottom:20}}>
                             <Button 
                                 variant = "contained"
                                 fullWidth
@@ -296,8 +294,6 @@ function EditProfile() {
                                 </Link>
                             </Button>
                         </Grid>
-                        
-
                     </Grid>
                 </form>
                             

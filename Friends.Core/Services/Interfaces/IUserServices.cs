@@ -9,10 +9,8 @@ namespace Friends.Core.Services.Interfaces
 {
     public interface IUserServices
     {
-        IEnumerable<User> GetUsers();
         User GetUserById(long id);
         User CreateUser(CreateUserDto newUser);
-        void UpdateUser(long id, CreateUserDto updatedUser);
         UserDto UpdateUserDetails(long userId, UpdateUserDto updatedUser);
         void RemoveUserById(long id);
         bool CheckIfEmailAlreadyExists(string email);

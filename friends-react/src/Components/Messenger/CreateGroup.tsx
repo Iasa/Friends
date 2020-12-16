@@ -1,12 +1,9 @@
 import { Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, Grid, List, ListItem, ListItemText, TextField } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../UserContext';
-import { ChatContext } from '../ChatContext';
-import ChatModel from './ChatModel';
 import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded';
 import { createGroup, getFriends } from '../../Services/UserServices';
-import IUserInfo from '../../IUserInfo';
-import { useHistory, useLocation } from 'react-router-dom';
+import IUserInfo from '../../Interfaces/IUserInfo';
 
 const CreateGroup = () => {
 

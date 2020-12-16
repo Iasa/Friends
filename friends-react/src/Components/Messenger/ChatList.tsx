@@ -1,16 +1,15 @@
 import { Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, List, ListItem, TextField } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
-import IUserInfo from "../../IUserInfo";
+import IUserInfo from "../../Interfaces/IUserInfo";
 import { createGroup, getChatList, getFriends } from "../../Services/UserServices";
 import { UserContext } from "../../UserContext";
 import ChatItem from "./ChatItem";
-import ChatModel from "./ChatModel";
-import CreateGroup from "./CreateGroup";
+import IChatModel from "../../Interfaces/IChatModel";
 import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded';
 
 function ChatList() {
 
-    const [chats, setChats] = useState([] as ChatModel[]);
+    const [chats, setChats] = useState([] as IChatModel[]);
     const userContext = useContext(UserContext); 
     const [open, setOpen] = useState(false);
     const [selectedFriends, setSelectedFriends] = useState([userContext.user.id]);
@@ -85,6 +84,7 @@ function ChatList() {
 
     return( 
     <> 
+    {chats.length === 0 ? <p>No friends yet</p> : ""}
         { !userHasMoreThanTwoFriends() ? "" :
             <Container>
             <Button 

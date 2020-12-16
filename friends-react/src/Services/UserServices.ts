@@ -1,12 +1,10 @@
-import React, { useContext } from 'react';
 import axios from 'axios';
-import UserRegisterModel from '../UserRegisterModel';
-import UserLogInModel from '../UserLogInModel';
-import IUserInfo from '../IUserInfo';
-import { UserContext } from '../UserContext';
-import Message from '../Components/Messenger/Message';
-import NewMessageModel from '../NewMessageModel';
-import IUpdateUserModel from '../IUpdateUserModel';
+import UserRegisterModel from '../Classes/UserRegisterModel';
+import UserLogInModel from '../Classes/UserLogInModel';
+import IUserInfo from '../Interfaces/IUserInfo';
+import INewMessageModel from '../Interfaces/INewMessageModel';
+import IUpdateUserModel from '../Interfaces/IUpdateUserModel';
+
 
 export const getUserById = async (id:number) => {
     const response = await fetch(`https://localhost:44329/api/User/${id}`);
@@ -61,34 +59,29 @@ export const getCurrentUser = () : IUserInfo => {
 }
 
 export const getChatList = async (userId : number) => {
-    const chatList = await axios.get(`https://localhost:44329/chats/${userId}`, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
+    const chatList = await axios.get(`https://localhost:44329/api/User/${userId}/chats`, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
     return chatList.data;
 }
 
-export const getChatMessages = async (chatId : number, pageNumber = 1) => {
-    //const messages = await axios.get(`https://localhost:44329/chatmessages/${chatId}`, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
-    const messages = await axios({
-                        method: 'GET',
-                        url: `https://localhost:44329/chatmessages/${chatId}`,
-                        headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`},
-                        params: { page : pageNumber }
-                    });
+export const getChatMessages = async (chatId : number, pageSize: number, pageNumber = 1) => {
+    const messages = await axios.get(`https://localhost:44329/api/Chat/${chatId}/messeges?pageNumber=${pageNumber}&pageSize=${pageSize}`, 
+                    { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
     return messages.data;
 }
 
-export const addMessage = async (newMessage : NewMessageModel) => {
+export const addMessage = async (newMessage : INewMessageModel) => {
     const message = await axios.post("https://localhost:44329/api/Message/messages", newMessage, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
     return message.data;
 }
 
-export const getNonFriends = async (userId: number, query: string, pageNumber: number, orderByFirstName: boolean = false, orderByLastName: boolean = false, 
+export const getNonFriends = async (userId: number, query: string, pageNumber: number, pageSize: number, orderByFirstName: boolean = false, orderByLastName: boolean = false, 
     orderByAge: boolean = false, orderAscending: boolean = true) => {
         console.log("service | id " + userId + " query: " + query + " pageNumber: " + pageNumber);
         const users = await axios({
             method: 'GET',
             url: 'https://localhost:44329/getNonFriends',
             headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`},
-            params: { userId : userId, query : query, pageNumber: pageNumber, orderByFirstName: orderByFirstName, 
+            params: { userId : userId, query : query, pageNumber: pageNumber, pageSize: pageSize, orderByFirstName: orderByFirstName, 
                 orderByLastName: orderByLastName, orderByAge: orderByAge, orderAscending: orderAscending }
         });
         console.log("in user service result lenght " + (users.data as IUserInfo[]).length);

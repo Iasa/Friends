@@ -4,7 +4,7 @@ import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import { UserContext } from "../../UserContext";
 import { ChatContext } from "../ChatContext";
 import { addMessage } from "../../Services/UserServices";
-import NewMessageModel from "../../NewMessageModel";
+import INewMessageModel from "../../Interfaces/INewMessageModel";
 
 function SendMessage() {
     
@@ -20,7 +20,7 @@ function SendMessage() {
 
     const onSubmit = () => {
         if(chatContext.activeChatId > 0 && messageContent && messageContent.trim().length > 0) {
-            const newMessage : NewMessageModel = {
+            const newMessage : INewMessageModel = {
                 senderId : userContext.user.id,
                 chatId : chatContext.activeChatId,
                 sendingTime : new Date(),

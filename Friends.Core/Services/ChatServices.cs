@@ -22,9 +22,9 @@ namespace Friends.Core.Services
             return await _chatRepository.CreateGroup(groupName, usersId);
         }
 
-        public IEnumerable<MessageDto> GetChatMessages(long chatId, int pageNumber)
+        public IEnumerable<MessageDto> GetChatMessages(long chatId, int pageNumber, int pageSize = PaginExtension.DefaultPageSize)
         {
-            return _chatRepository.GetChatMessages(chatId, pageNumber);
+            return _chatRepository.GetChatMessages(chatId, pageNumber, pageSize);
         }
 
         public IEnumerable<ChatDto> GetUserChats(long userId)

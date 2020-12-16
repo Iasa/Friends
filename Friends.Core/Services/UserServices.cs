@@ -212,9 +212,10 @@ namespace Friends.Core.Services
             _userRepository.AddRelation(userId, friendId);
         }
 
-        public IEnumerable<UserDto> GetNonFriends(long userId, string query, int pageNumber, bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true)
+        public IEnumerable<UserDto> GetNonFriends(long userId, string query, int pageNumber, int pageSize = PaginExtension.DefaultPageSize, 
+            bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true)
         {
-            return _userRepository.GetNonFriends(userId, query, pageNumber, orderByFirstName, orderByLastName, orderByAge, orderAscending);
+            return _userRepository.GetNonFriends(userId, query, pageNumber, pageSize, orderByFirstName, orderByLastName, orderByAge, orderAscending);
         }
 
         public void AddProfileImage(long userId, string imageTitle, byte[] imageData)

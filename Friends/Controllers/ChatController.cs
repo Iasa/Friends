@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Friends.Core.Services;
 
 namespace Friends.API.Controllers
 {
@@ -27,6 +28,15 @@ namespace Friends.API.Controllers
         {
             ChatDto newGroup = await _chatServices.CreateGroup(groupName, usersId);
             return newGroup;
+        }
+
+        [Authorize]
+        [HttpGet("{chatId}/messeges")]
+        public IActionResult GetChatMessages(long chatId, int pageNumber, int pageSize = PaginExtension.DefaultPageSize)
+        {
+            var result = _chatServices.GetChatMessages(chatId, pageNumber, pageSize);
+
+            return Ok(result);
         }
     }
 }

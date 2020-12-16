@@ -10,18 +10,17 @@ import {
 import { UserContext } from './UserContext';
 import Messenger from './Components/Messenger/Messenger';
 import { getCurrentUser } from './Services/UserServices';
-import IUserInfo from './IUserInfo';
-import MessengerProtectedRoute from './Components/MessengerProtectedRoute';
-import LoginRoute from './LoginRoute';
-import RegisterRoute from './RegisterRoute';
+import IUserInfo from './Interfaces/IUserInfo';
+import MessengerProtectedRoute from './Routes/MessengerProtectedRoute';
+import LoginRoute from './Routes/LoginRoute';
+import RegisterRoute from './Routes/RegisterRoute';
 import AddFriends from './Components/AddFriends';
-import AddFriendsRoute from './AddFriendsRoute';
+import AddFriendsRoute from './Routes/AddFriendsRoute';
 import EditProfile from './Components/EditProfile';
-import ProfilePageRoute from './ProfilePageRoute';
+import ProfilePageRoute from './Routes/ProfilePageRoute';
 import ProfilePage from './Components/ProfilePage';
-import EditProfileRoute from './EditProfileRoute';
-import IUpdateUserModel from './IUpdateUserModel';
-
+import EditProfileRoute from './Routes/EditProfileRoute';
+import backgroundImage from './backgroundImage.jpg'
 
 function App() {
 
@@ -37,8 +36,8 @@ function App() {
   }
 
   return (
-    <div className="App">
-     {/* <Messengerr /> */}
+    <div className="App" style={{background:`url(${backgroundImage})`, backgroundPosition: 'center',
+    backgroundSize: '15%'}}>
     <UserContext.Provider value={{user:user, logIn:logIn, logOut:logOut, updateUser:updateUser}}>
       
         <Router>

@@ -1,21 +1,18 @@
-import { AppBar, Container, createStyles, Divider, Drawer, Grid, IconButton, Link, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, makeStyles, Paper, Theme, Toolbar, Typography, useTheme } from "@material-ui/core";
-import { HubConnectionBuilder } from "@microsoft/signalr";
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { AppBar, Container, Grid, List, Paper, Toolbar, Typography, useTheme } from "@material-ui/core";
+import React, { useEffect, useRef, useState } from "react";
 import { getChatMessages } from "../../Services/UserServices";
-import { UserContext } from "../../UserContext";
 import { ChatContext } from "../ChatContext";
 import ChatList from "./ChatList";
 import Message from "./Message";
 import MessageList from "./MessageList";
 import SendMessage from "./SendMessage";
 import { animateScroll } from "react-scroll";
-import { scrollToBottom } from "react-scroll/modules/mixins/animate-scroll";
-import CreateGroup from "./CreateGroup";
+
 
 
 function Messenger() {
 
-  const userContext = useContext(UserContext);
+  const numberOfMessagesPerPage = 15;
   const theme = useTheme();
   
   // const hubConnection = new HubConnectionBuilder()
@@ -30,7 +27,7 @@ function Messenger() {
   
   const onSelectingAChat = async (chatId:number, chatName:string) => {
     currentChatName.current = chatName;
-    const messages = await getChatMessages(chatId);
+    const messages = await getChatMessages(chatId, numberOfMessagesPerPage);
     setCurrentChat({activeChatId : chatId, chatMessages : messages as Message[]});
   }
   
@@ -39,13 +36,6 @@ function Messenger() {
       containerId: "messageListPapar"
     });
   }, [currentChat]);
-
-
-  function scrollToBottom(){
-    animateScroll.scrollToBottom({
-      containerId: "messageListPapar"
-    });
-  };
 
 
 
@@ -79,7 +69,7 @@ function Messenger() {
             </List>
           </Paper>
           <ChatContext.Provider value={{activeChatId:currentChat.activeChatId, chatMessages:currentChat.chatMessages, onSelectingAChat:onSelectingAChat}}>
-            {currentChat.activeChatId != 0 ? <SendMessage /> : ""}
+            {currentChat.activeChatId !== 0 ? <SendMessage /> : ""}
           </ChatContext.Provider>
         </Paper>
         </Grid>

@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Container, Divider, TextField, Typography } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
-import IUserRegisterModel from '../IUserRegisterModel';
+import IUserRegisterModel from '../Interfaces/IUserRegisterModel';
 import Grid from '@material-ui/core/Grid'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { checkIfEmailExists, checkIfUsernameExists, registerUser } from '../Services/UserServices';
+import { checkIfEmailExists, checkIfUsernameExists, logInUser, registerUser } from '../Services/UserServices';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import { UserContext } from '../UserContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 20
     },
     regForm: {
         marginTop: theme.spacing(3),
@@ -37,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 function Register(props : any) {
 
     const classes = useStyles();
+    const userContext = useContext(UserContext);
 
     const validationSchema = yup.object().shape({
         firstName: yup.string().required("First Name is required").max(50, "Last Name is too long"),
@@ -66,12 +69,18 @@ function Register(props : any) {
 
     const onSubmit = (data : IUserRegisterModel) => {
          registerUser(data).then(response => {
-             if(!response.isSucces) alert(response.message);
+             if(response.isSucces) {
+                logInUser({ username: data.username, password: data.password}).then(response => {
+                    if( response.isSucces )  {
+                        userContext.logIn(response.user);
+                    }
+                });
+             };
         });
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" style={{backgroundColor:'#ffffffe8', border:'2px solid #e6e6e6'}}>
             <div className={classes.container}>
                 <Typography className={classes.registerText} component="h1" variant="h5">
                     Register

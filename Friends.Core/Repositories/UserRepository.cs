@@ -14,7 +14,6 @@ namespace Friends.Core.Repositories
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        private readonly int _peoplePerPage = 12;
         private readonly IChatRepository _chatRepository;
         private readonly IMapper _mapper;
 
@@ -43,7 +42,7 @@ namespace Friends.Core.Repositories
             return _context.Set<User>().FirstOrDefault(u => u.Id == id);
         }
 
-        public IEnumerable<UserDto> GetNonFriends(long userId, string query, int pageNumber,
+        public IEnumerable<UserDto> GetNonFriends(long userId, string query, int pageNumber, int pageSize = PaginExtension.DefaultPageSize,
             bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true)
         {
 
@@ -73,7 +72,7 @@ namespace Friends.Core.Repositories
                 else if (orderByLastName) nonFriends = nonFriends.OrderByDescending(x => x.LastName);
             }
 
-            return nonFriends.Page(pageNumber, _peoplePerPage).ToList();
+            return nonFriends.Page(pageNumber, pageSize).ToList();
         }
 
         public IEnumerable<UserDto> GetFriends(long userId)

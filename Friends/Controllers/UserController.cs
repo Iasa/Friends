@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Friends.Core.Dtos.UserDto;
 using Friends.Core.Exceptions;
+using Friends.Core.Services;
 using Friends.Core.Services.Interfaces;
 using Friends.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -107,8 +108,8 @@ namespace Friends.API.Controllers
             return NoContent();
         }
 
-        [AllowAnonymous]
-        [HttpGet("/chats/{userId}")]
+        [Authorize]
+        [HttpGet("{userId}/chats")]
         public IActionResult GetUserChats(long userId)
         {
             var result = _chatServices.GetUserChats(userId);
@@ -116,21 +117,13 @@ namespace Friends.API.Controllers
             return Ok(result);
         }
 
-        [Authorize]
-        [HttpGet("/chatmessages/{id}")]
-        public IActionResult GetChatMessages(long id, int page)
-        {
-            var result = _chatServices.GetChatMessages(id, page);
-
-            return Ok(result);
-        }
 
         [Authorize]
         [HttpGet("/getNonFriends")]
-        public IActionResult GetNonFriends(long userId, string query, int pageNumber,
+        public IActionResult GetNonFriends(long userId, string query, int pageNumber, int pageSize = PaginExtension.DefaultPageSize,
             bool orderByFirstName = false, bool orderByLastName = false, bool orderByAge = false, bool orderAscending = true)
         {
-            var result = _userServices.GetNonFriends(userId, query, pageNumber, orderByFirstName, orderByLastName, orderByAge, orderAscending);
+            var result = _userServices.GetNonFriends(userId, query, pageNumber, pageSize, orderByFirstName, orderByLastName, orderByAge, orderAscending);
             return Ok(result);
         }
 

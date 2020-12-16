@@ -1,15 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Card, CardContent, CardMedia, Container, Divider, Grid, Input, Paper, TextField, Typography } from '@material-ui/core';
+import { Button, Container, Divider, Grid, TextField, Typography } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import * as yup from "yup";
-import IUpdateUserModel from '../IUpdateUserModel';
-import IUserInfo from '../IUserInfo';
-import IUserRegisterModel from '../IUserRegisterModel';
-import { addProfileImage, checkIfEmailExists, checkIfUsernameExists, getProfileImage, logInUser, removeProfileImage, updateUser } from '../Services/UserServices';
+import IUpdateUserModel from '../Interfaces/IUpdateUserModel';
+import IUserInfo from '../Interfaces/IUserInfo';
+import { addProfileImage, checkIfEmailExists, checkIfUsernameExists, logInUser, removeProfileImage, updateUser } from '../Services/UserServices';
 import { UserContext } from '../UserContext';
 
 function EditProfile() {
@@ -112,8 +111,8 @@ function EditProfile() {
 
     return (
         
-        <Container maxWidth='sm'>
-            <Grid container spacing={5} style={{marginTop:5}}>
+        <Container maxWidth='sm' style={{backgroundColor:'#ffffffe8', border:'2px solid #e6e6e6'}}>
+            <Grid container spacing={5} style={{marginTop:5, padding: 20}}>
             
                 <Grid item xs={12} style={{height:'25vh', marginBottom: 20}}>
                     <Container style={{ width:'30vh'}}>

@@ -1,14 +1,14 @@
 import { ListItem, ListItemText, Typography } from "@material-ui/core";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../UserContext";
 import { ChatContext } from "../ChatContext";
 import Message from "./Message";
 import { getChatMessages } from "../../Services/UserServices";
 
-const numberOfMessagesPerPage = 10;
+const numberOfMessagesPerPage = 15;
 
-const MessageList : React.FC<{chatId:number}> = (currentChatIdd) =>{
+const MessageList : React.FC<{chatId:number}> = (currentChatId) =>{
   
   const chatContext = useContext(ChatContext);
   const userContext = useContext(UserContext);
@@ -16,19 +16,15 @@ const MessageList : React.FC<{chatId:number}> = (currentChatIdd) =>{
   const [hasMore, setHasMore] = useState(false);
   const [connection, setConnection] = useState<HubConnection>();
   const [messageList, setMessageList] = useState([] as Message[]);
-  const [currentChatId, setCurrentChatId] = useState(0);
 
   useEffect(() => {
-    const response = getChatMessages(chatContext.activeChatId, pageNumber);
+    const response = getChatMessages(chatContext.activeChatId, numberOfMessagesPerPage, pageNumber);
     response.then(mess => {
-        console.log("number of messeges received " + (mess as Message[]).length + " pageNumber: " + pageNumber);
-        
         setHasMore((mess as Message[]).length === numberOfMessagesPerPage);
         if(pageNumber !== 1) {
             const newMessageList = messageList;
             newMessageList.unshift(...mess);
             setMessageList([...newMessageList]);
-            console.log(messageList);
         }
     });
   }, [pageNumber]);
@@ -45,10 +41,7 @@ const MessageList : React.FC<{chatId:number}> = (currentChatIdd) =>{
       if (connection) {
         connection.start();
         connection.on("SendMessageToClients", message => {
-          
-          console.log("on receiving messageChatId " + (message as Message).chatId + " contextChatId: " + currentChatIdd.chatId);
           if(isTheSameChat((message as Message))) {
-           // (message as Message).chatId === currentChatIdd.chatId
             setMessageList(messageList => [...messageList, message]);
           }
         });
@@ -56,8 +49,8 @@ const MessageList : React.FC<{chatId:number}> = (currentChatIdd) =>{
     }, [connection]);
 
     function isTheSameChat(m:Message):boolean {
-      console.log("isTheSameChat: messageCHat currentCHat " + m.chatId + " " + currentChatIdd.chatId);
-      return m.chatId === currentChatIdd.chatId;
+      console.log("isTheSameChat: messageCHat currentCHat " + m.chatId + " " + currentChatId.chatId);
+      return m.chatId === currentChatId.chatId;
     }
 
    useEffect(() => {
@@ -68,21 +61,12 @@ const MessageList : React.FC<{chatId:number}> = (currentChatIdd) =>{
 
       console.log("active chat from effect " + chatContext.activeChatId);
 
-      setCurrentChatId(chatContext.activeChatId);
-
       setPageNumber(1);
       
       if (connection) {
         connection.stop();
-        
       }
-      
-      
    }, [chatContext.activeChatId]);
-
-  //  useEffect(() => {
-  //   setCurrentChatId(chatContext.activeChatId);
-  //  },[chatContext.activeChatId])
 
  
   const showMoreMessages = () => {
@@ -91,7 +75,6 @@ const MessageList : React.FC<{chatId:number}> = (currentChatIdd) =>{
 
     return (
         <div>
-       
           {hasMore && <ListItem button  onClick={ showMoreMessages }>
                         <ListItemText style={{width:'100%', textAlign:'center'}}>
                           <Typography
@@ -111,8 +94,8 @@ const MessageList : React.FC<{chatId:number}> = (currentChatIdd) =>{
           <ListItem key={message.id}>
             <ListItemText
               style={{ 
-                marginLeft:  message.senderId == userContext.user.id ? '60%' : '', 
-                backgroundColor: message.senderId == userContext.user.id ? 'lightsteelblue' : '#d5d5d5',
+                marginLeft:  message.senderId === userContext.user.id ? '60%' : '', 
+                backgroundColor: message.senderId === userContext.user.id ? 'lightsteelblue' : '#d5d5d5',
                 maxWidth: '40%', borderRadius:5, padding:5 }}
               primary={
                 <Typography
@@ -137,7 +120,8 @@ const MessageList : React.FC<{chatId:number}> = (currentChatIdd) =>{
               />
           </ListItem>)
         }
-        )} 
+        )}
+        {currentChatId.chatId < 1 ? <p>Please select a chat to start messaging</p> : ""} 
         </div>
     );
 

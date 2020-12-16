@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import IUser from "./IUser";
+import IUser from "./Interfaces/IUser";
 
 export const UserContext = createContext({} as IUser);

@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
 import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
-import IUserInfo from '../IUserInfo';
+import IUserInfo from '../Interfaces/IUserInfo';
 import { UserContext } from '../UserContext';
 import { addFriend, getNonFriends } from '../Services/UserServices';
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
@@ -34,9 +34,8 @@ function AddFriends() {
 
     
     useEffect(() => {
-        const result = getNonFriends(userContext.user.id, query, pageNumber, sorting.firstName, sorting.lastName, sorting.age, sorting.sortAscending);
-        console.log("in effect")
-        
+        const result = getNonFriends(userContext.user.id, query, pageNumber, personsPerPage, sorting.firstName, sorting.lastName, sorting.age, sorting.sortAscending);
+       
         result.then(users => {
             setPeople([...users]);
             setHasMore((users as IUserInfo[]).length === personsPerPage); 
@@ -46,11 +45,7 @@ function AddFriends() {
 
     const queryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event && event.target) {
-            
-            //console.log("query " + event.target.value);
-
             setTimeout(() => { 
-                console.log(`I can see you're not typing. I can use now!: ` + event.target.value) 
                 setQuery(event.target.value);
                 setPageNumber(1);
             }, 1000);
@@ -83,9 +78,9 @@ function AddFriends() {
     }
    
 return (
-    <Container component="main" style={{marginTop:50}}>
+    <Container component="main" style={{marginTop:50, backgroundColor:'#ffffffe8', borderRadius:5}}>
         
-            <Grid container spacing={2} style={{marginBottom:20}}>
+            <Grid container spacing={2} style={{marginBottom:20, paddingTop: 20}}>
                 <Grid item xs={5}>
                     <TextField 
                         placeholder = "search"

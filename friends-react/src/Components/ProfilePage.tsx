@@ -4,7 +4,7 @@ import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import * as yup from "yup";
-import IUserRegisterModel from '../IUserRegisterModel';
+import IUserRegisterModel from '../Interfaces/IUserRegisterModel';
 import { addProfileImage, checkIfEmailExists, checkIfUsernameExists, getProfileImage } from '../Services/UserServices';
 import { UserContext } from '../UserContext';
 
@@ -15,8 +15,8 @@ function ProfilePage() {
     const birthDate = userContext.user.birthDate.toString().substring(0, userContext.user.birthDate.toString().indexOf('T'));
 
     return (
-        <Container maxWidth='sm'>
-            <Grid container spacing={2} style={{marginTop:10}}>
+        <Container maxWidth='sm' style={{backgroundColor:'#ffffffe8', border:'2px solid #e6e6e6', height:'80vh'}}>
+            <Grid container spacing={2} style={{marginTop:10, padding:20}}>
                 <Grid item xs={4} >
                     <div style={{height:'25vh', width:'25vh', borderRadius: '50%', overflow:'hidden', backgroundColor:'rgb(96 96 96 / 18%)'}}>
                         <img 
@@ -47,7 +47,7 @@ function ProfilePage() {
                 <Button 
                     variant = "contained"
                     fullWidth
-                    style = {{backgroundColor: '#ff6c6c'}}
+                    style = {{backgroundColor: '#ff6c6c', marginBottom:20}}
                 >
                     <Link to="/editprofile" style={{textDecoration: 'none', color:'white'}}>
                     Edit Profile

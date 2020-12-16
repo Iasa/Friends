@@ -10,7 +10,7 @@ namespace Friends.Core.Services.Interfaces
     public interface IChatServices
     {
         IEnumerable<ChatDto> GetUserChats(long userId);
-        IEnumerable<MessageDto> GetChatMessages(long chatId, int pageNumber);
+        IEnumerable<MessageDto> GetChatMessages(long chatId, int pageNumber, int pageSize = PaginExtension.DefaultPageSize);
         Task<ChatDto> CreateGroup(string groupName, long[] usersId);
     }
 }

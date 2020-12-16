@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { Button, Container, TextField, Typography } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
-import IUserRegisterModel from '../IUserRegisterModel';
+import IUserRegisterModel from '../Interfaces/IUserRegisterModel';
 import Grid from '@material-ui/core/Grid'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import {checkIfUsernameExists, checkPassword, logInUser} from '../Services/UserServices';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import UserLogInModel from '../UserLogInModel';
+import UserLogInModel from '../Classes/UserLogInModel';
 import { red } from '@material-ui/core/colors';
 import { UserContext } from '../UserContext';
 import { Redirect } from 'react-router-dom';
@@ -41,17 +41,11 @@ const useStyles = makeStyles((theme) => ({
 
 function Login(props : any) {
 
-    const [passwordIsWrong, setPasswordIsWrong] = useState(false);
     const [username, setUsername] = useState('');
 
     const classes = useStyles();
 
     const userContext = useContext(UserContext);
-
-    // type UserLogInModel = {
-    //     username : string,
-    //     password : string
-    // }
 
     const validationSchema = yup.object().shape({
         username: yup.string().required("Username is required")
@@ -73,7 +67,6 @@ function Login(props : any) {
     });
 
     const onSubmit = async (data : UserLogInModel) => {
-        //checkPassword(data.username, data.password);
         logInUser(data).then(response => {
             if( response.isSucces )  {
                 userContext.logIn(response.user);
@@ -86,7 +79,7 @@ function Login(props : any) {
     }
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" style={{backgroundColor:'#ffffffe8', border:'2px solid #e6e6e6', height:'80vh'}}>
             
             <div className={classes.container}>
                 <Typography component="h1" variant="h5">
